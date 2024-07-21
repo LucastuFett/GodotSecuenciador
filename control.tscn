@@ -1,0 +1,378 @@
+[gd_scene load_steps=8 format=3 uid="uid://batna25ggjth"]
+
+[ext_resource type="Script" path="res://buttons.gd" id="1_2l6ow"]
+[ext_resource type="Script" path="res://main.gd" id="1_3bh58"]
+[ext_resource type="StyleBox" uid="uid://dgo4nta8cmgwq" path="res://themes/WhiteKey.tres" id="2_f1k07"]
+[ext_resource type="Script" path="res://screen.gd" id="2_sqclt"]
+[ext_resource type="Script" path="res://piano.gd" id="3_1i77l"]
+[ext_resource type="StyleBox" uid="uid://5luf4pv26r2w" path="res://themes/BlackKey.tres" id="4_2np7d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62ndd"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3bh58")
+
+[node name="Buttons" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 472.0
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_constants/h_separation = 73
+theme_override_constants/v_separation = 4
+columns = 8
+script = ExtResource("1_2l6ow")
+
+[node name="B1" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B2" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B3" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B4" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B5" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B6" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B7" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B8" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B9" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B10" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B11" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B12" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B13" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B14" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B15" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="B16" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
+action_mode = 0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 999.0
+offset_top = 147.0
+offset_right = 1137.0
+offset_bottom = 204.0
+theme_override_font_sizes/font_size = 41
+text = "Tempo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="."]
+layout_mode = 0
+offset_left = 1023.0
+offset_top = 214.0
+offset_right = 1106.06
+offset_bottom = 245.0
+min_value = 60.0
+max_value = 240.0
+value = 120.0
+
+[node name="Screen" type="ReferenceRect" parent="."]
+layout_mode = 0
+offset_left = 361.0
+offset_top = 107.0
+offset_right = 711.0
+offset_bottom = 406.0
+script = ExtResource("2_sqclt")
+
+[node name="Piano" type="ReferenceRect" parent="Screen"]
+layout_mode = 0
+offset_right = 245.0
+offset_bottom = 200.0
+script = ExtResource("3_1i77l")
+
+[node name="NC" type="Panel" parent="Screen/Piano"]
+layout_mode = 0
+offset_top = 75.0
+offset_right = 35.0
+offset_bottom = 200.0
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="NC#" type="Panel" parent="Screen/Piano"]
+z_index = 1
+layout_mode = 0
+offset_left = 26.0
+offset_top = 75.0
+offset_right = 44.0
+offset_bottom = 150.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="ND" type="Panel" parent="Screen/Piano"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 75.0
+offset_right = 70.0
+offset_bottom = 200.0
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="ND#" type="Panel" parent="Screen/Piano"]
+z_index = 1
+layout_mode = 0
+offset_left = 61.0
+offset_top = 75.0
+offset_right = 79.0
+offset_bottom = 150.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="NE" type="Panel" parent="Screen/Piano"]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 75.0
+offset_right = 105.0
+offset_bottom = 200.0
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="NF" type="Panel" parent="Screen/Piano"]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 75.0
+offset_right = 140.0
+offset_bottom = 200.0
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="NF#" type="Panel" parent="Screen/Piano"]
+z_index = 1
+layout_mode = 0
+offset_left = 131.0
+offset_top = 75.0
+offset_right = 149.0
+offset_bottom = 150.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="NG" type="Panel" parent="Screen/Piano"]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 75.0
+offset_right = 175.0
+offset_bottom = 200.0
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="NG#" type="Panel" parent="Screen/Piano"]
+z_index = 1
+layout_mode = 0
+offset_left = 166.0
+offset_top = 75.0
+offset_right = 184.0
+offset_bottom = 150.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="NA" type="Panel" parent="Screen/Piano"]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 75.0
+offset_right = 210.0
+offset_bottom = 200.0
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="NA#" type="Panel" parent="Screen/Piano"]
+z_index = 1
+layout_mode = 0
+offset_left = 201.0
+offset_top = 75.0
+offset_right = 219.0
+offset_bottom = 150.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="NB" type="Panel" parent="Screen/Piano"]
+layout_mode = 0
+offset_left = 210.0
+offset_top = 75.0
+offset_right = 245.0
+offset_bottom = 200.0
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Edit" type="ReferenceRect" parent="Screen/Piano"]
+visible = false
+layout_mode = 0
+offset_left = 9.0
+offset_top = 2.0
+offset_right = 233.0
+offset_bottom = 62.0
+
+[node name="Tone" type="Label" parent="Screen/Piano/Edit"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 5.0
+offset_right = 68.0
+offset_bottom = 28.0
+text = "Tone"
+horizontal_alignment = 1
+
+[node name="ToneEdit" type="Label" parent="Screen/Piano/Edit"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 26.0
+offset_right = 54.0
+offset_bottom = 49.0
+text = "C"
+horizontal_alignment = 1
+
+[node name="Scale" type="Label" parent="Screen/Piano/Edit"]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 5.0
+offset_right = 189.0
+offset_bottom = 28.0
+text = "Scale"
+horizontal_alignment = 1
+
+[node name="ScaleEdit" type="Label" parent="Screen/Piano/Edit"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 26.0
+offset_right = 203.0
+offset_bottom = 49.0
+text = "Major"
+horizontal_alignment = 1
+
+[node name="Menu" type="ReferenceRect" parent="Screen/Piano"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 2.0
+offset_right = 233.0
+offset_bottom = 62.0
+
+[node name="Scale" type="Label" parent="Screen/Piano/Menu"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 141.0
+offset_bottom = 27.0
+text = "C Major"
+
+[node name="Note" type="Label" parent="Screen/Piano/Menu"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 29.0
+offset_right = 79.0
+offset_bottom = 52.0
+text = "C3"
+
+[node name="Left" type="Button" parent="Screen"]
+layout_mode = 0
+offset_left = 264.0
+offset_top = 126.0
+offset_right = 291.0
+offset_bottom = 157.0
+text = "<"
+
+[node name="Right" type="Button" parent="Screen"]
+layout_mode = 0
+offset_left = 302.0
+offset_top = 126.0
+offset_right = 329.0
+offset_bottom = 157.0
+text = ">"
+
+[node name="Select" type="Button" parent="Screen"]
+layout_mode = 0
+offset_left = 281.0
+offset_top = 65.0
+offset_right = 312.0
+offset_bottom = 96.0
+text = "OK"
+
+[node name="F1" type="Button" parent="Screen"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 260.0
+offset_right = 43.0
+offset_bottom = 291.0
+text = "1"
+
+[node name="Label" type="Label" parent="Screen"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 231.0
+offset_right = 49.0
+offset_bottom = 254.0
+text = "Scale"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="value_changed" from="SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="pressed" from="Screen/Left" to="Screen" method="_on_left_pressed"]
+[connection signal="pressed" from="Screen/Right" to="Screen" method="_on_right_pressed"]
+[connection signal="pressed" from="Screen/Select" to="Screen" method="_on_select_pressed"]
+[connection signal="pressed" from="Screen/F1" to="Screen" method="_on_f_1_pressed"]
