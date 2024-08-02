@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://batna25ggjth"]
+[gd_scene load_steps=9 format=3 uid="uid://batna25ggjth"]
 
 [ext_resource type="Script" path="res://buttons.gd" id="1_2l6ow"]
 [ext_resource type="Script" path="res://main.gd" id="1_3bh58"]
@@ -7,12 +7,12 @@
 [ext_resource type="Script" path="res://piano.gd" id="3_1i77l"]
 [ext_resource type="StyleBox" uid="uid://j252hx5vtswo" path="res://themes/GreyBtn.tres" id="3_hmk0w"]
 [ext_resource type="StyleBox" uid="uid://5luf4pv26r2w" path="res://themes/BlackKey.tres" id="4_2np7d"]
-[ext_resource type="StyleBox" uid="uid://oqkgiup1qsgj" path="res://themes/EditableLabel.tres" id="8_d5opc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62ndd"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -21,107 +21,107 @@ script = ExtResource("1_3bh58")
 
 [node name="Buttons" type="GridContainer" parent="."]
 layout_mode = 0
-offset_left = 25.0
-offset_top = 360.0
-offset_right = 632.0
-offset_bottom = 484.0
-theme_override_constants/h_separation = 18
+offset_left = 1.0
+offset_top = 472.0
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_constants/h_separation = 73
 theme_override_constants/v_separation = 4
 columns = 8
 script = ExtResource("1_2l6ow")
 
 [node name="B1" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = ExtResource("3_hmk0w")
 action_mode = 0
 
 [node name="B2" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B3" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B4" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B5" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B6" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B7" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B8" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B9" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B10" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B11" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B12" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B13" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B14" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B15" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
 
 [node name="B16" type="Button" parent="Buttons"]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
@@ -129,23 +129,41 @@ action_mode = 0
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.1
 
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 999.0
+offset_top = 147.0
+offset_right = 1137.0
+offset_bottom = 204.0
+theme_override_font_sizes/font_size = 41
+text = "Tempo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="."]
+layout_mode = 0
+offset_left = 1023.0
+offset_top = 214.0
+offset_right = 1106.06
+offset_bottom = 245.0
+min_value = 60.0
+max_value = 240.0
+value = 120.0
+
 [node name="Screen" type="ReferenceRect" parent="."]
 layout_mode = 0
-offset_left = 148.0
-offset_top = 53.0
-offset_right = 468.0
-offset_bottom = 293.0
-border_color = Color(1, 1, 1, 1)
-editor_only = false
+offset_left = 396.0
+offset_top = 109.0
+offset_right = 716.0
+offset_bottom = 349.0
 script = ExtResource("2_sqclt")
 
 [node name="Piano" type="ReferenceRect" parent="Screen"]
 layout_mode = 0
-offset_left = 89.0
-offset_top = 122.0
-offset_right = 334.0
-offset_bottom = 248.0
-scale = Vector2(0.64, 0.64)
+offset_left = 33.0
+offset_top = 66.0
+offset_right = 278.0
+offset_bottom = 192.0
 script = ExtResource("3_1i77l")
 
 [node name="NC" type="Panel" parent="Screen/Piano"]
@@ -248,47 +266,133 @@ offset_right = 245.0
 offset_bottom = 126.0
 theme_override_styles/panel = ExtResource("2_f1k07")
 
-[node name="Controls" type="ReferenceRect" parent="Screen"]
-z_index = -1
+[node name="Scale" type="ReferenceRect" parent="Screen"]
+visible = false
 layout_mode = 0
-offset_top = -8.0
-offset_right = 403.0
-offset_bottom = 293.0
+offset_left = 9.0
+offset_top = 2.0
+offset_right = 233.0
+offset_bottom = 62.0
+
+[node name="Tone" type="Label" parent="Screen/Scale"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 5.0
+offset_right = 68.0
+offset_bottom = 28.0
+text = "Tone"
+horizontal_alignment = 1
+
+[node name="ToneEdit" type="Label" parent="Screen/Scale"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 26.0
+offset_right = 54.0
+offset_bottom = 49.0
+text = "C"
+horizontal_alignment = 1
+
+[node name="Scale" type="Label" parent="Screen/Scale"]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 5.0
+offset_right = 189.0
+offset_bottom = 28.0
+text = "Scale"
+horizontal_alignment = 1
+
+[node name="ScaleEdit" type="Label" parent="Screen/Scale"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 26.0
+offset_right = 203.0
+offset_bottom = 49.0
+text = "Major"
+horizontal_alignment = 1
+
+[node name="Menu" type="ReferenceRect" parent="Screen"]
+visible = false
+layout_mode = 0
+offset_left = 9.0
+offset_top = 2.0
+offset_right = 233.0
+offset_bottom = 62.0
+
+[node name="Scale" type="Label" parent="Screen/Menu"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 141.0
+offset_bottom = 27.0
+text = "C Major"
+
+[node name="Note" type="Label" parent="Screen/Menu"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 29.0
+offset_right = 79.0
+offset_bottom = 52.0
+text = "C3"
+
+[node name="Note" type="ReferenceRect" parent="Screen"]
+visible = false
+layout_mode = 0
+offset_left = 9.0
+offset_top = 2.0
+offset_right = 233.0
+offset_bottom = 62.0
+
+[node name="Octave" type="Label" parent="Screen/Note"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 141.0
+offset_bottom = 27.0
+text = "Octave"
+
+[node name="OctaveEdit" type="Label" parent="Screen/Note"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 29.0
+offset_right = 79.0
+offset_bottom = 52.0
+text = "3"
+
+[node name="Controls" type="ReferenceRect" parent="Screen"]
+layout_mode = 0
+offset_right = 393.0
+offset_bottom = 301.0
 
 [node name="Left" type="Button" parent="Screen/Controls"]
 layout_mode = 0
-offset_left = 330.0
+offset_left = 322.0
 offset_top = 122.0
-offset_right = 357.0
+offset_right = 349.0
 offset_bottom = 153.0
-theme_override_styles/normal = ExtResource("3_hmk0w")
 text = "<"
 
 [node name="Right" type="Button" parent="Screen/Controls"]
 layout_mode = 0
-offset_left = 367.0
+offset_left = 359.0
 offset_top = 122.0
-offset_right = 394.0
+offset_right = 386.0
 offset_bottom = 153.0
-theme_override_styles/normal = ExtResource("3_hmk0w")
 text = ">"
 
 [node name="Select" type="Button" parent="Screen/Controls"]
 layout_mode = 0
-offset_left = 347.0
+offset_left = 334.0
 offset_top = 82.0
-offset_right = 378.0
+offset_right = 365.0
 offset_bottom = 113.0
-theme_override_styles/normal = ExtResource("3_hmk0w")
 text = "OK"
 
 [node name="Exit" type="Button" parent="Screen/Controls"]
 layout_mode = 0
-offset_left = 343.0
+offset_left = 335.0
 offset_top = 160.0
-offset_right = 380.0
+offset_right = 372.0
 offset_bottom = 191.0
-theme_override_styles/normal = ExtResource("3_hmk0w")
 text = "Exit"
 
 [node name="F1" type="Button" parent="Screen/Controls"]
@@ -297,15 +401,14 @@ offset_left = 41.0
 offset_top = 260.0
 offset_right = 68.0
 offset_bottom = 291.0
-theme_override_styles/normal = ExtResource("3_hmk0w")
 text = "1"
 
 [node name="LF1" type="Label" parent="Screen/Controls"]
 layout_mode = 0
 offset_left = 36.0
-offset_top = 219.0
+offset_top = 215.0
 offset_right = 76.0
-offset_bottom = 242.0
+offset_bottom = 238.0
 text = "Prog"
 horizontal_alignment = 1
 
@@ -315,19 +418,16 @@ offset_left = 116.0
 offset_top = 260.0
 offset_right = 143.0
 offset_bottom = 291.0
-theme_override_styles/normal = ExtResource("3_hmk0w")
 text = "2"
 
 [node name="LF2" type="Label" parent="Screen/Controls"]
 layout_mode = 0
-offset_left = 108.0
-offset_top = 211.0
-offset_right = 155.0
-offset_bottom = 250.0
-theme_override_constants/line_spacing = -8
+offset_left = 112.0
+offset_top = 214.0
+offset_right = 152.0
+offset_bottom = 237.0
 text = "Play"
 horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="F3" type="Button" parent="Screen/Controls"]
 layout_mode = 0
@@ -335,15 +435,14 @@ offset_left = 199.0
 offset_top = 259.0
 offset_right = 226.0
 offset_bottom = 290.0
-theme_override_styles/normal = ExtResource("3_hmk0w")
 text = "3"
 
 [node name="LF3" type="Label" parent="Screen/Controls"]
 layout_mode = 0
 offset_left = 187.0
-offset_top = 218.0
+offset_top = 214.0
 offset_right = 244.0
-offset_bottom = 241.0
+offset_bottom = 237.0
 text = "Launch"
 horizontal_alignment = 1
 
@@ -353,172 +452,26 @@ offset_left = 274.0
 offset_top = 259.0
 offset_right = 301.0
 offset_bottom = 290.0
-theme_override_styles/normal = ExtResource("3_hmk0w")
 text = "4"
 
 [node name="LF4" type="Label" parent="Screen/Controls"]
 layout_mode = 0
-offset_left = 260.0
-offset_top = 219.0
-offset_right = 313.0
-offset_bottom = 242.0
+offset_left = 266.0
+offset_top = 215.0
+offset_right = 306.0
+offset_bottom = 238.0
 text = "DAW"
 horizontal_alignment = 1
 
 [node name="Toggle" type="CheckButton" parent="Screen/Controls"]
 layout_mode = 0
-offset_left = 340.0
+offset_left = 332.0
 offset_top = 218.0
-offset_right = 384.0
+offset_right = 376.0
 offset_bottom = 242.0
-theme_override_styles/normal = ExtResource("3_hmk0w")
-
-[node name="Title" type="Label" parent="Screen"]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 3.0
-offset_right = 317.0
-offset_bottom = 26.0
-text = "Main - Config"
-horizontal_alignment = 1
-
-[node name="Menus" type="ReferenceRect" parent="Screen"]
-z_index = -1
-layout_mode = 0
-offset_left = 4.0
-offset_top = 28.0
-offset_right = 317.0
-offset_bottom = 141.0
-
-[node name="Velocity" type="ReferenceRect" parent="Screen/Menus"]
-visible = false
-layout_mode = 0
-offset_right = 76.0
-offset_bottom = 57.0
-border_color = Color(1, 1, 1, 1)
-editor_only = false
-
-[node name="Vel" type="Label" parent="Screen/Menus/Velocity"]
-layout_mode = 0
-offset_left = 6.0
-offset_top = 4.0
-offset_right = 72.0
-offset_bottom = 27.0
-text = "Velocity:"
-
-[node name="VelValue" type="Label" parent="Screen/Menus/Velocity"]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 29.0
-offset_right = 54.0
-offset_bottom = 52.0
-theme_override_styles/normal = ExtResource("8_d5opc")
-text = "100"
-
-[node name="Channel" type="ReferenceRect" parent="Screen/Menus"]
-visible = false
-layout_mode = 0
-offset_left = 76.0
-offset_right = 151.0
-offset_bottom = 57.0
-border_color = Color(1, 1, 1, 1)
-editor_only = false
-
-[node name="Chn" type="Label" parent="Screen/Menus/Channel"]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 72.0
-offset_bottom = 27.0
-text = "Channel:"
-
-[node name="ChnValue" type="Label" parent="Screen/Menus/Channel"]
-layout_mode = 0
-offset_left = 27.0
-offset_top = 29.0
-offset_right = 47.0
-offset_bottom = 52.0
-theme_override_styles/normal = ExtResource("8_d5opc")
-text = "1"
-horizontal_alignment = 1
-
-[node name="Scale" type="ReferenceRect" parent="Screen/Menus"]
-visible = false
-layout_mode = 0
-offset_left = 151.0
-offset_right = 258.0
-offset_bottom = 57.0
-border_color = Color(1, 1, 1, 1)
-editor_only = false
-
-[node name="Scale" type="Label" parent="Screen/Menus/Scale"]
-layout_mode = 0
-offset_left = 6.0
-offset_top = 4.0
-offset_right = 101.0
-offset_bottom = 27.0
-text = "Scale:"
-horizontal_alignment = 1
-
-[node name="ScaleTone" type="Label" parent="Screen/Menus/Scale"]
-layout_mode = 0
-offset_left = 2.0
-offset_top = 28.0
-offset_right = 23.0
-offset_bottom = 51.0
-text = "C"
-horizontal_alignment = 1
-
-[node name="ScaleMode" type="Label" parent="Screen/Menus/Scale"]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 29.0
-offset_right = 105.0
-offset_bottom = 52.0
-theme_override_styles/normal = ExtResource("8_d5opc")
-text = "Major"
-horizontal_alignment = 1
-
-[node name="Tempo" type="ReferenceRect" parent="Screen/Menus"]
-visible = false
-layout_mode = 0
-offset_left = 258.0
-offset_right = 313.0
-offset_bottom = 57.0
-border_color = Color(1, 1, 1, 1)
-editor_only = false
-
-[node name="Tempo" type="Label" parent="Screen/Menus/Tempo"]
-layout_mode = 0
-offset_left = 2.0
-offset_top = 6.0
-offset_right = 53.0
-offset_bottom = 26.0
-theme_override_font_sizes/font_size = 14
-text = "Tempo:"
-horizontal_alignment = 1
-
-[node name="TempoValue" type="Label" parent="Screen/Menus/Tempo"]
-layout_mode = 0
-offset_left = 11.0
-offset_top = 29.0
-offset_right = 44.0
-offset_bottom = 52.0
-theme_override_styles/normal = ExtResource("8_d5opc")
-text = "120"
-horizontal_alignment = 1
-
-[node name="Hold" type="Label" parent="Screen/Menus"]
-visible = false
-layout_mode = 0
-offset_left = 23.0
-offset_top = 76.0
-offset_right = 60.0
-offset_bottom = 99.0
-theme_override_styles/normal = ExtResource("8_d5opc")
-text = "Hold"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="value_changed" from="SpinBox" to="." method="_on_spin_box_value_changed"]
 [connection signal="pressed" from="Screen/Controls/Left" to="Screen" method="_on_left_pressed"]
 [connection signal="pressed" from="Screen/Controls/Right" to="Screen" method="_on_right_pressed"]
 [connection signal="pressed" from="Screen/Controls/Select" to="." method="_on_select_pressed"]
