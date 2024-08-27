@@ -1,3 +1,4 @@
+class_name Main
 extends Control
 
 enum {MAIN, PROG, NOTE, MEMORY, PLAY, LAUNCH, DAW}
@@ -10,6 +11,7 @@ signal ok
 var midi : Midi
 
 var mainState := MAIN
+var possible = Array()
 var messages = Array()
 var beatsPerTone = Array()
 var beat := 1

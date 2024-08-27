@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://batna25ggjth"]
+[gd_scene load_steps=11 format=3 uid="uid://batna25ggjth"]
 
 [ext_resource type="Script" path="res://buttons.gd" id="1_2l6ow"]
 [ext_resource type="Script" path="res://main.gd" id="1_3bh58"]
@@ -11,8 +11,17 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62ndd"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljt5i"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.537137, 0.665153, 0.977781, 1)
+
 [node name="Control" type="Control"]
 layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -136,10 +145,252 @@ offset_top = 53.0
 offset_right = 468.0
 offset_bottom = 293.0
 border_color = Color(1, 1, 1, 1)
+border_width = 0.5
 editor_only = false
 script = ExtResource("2_sqclt")
 
+[node name="PianoGrid" type="ReferenceRect" parent="Screen"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 31.0
+offset_right = 221.0
+offset_bottom = 200.0
+border_color = Color(0.4, 0.588235, 0.976471, 0)
+border_width = 0.5
+editor_only = false
+
+[node name="Piano" type="ReferenceRect" parent="Screen/PianoGrid"]
+layout_mode = 0
+offset_right = 14.0
+offset_bottom = 169.0
+border_color = Color(0.543863, 0.526374, 0.506201, 1)
+border_width = 0.1
+
+[node name="Keys" type="VBoxContainer" parent="Screen/PianoGrid/Piano"]
+layout_mode = 0
+offset_right = 14.0
+offset_bottom = 169.0
+theme_override_constants/separation = 0
+
+[node name="Panel" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel2" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel2"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel4" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel4"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel5" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel6" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel7" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel7"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel8" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel9" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel9"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel10" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel11" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel11"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel24" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel12" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel13" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel13"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel14" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel15" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel15"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel16" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel17" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel18" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel18"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel19" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel20" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel20"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel21" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel22" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel3" type="Panel" parent="Screen/PianoGrid/Piano/Keys/Panel22"]
+custom_minimum_size = Vector2(8, 6)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 13.0
+offset_bottom = 7.0
+theme_override_styles/panel = ExtResource("4_2np7d")
+
+[node name="Panel23" type="Panel" parent="Screen/PianoGrid/Piano/Keys"]
+custom_minimum_size = Vector2(14, 7)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_f1k07")
+
+[node name="Panel" type="Panel" parent="Screen/PianoGrid"]
+z_index = 1
+layout_mode = 0
+offset_right = 206.0
+offset_bottom = 169.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ljt5i")
+
 [node name="Piano" type="ReferenceRect" parent="Screen"]
+visible = false
 layout_mode = 0
 offset_left = 89.0
 offset_top = 122.0
@@ -254,6 +505,7 @@ layout_mode = 0
 offset_top = -8.0
 offset_right = 403.0
 offset_bottom = 293.0
+border_width = 0.5
 
 [node name="Left" type="Button" parent="Screen/Controls"]
 layout_mode = 0
@@ -383,6 +635,7 @@ text = "Main - Config"
 horizontal_alignment = 1
 
 [node name="Menus" type="ReferenceRect" parent="Screen"]
+visible = false
 z_index = -1
 layout_mode = 0
 offset_left = 4.0
