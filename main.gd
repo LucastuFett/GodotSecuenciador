@@ -2,7 +2,7 @@ class_name Main
 extends Control
 
 enum {MAIN, PROG, NOTE, MEMORY, PLAY, LAUNCH, DAW}
-const labels = [["Prog", "Play", "Launch", "DAW"],["Note", "Play\nPause", "Stop", "Memory"],["Accept", "", "", "Cancel"]]
+const labels = [["Programming", "Play", "Launch", "DAW","","","",""],["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],["Accept", "", "", "Cancel","","","",""]]
 const titles = ["Main - Config", "Programming", "Edit Note"]
 const scales = [["Major", [2,2,1,2,2,2]], ["Minor", [2,1,2,2,1,2]], ["Chromatic", [1,1,1,1,1,1,1,1,1,1,1]]]
 const editLabel = preload("res://themes/EditableLabel.tres")
@@ -75,36 +75,53 @@ func changeState():
 	match mainState:
 		MAIN:
 			$Screen/Piano.set_visible(false)
-			$Screen/Menus/Velocity.set_visible(false)
+			$Screen/Menus/Rotary.set_visible(false)
 			$Screen/Menus/Channel.set_visible(false)
 			$Screen/Menus/Scale.set_visible(false)
 			$Screen/Menus/Tempo.set_visible(false)
 			$Screen/Menus/Hold.set_visible(false)
 		PROG:
 			$Screen/Piano.set_visible(true)
-			$Screen/Menus/Velocity.set_visible(true)
+			$Screen/Menus/Rotary.set_visible(true)
 			$Screen/Menus/Channel.set_visible(true)
 			$Screen/Menus/Scale.set_visible(true)
 			$Screen/Menus/Tempo.set_visible(true)
 			$Screen/Menus/Hold.set_visible(true)
 			
-			$Screen/Menus/Velocity/VelValue.add_theme_stylebox_override("normal",selectLabel)
+
 			$Screen/Menus/Channel/ChnValue.add_theme_stylebox_override("normal",editLabel)
-			$Screen/Menus/Scale/ScaleMode.add_theme_stylebox_override("normal",editLabel)
+			$Screen/Menus/Scale/ScaleValue.add_theme_stylebox_override("normal",editLabel)
 			$Screen/Menus/Tempo/TempoValue.add_theme_stylebox_override("normal",editLabel)
 			$Screen/Menus/Hold.add_theme_stylebox_override("normal",editLabel)
 		NOTE:
-			$Screen/Menus/Velocity/VelValue.remove_theme_stylebox_override("normal")
+			$Screen/Menus/Rotary/Value.remove_theme_stylebox_override("normal")
 			$Screen/Menus/Channel/ChnValue.remove_theme_stylebox_override("normal")
-			$Screen/Menus/Scale/ScaleMode.remove_theme_stylebox_override("normal")
+			$Screen/Menus/Scale/ScaleValue.remove_theme_stylebox_override("normal")
 			$Screen/Menus/Tempo/TempoValue.remove_theme_stylebox_override("normal")
 			$Screen/Menus/Hold.remove_theme_stylebox_override("normal")
 	
 	$Screen/Title.text = titles[mainState]
-	$Screen/Controls/LF1.text = labels[mainState][0]
-	$Screen/Controls/LF2.text = labels[mainState][1]
-	$Screen/Controls/LF3.text = labels[mainState][2]
-	$Screen/Controls/LF4.text = labels[mainState][3]
-
-
-
+	$Screen/Labels/LF1.text = labels[mainState][0]
+	$Screen/Labels/LF2.text = labels[mainState][1]
+	$Screen/Labels/LF3.text = labels[mainState][2]
+	$Screen/Labels/LF4.text = labels[mainState][3]
+	if labels[mainState][4] != "":
+		$Screen/Labels/SH1.visible = true
+		$Screen/Labels/SH1.text = labels[mainState][4]
+	else:
+		$Screen/Labels/SH1.visible = false
+	if labels[mainState][5] != "":
+		$Screen/Labels/SH2.visible = true
+		$Screen/Labels/SH2.text = labels[mainState][5]
+	else:
+		$Screen/Labels/SH2.visible = false
+	if labels[mainState][6] != "":
+		$Screen/Labels/SH3.visible = true
+		$Screen/Labels/SH3.text = labels[mainState][6]
+	else:
+		$Screen/Labels/SH3.visible = false
+	if labels[mainState][7] != "":
+		$Screen/Labels/SH4.visible = true
+		$Screen/Labels/SH4.text = labels[mainState][7]
+	else:
+		$Screen/Labels/SH4.visible = false

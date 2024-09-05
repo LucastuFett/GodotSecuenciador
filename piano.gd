@@ -35,8 +35,7 @@ func getPossible():
 		possible[0].append(actKey)
 		possible[1].append(redStyle)
 	
-	$"../Menus/Scale/ScaleTone".text = tones[tone]
-	$"../Menus/Scale/ScaleMode".text = scales[mode][0]
+	$"../Menus/Scale/ScaleValue".text = tones[tone] + " " + scales[mode][0]
 
 func paint():
 	for key in keys:
