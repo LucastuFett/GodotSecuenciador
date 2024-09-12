@@ -1,17 +1,15 @@
 class_name Main
 extends Control
 
-enum {MAIN, PROG, NOTE, MEMORY, PLAY, LAUNCH, DAW}
-const labels = [["Programming", "Play", "Launch", "DAW","","","",""],["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],["Accept", "", "", "Cancel","","","",""]]
+enum {MAIN, PROG, NOTE, MEMORY, CHANNEL, TEMPO, SCALE, PLAY, LAUNCH, DAW}
+const labels = [["Programming", "Play", "Launch", "DAW","","","",""],["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],["Accept", "Octave -", "Octave +", "Cancel","","","",""]]
 const titles = ["Main - Config", "Programming", "Edit Note"]
 const scales = [["Major", [2,2,1,2,2,2]], ["Minor", [2,1,2,2,1,2]], ["Chromatic", [1,1,1,1,1,1,1,1,1,1,1]]]
 const editLabel = preload("res://themes/EditableLabel.tres")
-const selectLabel = preload("res://themes/SelectedLabel.tres")
 signal ok
 var midi : Midi
 
 var mainState := MAIN
-var possible = Array()
 var messages = Array()
 var beatsPerTone = Array()
 var beat := 1
@@ -49,7 +47,18 @@ func _on_f_1_pressed():
 	changeState()
 
 func _on_f_2_pressed():
-	pass
+	match mainState:
+		NOTE:
+			octave -= 1
+		_:
+			pass
+			
+func _on_f_3_pressed():
+	match mainState:
+		NOTE:
+			octave += 1
+		_:
+			pass
 
 func _on_exit_pressed():
 	match mainState:
@@ -74,31 +83,13 @@ func _on_exit_pressed():
 func changeState():
 	match mainState:
 		MAIN:
-			$Screen/Piano.set_visible(false)
-			$Screen/Menus/Rotary.set_visible(false)
-			$Screen/Menus/Channel.set_visible(false)
-			$Screen/Menus/Scale.set_visible(false)
-			$Screen/Menus/Tempo.set_visible(false)
-			$Screen/Menus/Hold.set_visible(false)
+			$Screen/PianoGrid.set_visible(false)
+			$Screen/Menus.set_visible(false)
 		PROG:
-			$Screen/Piano.set_visible(true)
-			$Screen/Menus/Rotary.set_visible(true)
-			$Screen/Menus/Channel.set_visible(true)
-			$Screen/Menus/Scale.set_visible(true)
-			$Screen/Menus/Tempo.set_visible(true)
-			$Screen/Menus/Hold.set_visible(true)
-			
-
-			$Screen/Menus/Channel/ChnValue.add_theme_stylebox_override("normal",editLabel)
-			$Screen/Menus/Scale/ScaleValue.add_theme_stylebox_override("normal",editLabel)
-			$Screen/Menus/Tempo/TempoValue.add_theme_stylebox_override("normal",editLabel)
-			$Screen/Menus/Hold.add_theme_stylebox_override("normal",editLabel)
+			$Screen/PianoGrid.set_visible(true)
+			$Screen/Menus.set_visible(true)
 		NOTE:
-			$Screen/Menus/Rotary/Value.remove_theme_stylebox_override("normal")
-			$Screen/Menus/Channel/ChnValue.remove_theme_stylebox_override("normal")
-			$Screen/Menus/Scale/ScaleValue.remove_theme_stylebox_override("normal")
-			$Screen/Menus/Tempo/TempoValue.remove_theme_stylebox_override("normal")
-			$Screen/Menus/Hold.remove_theme_stylebox_override("normal")
+			pass
 	
 	$Screen/Title.text = titles[mainState]
 	$Screen/Labels/LF1.text = labels[mainState][0]

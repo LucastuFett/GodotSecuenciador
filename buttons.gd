@@ -26,4 +26,3 @@ func _buttonPress(num):
 	
 func getButtons() -> Array:
 	return listbtn
-
