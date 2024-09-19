@@ -1,8 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://batna25ggjth"]
+[gd_scene load_steps=15 format=3 uid="uid://batna25ggjth"]
 
 [ext_resource type="Script" path="res://buttons.gd" id="1_2l6ow"]
 [ext_resource type="Script" path="res://main.gd" id="1_3bh58"]
-[ext_resource type="StyleBox" uid="uid://dgo4nta8cmgwq" path="res://themes/WhiteKey.tres" id="2_f1k07"]
 [ext_resource type="Script" path="res://screen.gd" id="2_sqclt"]
 [ext_resource type="Script" path="res://piano.gd" id="3_1i77l"]
 [ext_resource type="StyleBox" uid="uid://j252hx5vtswo" path="res://themes/GreyBtn.tres" id="3_hmk0w"]
@@ -19,12 +18,6 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.537137, 0.665153, 0.977781, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_270sd"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_bottom = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fmghn"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -2400,114 +2393,14 @@ custom_minimum_size = Vector2(7, 9)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("7_qthdj")
 
-[node name="Piano" type="ReferenceRect" parent="Screen"]
-visible = false
+[node name="Octave" type="Label" parent="Screen/PianoGrid"]
+texture_filter = 1
 layout_mode = 0
-offset_left = 89.0
-offset_top = 122.0
-offset_right = 334.0
-offset_bottom = 248.0
-scale = Vector2(0.64, 0.64)
-
-[node name="NC" type="Panel" parent="Screen/Piano"]
-layout_mode = 0
-offset_top = 1.0
-offset_right = 35.0
-offset_bottom = 126.0
-theme_override_styles/panel = ExtResource("2_f1k07")
-
-[node name="NC#" type="Panel" parent="Screen/Piano"]
-z_index = 1
-layout_mode = 0
-offset_left = 26.0
-offset_top = 1.0
-offset_right = 44.0
-offset_bottom = 76.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_270sd")
-
-[node name="ND" type="Panel" parent="Screen/Piano"]
-layout_mode = 0
-offset_left = 35.0
-offset_top = 1.0
-offset_right = 70.0
-offset_bottom = 126.0
-theme_override_styles/panel = ExtResource("2_f1k07")
-
-[node name="ND#" type="Panel" parent="Screen/Piano"]
-z_index = 1
-layout_mode = 0
-offset_left = 61.0
-offset_top = 1.0
-offset_right = 79.0
-offset_bottom = 76.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_270sd")
-
-[node name="NE" type="Panel" parent="Screen/Piano"]
-layout_mode = 0
-offset_left = 70.0
-offset_top = 1.0
-offset_right = 105.0
-offset_bottom = 126.0
-theme_override_styles/panel = ExtResource("2_f1k07")
-
-[node name="NF" type="Panel" parent="Screen/Piano"]
-layout_mode = 0
-offset_left = 105.0
-offset_top = 1.0
-offset_right = 140.0
-offset_bottom = 126.0
-theme_override_styles/panel = ExtResource("2_f1k07")
-
-[node name="NF#" type="Panel" parent="Screen/Piano"]
-z_index = 1
-layout_mode = 0
-offset_left = 131.0
-offset_top = 1.0
-offset_right = 149.0
-offset_bottom = 76.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_270sd")
-
-[node name="NG" type="Panel" parent="Screen/Piano"]
-layout_mode = 0
-offset_left = 140.0
-offset_top = 1.0
-offset_right = 175.0
-offset_bottom = 126.0
-theme_override_styles/panel = ExtResource("2_f1k07")
-
-[node name="NG#" type="Panel" parent="Screen/Piano"]
-z_index = 1
-layout_mode = 0
-offset_left = 166.0
-offset_top = 1.0
-offset_right = 184.0
-offset_bottom = 76.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_270sd")
-
-[node name="NA" type="Panel" parent="Screen/Piano"]
-layout_mode = 0
-offset_left = 175.0
-offset_top = 1.0
-offset_right = 210.0
-offset_bottom = 126.0
-theme_override_styles/panel = ExtResource("2_f1k07")
-
-[node name="NA#" type="Panel" parent="Screen/Piano"]
-z_index = 1
-layout_mode = 0
-offset_left = 201.0
-offset_top = 1.0
-offset_right = 219.0
-offset_bottom = 76.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_270sd")
-
-[node name="NB" type="Panel" parent="Screen/Piano"]
-layout_mode = 0
-offset_left = 210.0
-offset_top = 1.0
-offset_right = 245.0
-offset_bottom = 126.0
-theme_override_styles/panel = ExtResource("2_f1k07")
+offset_left = -23.0
+offset_top = 91.0
+offset_right = 7.0
+offset_bottom = 114.0
+text = "C2"
 
 [node name="Controls" type="ReferenceRect" parent="Screen"]
 z_index = -1
@@ -2553,6 +2446,16 @@ offset_bottom = 191.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
 text = "Exit"
 
+[node name="Shift" type="Button" parent="Screen/Controls"]
+layout_mode = 0
+offset_left = 343.0
+offset_top = 198.0
+offset_right = 380.0
+offset_bottom = 229.0
+theme_override_styles/normal = ExtResource("3_hmk0w")
+toggle_mode = true
+text = "Shift"
+
 [node name="F1" type="Button" parent="Screen/Controls"]
 layout_mode = 0
 offset_left = 41.0
@@ -2592,9 +2495,9 @@ text = "4"
 [node name="Toggle" type="CheckButton" parent="Screen/Controls"]
 layout_mode = 0
 offset_left = 340.0
-offset_top = 218.0
+offset_top = 239.0
 offset_right = 384.0
-offset_bottom = 242.0
+offset_bottom = 263.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
 
 [node name="Menus" type="ReferenceRect" parent="Screen"]
@@ -2935,6 +2838,9 @@ vertical_alignment = 1
 [connection signal="pressed" from="Screen/Controls/Right" to="Screen" method="_on_right_pressed"]
 [connection signal="pressed" from="Screen/Controls/Select" to="." method="_on_select_pressed"]
 [connection signal="pressed" from="Screen/Controls/Exit" to="." method="_on_exit_pressed"]
+[connection signal="toggled" from="Screen/Controls/Shift" to="." method="_shift"]
 [connection signal="pressed" from="Screen/Controls/F1" to="." method="_on_f_1_pressed"]
 [connection signal="pressed" from="Screen/Controls/F2" to="." method="_on_f_2_pressed"]
 [connection signal="pressed" from="Screen/Controls/F3" to="." method="_on_f_3_pressed"]
+[connection signal="pressed" from="Screen/Controls/F4" to="." method="_on_f_4_pressed"]
+[connection signal="toggled" from="Screen/Controls/Toggle" to="." method="_toggle"]

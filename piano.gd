@@ -4,10 +4,10 @@ var keys = Array()
 var selection = Array()
 var possible = Array()
 var tones = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-var curOctave = 3
 
 const blueStyle = preload("res://themes/BlueScale.tres")
 const pinkStyle = preload("res://themes/PinkScale.tres")
+const pinkSel = preload("res://themes/PinkSel.tres")
 const greenStyle = preload("res://themes/GreenScale.tres")
 const greenSel = preload("res://themes/GreenSel.tres")
 const orangeStyle = preload("res://themes/OrangeScale.tres")
@@ -20,6 +20,7 @@ func _ready():
 		keys.append(i)
 	for i in $Selected.get_children():
 		selection.append(i)
+	getPossible()
 	paint()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -29,6 +30,7 @@ func _process(delta):
 func getPossible():
 	# possible = [[note, note2],[style, style2]]
 	var actKey = tone
+	possible = []
 	possible.append([])
 	possible.append([])
 	
@@ -43,7 +45,7 @@ func getPossible():
 
 func paint():
 	# Pintar Escala y Seleccionado
-	getPossible()
+	var pos = null
 	for key in keys:
 		key.add_theme_stylebox_override("panel",noStyle)
 	for sel in selection:
@@ -51,12 +53,23 @@ func paint():
 	for i in len(possible[0]):
 		keys[possible[0][i]].add_theme_stylebox_override("panel",possible[1][i])
 		keys[possible[0][i]+12].add_theme_stylebox_override("panel",possible[1][i])
+		if note == possible[0][i]:
+			pos = i
 	var offset = 0
-	if octave != curOctave:
+	if octave == curOctave - 1:
+		curOctave -= 2
+	if octave == curOctave + 2:
+		curOctave += 2
+	if octave == curOctave + 1:
 		offset += 12
-	if note in possible[0]:
-		keys[possible[0][note] + offset].add_theme_stylebox_override("panel",greenStyle)
-		selection[possible[0][note] + offset].add_theme_stylebox_override("panel",greenSel)
+	if mainState != SCALE:
+		if pos != null:
+			keys[possible[0][pos] + offset].add_theme_stylebox_override("panel",greenStyle)
+			selection[possible[0][pos] + offset].add_theme_stylebox_override("panel",greenSel)
+		else:
+			keys[note + offset].add_theme_stylebox_override("panel",orangeStyle)
+			selection[note + offset].add_theme_stylebox_override("panel",orangeSel)
 	else:
-		keys[note + offset].add_theme_stylebox_override("panel",orangeStyle)
-		selection[note + offset].add_theme_stylebox_override("panel",orangeSel)
+		selection[tone].add_theme_stylebox_override("panel",pinkSel)
+		selection[tone + 12].add_theme_stylebox_override("panel",pinkSel)
+	$Octave.text = "C" + str(curOctave)
