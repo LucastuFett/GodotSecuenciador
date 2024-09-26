@@ -10,8 +10,12 @@ func _init():
 			midi_out.open_port(i)
 	print(midi_out.is_port_open())
 
+
 func sendNoteOn(chn: int, note, vel):
 	midi_out.send_message([0x90 | chn,note,vel])
 	
 func sendNoteOff(chn: int, note, vel):
 	midi_out.send_message([0x80 | chn,note,vel])
+
+func sendMessage(mes):
+	midi_out.send_message(mes)

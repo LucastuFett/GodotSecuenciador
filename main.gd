@@ -7,7 +7,7 @@ const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
 				["Accept", "Octave -", "Octave +", "Cancel","","","",""],
 				["","","","","","","",""],
 				["","","","","","","",""],
-				["","","","","","","",""],
+				["Accept","Internal","External","Cancel","","","",""],
 				["Accept","Mode -","Mode +","Cancel","","","",""]]
 const titles = ["Main - Config", 
 				"Programming", 
@@ -24,7 +24,7 @@ var midi : Midi
 static var mainState := MAIN
 static var messages = Array()
 static var beatsPerTone = PackedInt32Array()
-static var beat := 1
+static var beat := 0
 static var tone = 0
 static var mode = 0
 static var note = 0
@@ -35,27 +35,31 @@ static var channels = PackedByteArray()
 static var mode32 = false
 static var half = false
 static var control = 0
+static var tempo = [0,120] # 0 = Int, 1 = Ext, en Ext, 0 = Half, 2 = Dbl
 
 var shift = false
 var prevNote = 0
 var prevMode = 0
 var prevTone = 0
+var prevTempo = [0,120]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	midi = Midi.new()
-	#$Timer.wait_time = 1/($SpinBox.value/60)
-	$Timer.start()
+	if tempo[0] == 0:
+		$Timer.wait_time = float(1/(tempo[1]/60))
 	changeState()
 	ok.connect($Screen._on_select_pressed.bind())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#if tempo[0] == 0:
+		#$Timer.wait_time = 1/(tempo[1]/60)
 	pass
 	
 func _on_select_pressed():
 	match mainState:
-		NOTE, SCALE:
+		NOTE, SCALE, TEMPO:
 			mainState = PROG
 		PROG:
 			if mode32:
@@ -65,7 +69,7 @@ func _on_select_pressed():
 
 func _on_f_1_pressed():
 	match mainState:
-		MAIN, NOTE, SCALE:
+		MAIN, NOTE, SCALE, TEMPO:
 			mainState = PROG
 		PROG:
 			mainState = NOTE
@@ -74,6 +78,11 @@ func _on_f_1_pressed():
 
 func _on_f_2_pressed():
 	match mainState:
+		PROG:
+			if $Timer.is_stopped():
+				$Timer.start(0)
+			else:
+				$Timer.stop()
 		NOTE:
 			octave -= 1
 			if octave < 0:
@@ -89,6 +98,13 @@ func _on_f_2_pressed():
 			
 func _on_f_3_pressed():
 	match mainState:
+		PROG:
+			if shift:
+				prevTempo = tempo
+				mainState = TEMPO
+			else:
+				$Timer.stop()
+				beat = 0
 		NOTE:
 			octave += 1
 			if octave > 7:
@@ -116,6 +132,9 @@ func _on_f_4_pressed():
 			mode = prevMode
 			tone = prevTone
 			mainState = PROG
+		TEMPO:
+			tempo = prevTempo
+			mainState = PROG
 	changeState()
 
 func _on_exit_pressed():
@@ -123,6 +142,14 @@ func _on_exit_pressed():
 		PROG:
 			mainState = MAIN
 		NOTE:
+			note = prevNote
+			mainState = PROG
+		SCALE:
+			mode = prevMode
+			tone = prevTone
+			mainState = PROG
+		TEMPO:
+			tempo = prevTempo
 			mainState = PROG
 	changeState()
 	
@@ -132,18 +159,6 @@ func _shift(toggled_on):
 func _toggle(toggled_on):
 	mode32 = toggled_on
 	changeState()
-	
-#func _on_timer_timeout():
-	#beatPlay(beat)
-	#beat += 1
-	#if beat == 17:
-		#beat = 1
-		
-
-#func beatPlay(beat):
-	#midi.sendNoteOff(15, 60, 127)
-	#if $Buttons.pressed[beat - 1]:
-		#midi.sendNoteOn(15, 60, 127)
 
 func changeState():
 	match mainState:
@@ -186,3 +201,23 @@ func changeState():
 		$"Screen/Menus/Toggler/1-16".add_theme_color_override("font_color",Color.WHITE)
 		$"Screen/Menus/Toggler/17-32".add_theme_color_override("font_color",Color.GRAY)
 	$Screen.updateScreen()
+
+func beatPlay():
+	var index
+	var beatMask = 0x8000000 >> beat
+	if control & beatMask == 0:
+		print("empty")
+		return
+	for i in 10:
+		index = (i * 32) + beat
+		print(messages[index][0])
+		if messages[index][0] != 0:
+			print(messages[index])
+			midi.sendMessage(messages[index])
+
+func _on_timeout() -> void:
+	beatPlay()
+	#print(beat)
+	beat += 1
+	if (mode32 && beat == 32) || (!mode32 && beat == 16):
+		beat = 0

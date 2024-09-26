@@ -2138,6 +2138,7 @@ layout_mode = 2
 theme_override_styles/panel = ExtResource("7_1lila")
 
 [node name="Selected" type="HBoxContainer" parent="Screen/PianoGrid"]
+z_index = 1
 layout_mode = 0
 offset_left = 1.0
 offset_top = 1.0
@@ -2833,7 +2834,7 @@ text = "Main - Config"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_timeout"]
 [connection signal="pressed" from="Screen/Controls/Left" to="Screen" method="_on_left_pressed"]
 [connection signal="pressed" from="Screen/Controls/Right" to="Screen" method="_on_right_pressed"]
 [connection signal="pressed" from="Screen/Controls/Select" to="." method="_on_select_pressed"]

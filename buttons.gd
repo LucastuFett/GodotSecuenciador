@@ -3,7 +3,7 @@ extends Main
 
 const blueStyle = preload("res://themes/BlueBtn.tres")
 const greyStyle = preload("res://themes/GreyBtn.tres")
-
+const purpleStyle = preload("res://themes/PurpleBtn.tres")
 var listbtn = Array()
 
 # Called when the node enters the scene tree for the first time.
@@ -36,7 +36,9 @@ func _process(delta):
 			listbtn[i].add_theme_stylebox_override("normal",blueStyle)
 		else:
 			listbtn[i].add_theme_stylebox_override("normal",greyStyle)
-
+		if beat == num:
+			listbtn[i].add_theme_stylebox_override("normal",purpleStyle)
+			
 func _buttonPress(num):
 	# Almacenar en messages y beatsPerTone
 	# messages = [10][32], checkear dupes
@@ -55,7 +57,7 @@ func _buttonPress(num):
 	if beatsPerTone[bptIndex] & beatMask != 0:
 		channels[channel] -= 1
 		while(i < 10):
-			var index = (i*10) + beat
+			var index = (i*32) + num
 			if messages[index][0] & 0xF == channel && messages[index][1] == midiNote:
 				messages[index][0] = 0
 				beatsPerTone[bptIndex] &= ~beatMask
@@ -64,15 +66,16 @@ func _buttonPress(num):
 				i += 1
 		i = 0
 		while i < 10:
-			if messages[(i*10) + beat][0] == 0:
+			if messages[(i*32) + num][0] == 0:
 				return
 			else:
 				i += 1
 		control &= ~beatMask
+	# Si no esta activo
 	else:
 		channels[channel] += 1
 		while i < 10:
-			var index = (i*10) + beat
+			var index = (i*32) + num
 			if messages[index][0] == 0:
 				if control & beatMask == 0:
 					control |= beatMask
@@ -81,4 +84,3 @@ func _buttonPress(num):
 				break
 			else:
 				i += 1
-	print(beatsPerTone)
