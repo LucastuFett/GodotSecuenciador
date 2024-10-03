@@ -79,7 +79,9 @@ func _buttonPress(num):
 			if messages[index][0] == 0:
 				if control & beatMask == 0:
 					control |= beatMask
+					#print(control)
 				messages[index] = [0x90 | channel,midiNote,velocity]
+				#print(index,messages[index])
 				beatsPerTone[bptIndex] |= beatMask
 				break
 			else:

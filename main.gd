@@ -20,6 +20,7 @@ const scales = [["Major", [2,2,1,2,2,2]], ["Minor", [2,1,2,2,1,2]], ["Chromatic"
 const editLabel = preload("res://themes/EditableLabel.tres")
 signal ok
 var midi : Midi
+var midiFile : MidiFile
 
 static var mainState := MAIN
 static var messages = Array()
@@ -46,8 +47,13 @@ var prevTempo = [0,120]
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	midi = Midi.new()
+	midiFile = MidiFile.new()
+	midiFile.save_to_file(1)
+	velocity = int($Screen/Menus/Rotary/Value.text)
 	if tempo[0] == 0:
-		$Timer.wait_time = float(1/(tempo[1]/60))
+		var tempoMS = (float(1)/(tempo[1]/60))*1000
+		print(tempoMS)
+		$MidiTimer.setTempo(int(tempoMS))
 	changeState()
 	ok.connect($Screen._on_select_pressed.bind())
 
@@ -79,10 +85,9 @@ func _on_f_1_pressed():
 func _on_f_2_pressed():
 	match mainState:
 		PROG:
-			if $Timer.is_stopped():
-				$Timer.start(0)
-			else:
-				$Timer.stop()
+			if !$MidiTimer.running:
+				beat -= 1
+			$MidiTimer.playPause()
 		NOTE:
 			octave -= 1
 			if octave < 0:
@@ -103,7 +108,7 @@ func _on_f_3_pressed():
 				prevTempo = tempo
 				mainState = TEMPO
 			else:
-				$Timer.stop()
+				$MidiTimer.stop()
 				beat = 0
 		NOTE:
 			octave += 1
@@ -204,20 +209,20 @@ func changeState():
 
 func beatPlay():
 	var index
-	var beatMask = 0x8000000 >> beat
+	var beatMask = 0x80000000 >> beat
 	if control & beatMask == 0:
-		print("empty")
+		#print("empty")
 		return
 	for i in 10:
 		index = (i * 32) + beat
-		print(messages[index][0])
+		#print(messages[index][0])
 		if messages[index][0] != 0:
 			print(messages[index])
 			midi.sendMessage(messages[index])
 
 func _on_timeout() -> void:
-	beatPlay()
-	#print(beat)
 	beat += 1
 	if (mode32 && beat == 32) || (!mode32 && beat == 16):
 		beat = 0
+	beatPlay()
+	#print(beat)
