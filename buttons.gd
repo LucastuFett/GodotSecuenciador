@@ -10,13 +10,14 @@ var listbtn = Array()
 func _ready():
 	listbtn = [$B1, $B2, $B3, $B4, $B5, $B6, $B7, $B8, $B9, $B10, $B11, $B12, $B13, $B14, $B15, $B16]
 	messages.resize(320)
+	offMessages.resize(320)
 	beatsPerTone.resize(1536)
 	channels.resize(16)
 	
 	channels.fill(0)
 	beatsPerTone.fill(0)
 	messages.fill([0,0,0])
-	
+	offMessages.fill([0,0,0])
 	var n = 0
 	for btn in listbtn:
 		btn.pressed.connect(_buttonPress.bind(n))
@@ -60,6 +61,17 @@ func _buttonPress(num):
 			var index = (i*32) + num
 			if messages[index][0] & 0xF == channel && messages[index][1] == midiNote:
 				messages[index][0] = 0
+				if mode32:
+					if num == 31:
+						num = 0
+					else:
+						num += 1
+				else:
+					if num == 15:
+						num = 0
+					else:
+						num += 1
+				offMessages[(i*32) + num][0] = 0
 				beatsPerTone[bptIndex] &= ~beatMask
 				break
 			else:
@@ -81,6 +93,17 @@ func _buttonPress(num):
 					control |= beatMask
 					#print(control)
 				messages[index] = [0x90 | channel,midiNote,velocity]
+				if mode32:
+					if num == 31:
+						num = 0
+					else:
+						num += 1
+				else:
+					if num == 15:
+						num = 0
+					else:
+						num += 1
+				offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
 				#print(index,messages[index])
 				beatsPerTone[bptIndex] |= beatMask
 				break

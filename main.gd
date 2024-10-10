@@ -24,6 +24,7 @@ var midiFile : MidiFile
 
 static var mainState := MAIN
 static var messages = Array()
+static var offMessages = Array()
 static var beatsPerTone = PackedInt32Array()
 static var beat := 0
 static var tone = 0
@@ -48,7 +49,6 @@ var prevTempo = [0,120]
 func _ready():
 	midi = Midi.new()
 	midiFile = MidiFile.new()
-	midiFile.save_to_file(1)
 	velocity = int($Screen/Menus/Rotary/Value.text)
 	if tempo[0] == 0:
 		var tempoMS = (float(1)/(tempo[1]/60))*1000
@@ -70,6 +70,8 @@ func _on_select_pressed():
 		PROG:
 			if mode32:
 				half = not half
+		MAIN:
+			midiFile.save_to_file(messages,offMessages)
 	changeState()
 	ok.emit()
 
@@ -163,6 +165,8 @@ func _shift(toggled_on):
 	
 func _toggle(toggled_on):
 	mode32 = toggled_on
+	# Pasar off del 0 al 16 o del 16 al 0
+	# Recalcular off del 0 si se pasa a 32
 	changeState()
 
 func changeState():
