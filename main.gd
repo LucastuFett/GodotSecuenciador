@@ -5,7 +5,7 @@ enum {MAIN, PROG, NOTE, MEMORY, CHANNEL, TEMPO, SCALE, PLAY, LAUNCH, DAW}
 const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
 				["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],
 				["Accept", "Octave -", "Octave +", "Cancel","","","",""],
-				["","","","","","","",""],
+				["Save","","","Load","","","",""],
 				["","","","","","","",""],
 				["Accept","Internal","External","Cancel","","","",""],
 				["Accept","Mode -","Mode +","Cancel","","","",""]]
@@ -70,8 +70,6 @@ func _on_select_pressed():
 		PROG:
 			if mode32:
 				half = not half
-		MAIN:
-			midiFile.save_to_file(messages,offMessages)
 	changeState()
 	ok.emit()
 
@@ -80,8 +78,14 @@ func _on_f_1_pressed():
 		MAIN, NOTE, SCALE, TEMPO:
 			mainState = PROG
 		PROG:
-			mainState = NOTE
-			prevNote = note
+			if shift:
+				mainState = MEMORY
+			else:
+				mainState = NOTE
+				prevNote = note
+		MEMORY:
+			midiFile.save_to_file(messages,offMessages,tempo[1])
+			mainState = PROG
 	changeState()
 
 func _on_f_2_pressed():
@@ -141,6 +145,10 @@ func _on_f_4_pressed():
 			mainState = PROG
 		TEMPO:
 			tempo = prevTempo
+			mainState = PROG
+		MEMORY:
+			midiFile.read_from_file(messages,offMessages)
+			$Buttons.updateBPT()
 			mainState = PROG
 	changeState()
 

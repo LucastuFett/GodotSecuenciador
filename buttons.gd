@@ -109,3 +109,16 @@ func _buttonPress(num):
 				break
 			else:
 				i += 1
+
+func updateBPT():
+	beatsPerTone.fill(0)
+	var bptIndex = 0
+	var beatMask = 0x80000000
+	for j in 32:
+		for i in 10:
+			var index = (i * 32) + j
+			if messages[index][0] != 0 && messages[index][2] != 0:
+				bptIndex = ((messages[index][1] - 24)*16) + (messages[index][0] & 0xF)
+				beatsPerTone[bptIndex] |= (beatMask >> j)
+				if control & (beatMask >> j) == 0:
+					control |= (beatMask >> j)
