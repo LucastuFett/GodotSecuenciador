@@ -2,12 +2,26 @@ class_name Screen
 extends Main
 
 static var curOctave = 2
+const letters = [
+  'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+  'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',
+  'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/',
+  '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
+]
+const shLetters = [
+  'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
+  'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':',
+  'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?',
+  '!', '@', '#', '$', '%', '_', '-', '*', '(', ')'
+]
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Actualizar Labels de Menu
 	$Menus/Scale/ScaleValue.text = $PianoGrid.tones[tone] + " " + scales[mode][0]
-	pass
+	for i in $Memory/Keyboard.get_child_count():
+		$Memory/Keyboard.get_children()[i].text = letters[i]
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass

@@ -1,11 +1,12 @@
 class_name Main
 extends Control
 
-enum {MAIN, PROG, NOTE, MEMORY, CHANNEL, TEMPO, SCALE, PLAY, LAUNCH, DAW}
+enum {MAIN, PROG, NOTE, MEMORY, SAVELOAD, CHANNEL, TEMPO, SCALE, PLAY, LAUNCH, DAW}
 const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
 				["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],
 				["Accept", "Octave -", "Octave +", "Cancel","","","",""],
-				["Save","","","Load","","","",""],
+				["Save","Shift","Backspace","Load","","Numbers","Space",""],
+				["Accept","Bank -","Bank +","Cancel","","","",""],
 				["","","","","","","",""],
 				["Accept","Internal","External","Cancel","","","",""],
 				["Accept","Mode -","Mode +","Cancel","","","",""]]
@@ -13,6 +14,7 @@ const titles = ["Main - Config",
 				"Programming", 
 				"Edit Note",
 				"Memory",
+				"Save/Load",
 				"Edit Channel",
 				"Edit Tempo",
 				"Edit Scale"]
@@ -56,6 +58,8 @@ func _ready():
 		$MidiTimer.setTempo(int(tempoMS))
 	changeState()
 	ok.connect($Screen._on_select_pressed.bind())
+	#print(int($Screen/Memory/Keyboard/Button.text))
+	#$Screen/Memory/Keyboard/Button.text = str(int($Screen/Memory/Keyboard/Button.text) + 32)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
