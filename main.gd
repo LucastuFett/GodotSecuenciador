@@ -46,26 +46,21 @@ var prevNote = 0
 var prevMode = 0
 var prevTone = 0
 var prevTempo = [0,120]
+var tempoMS
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	midi = Midi.new()
 	midiFile = MidiFile.new()
 	velocity = int($Screen/Menus/Rotary/Value.text)
-	if tempo[0] == 0:
-		var tempoMS = (float(1)/(tempo[1]/60))*1000
-		print(tempoMS)
-		$MidiTimer.setTempo(int(tempoMS))
+	tempoChange()
 	changeState()
 	ok.connect($Screen._on_select_pressed.bind())
-	#print(int($Screen/Memory/Keyboard/Button.text))
-	#$Screen/Memory/Keyboard/Button.text = str(int($Screen/Memory/Keyboard/Button.text) + 32)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#if tempo[0] == 0:
-		#$Timer.wait_time = 1/(tempo[1]/60)
-	pass
+	if mainState == TEMPO:
+		tempoChange()
 	
 func _on_select_pressed():
 	match mainState:
@@ -97,6 +92,8 @@ func _on_f_2_pressed():
 		PROG:
 			if !$MidiTimer.running:
 				beat -= 1
+			else:
+				allNotesOff()
 			$MidiTimer.playPause()
 		NOTE:
 			octave -= 1
@@ -108,8 +105,8 @@ func _on_f_2_pressed():
 			if mode < 0:
 				mode = len(scales)
 			$Screen.updateScreen()
-		_:
-			pass
+		TEMPO:
+			tempo[0] = 0
 			
 func _on_f_3_pressed():
 	match mainState:
@@ -119,6 +116,7 @@ func _on_f_3_pressed():
 				mainState = TEMPO
 			else:
 				$MidiTimer.stop()
+				allNotesOff()
 				beat = 0
 		NOTE:
 			octave += 1
@@ -130,8 +128,9 @@ func _on_f_3_pressed():
 			if mode == len(scales):
 				mode = 0
 			$Screen.updateScreen()
-		_:
-			pass
+		TEMPO:
+			tempo[0] = 1
+	changeState()
 
 func _on_f_4_pressed():
 	match mainState:
@@ -222,6 +221,7 @@ func changeState():
 		$"Screen/Menus/Toggler/1-16".add_theme_color_override("font_color",Color.WHITE)
 		$"Screen/Menus/Toggler/17-32".add_theme_color_override("font_color",Color.GRAY)
 	$Screen.updateScreen()
+	tempoChange()
 
 func beatPlay():
 	var index
@@ -232,6 +232,9 @@ func beatPlay():
 	for i in 10:
 		index = (i * 32) + beat
 		#print(messages[index][0])
+		if offMessages[index][0] != 0:
+			print(offMessages[index])
+			midi.sendMessage(offMessages[index])
 		if messages[index][0] != 0:
 			print(messages[index])
 			midi.sendMessage(messages[index])
@@ -242,3 +245,14 @@ func _on_timeout() -> void:
 		beat = 0
 	beatPlay()
 	#print(beat)
+
+func allNotesOff():
+	for i in 16:
+		if channels[i] != 0:
+			midi.sendMessage([0xB0 | i,123,0])
+
+func tempoChange():
+	if tempo[0] == 0:
+		tempoMS = (float(1)/(float(tempo[1])/60))*1000
+		print(tempoMS)
+		$MidiTimer.setTempo(int(tempoMS))

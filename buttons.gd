@@ -1,6 +1,8 @@
 class_name Buttons
 extends Main
 
+const beatButtons = [65, 83, 68, 70, 71, 72, 74, 75,
+					 90, 88, 67, 86, 66, 78, 77, 44]
 const blueStyle = preload("res://themes/BlueBtn.tres")
 const greyStyle = preload("res://themes/GreyBtn.tres")
 const purpleStyle = preload("res://themes/PurpleBtn.tres")
@@ -21,7 +23,15 @@ func _ready():
 	var n = 0
 	for btn in listbtn:
 		btn.pressed.connect(_buttonPress.bind(n))
+		var sh = Shortcut.new()
+		sh.events = Array([], TYPE_OBJECT, "Object", InputEvent)
+		var inp = InputEventKey.new()
+		inp.keycode = beatButtons[n]
+		sh.events.append(inp)
+		btn.shortcut = sh
+		btn.text = OS.get_keycode_string(inp.keycode)
 		n += 1
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -80,6 +90,8 @@ func _buttonPress(num):
 		while i < 10:
 			if messages[(i*32) + num][0] == 0:
 				return
+			elif offMessages[(i*32) + num][0] == 0:
+				return
 			else:
 				i += 1
 		control &= ~beatMask
@@ -103,9 +115,12 @@ func _buttonPress(num):
 						num = 0
 					else:
 						num += 1
-				offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
-				#print(index,messages[index])
 				beatsPerTone[bptIndex] |= beatMask
+				offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+				beatMask = 0x80000000 >> num	
+				if control & beatMask == 0:
+					control |= beatMask
+				#print(index,messages[index])
 				break
 			else:
 				i += 1

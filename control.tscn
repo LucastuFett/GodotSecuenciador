@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://batna25ggjth"]
+[gd_scene load_steps=42 format=3 uid="uid://batna25ggjth"]
 
 [ext_resource type="Script" path="res://buttons.gd" id="1_2l6ow"]
 [ext_resource type="Script" path="res://main.gd" id="1_3bh58"]
@@ -10,7 +10,18 @@
 [ext_resource type="StyleBox" uid="uid://ifxgqnl52ruv" path="res://themes/TransparentKey.tres" id="7_qthdj"]
 [ext_resource type="Script" path="res://timer.gd" id="9_sov8j"]
 
+[sub_resource type="InputEventKey" id="InputEventKey_b2jhy"]
+device = -1
+keycode = 44
+unicode = 44
+
+[sub_resource type="Shortcut" id="Shortcut_s3sxy"]
+events = [SubResource("InputEventKey_b2jhy")]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62ndd"]
+
+[sub_resource type="Shortcut" id="Shortcut_ao5pd"]
+events = [SubResource("InputEventKey_b2jhy")]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljt5i"]
 bg_color = Color(0, 0, 0, 0)
@@ -19,6 +30,80 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.537137, 0.665153, 0.977781, 1)
+
+[sub_resource type="InputEventKey" id="InputEventKey_ypg5i"]
+device = -1
+keycode = 4194319
+
+[sub_resource type="Shortcut" id="Shortcut_hrxgg"]
+events = [SubResource("InputEventKey_ypg5i")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_4bbn3"]
+device = -1
+keycode = 4194321
+
+[sub_resource type="Shortcut" id="Shortcut_kbxyv"]
+events = [SubResource("InputEventKey_4bbn3")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_y8nwb"]
+device = -1
+keycode = 4194309
+
+[sub_resource type="Shortcut" id="Shortcut_r7864"]
+events = [SubResource("InputEventKey_y8nwb")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_5jfcg"]
+device = -1
+keycode = 4194308
+
+[sub_resource type="Shortcut" id="Shortcut_0wnjg"]
+events = [SubResource("InputEventKey_5jfcg")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_25kww"]
+device = -1
+keycode = 4194325
+
+[sub_resource type="Shortcut" id="Shortcut_kf770"]
+events = [SubResource("InputEventKey_25kww")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ybht8"]
+device = -1
+keycode = 49
+unicode = 49
+
+[sub_resource type="Shortcut" id="Shortcut_6rxg8"]
+events = [SubResource("InputEventKey_ybht8")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_dojds"]
+device = -1
+keycode = 50
+unicode = 50
+
+[sub_resource type="Shortcut" id="Shortcut_c0pde"]
+events = [SubResource("InputEventKey_dojds")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_e6uyt"]
+device = -1
+keycode = 51
+unicode = 51
+
+[sub_resource type="Shortcut" id="Shortcut_vjqnu"]
+events = [SubResource("InputEventKey_e6uyt")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_h6c1x"]
+device = -1
+keycode = 52
+unicode = 52
+
+[sub_resource type="Shortcut" id="Shortcut_1et82"]
+events = [SubResource("InputEventKey_h6c1x")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_srqbt"]
+device = -1
+keycode = 4194320
+
+[sub_resource type="Shortcut" id="Shortcut_fxste"]
+events = [SubResource("InputEventKey_srqbt")]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fmghn"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -83,12 +168,14 @@ custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_styles/normal = ExtResource("3_hmk0w")
 action_mode = 0
+shortcut = SubResource("Shortcut_s3sxy")
 
 [node name="B2" type="Button" parent="Buttons"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
+shortcut = SubResource("Shortcut_ao5pd")
 
 [node name="B3" type="Button" parent="Buttons"]
 custom_minimum_size = Vector2(60, 60)
@@ -2438,6 +2525,7 @@ offset_top = 122.0
 offset_right = 357.0
 offset_bottom = 153.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
+shortcut = SubResource("Shortcut_hrxgg")
 text = "<"
 
 [node name="Right" type="Button" parent="Screen/Controls"]
@@ -2447,6 +2535,7 @@ offset_top = 122.0
 offset_right = 394.0
 offset_bottom = 153.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
+shortcut = SubResource("Shortcut_kbxyv")
 text = ">"
 
 [node name="Select" type="Button" parent="Screen/Controls"]
@@ -2456,6 +2545,7 @@ offset_top = 82.0
 offset_right = 378.0
 offset_bottom = 113.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
+shortcut = SubResource("Shortcut_r7864")
 text = "OK"
 
 [node name="Exit" type="Button" parent="Screen/Controls"]
@@ -2465,6 +2555,7 @@ offset_top = 160.0
 offset_right = 380.0
 offset_bottom = 191.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
+shortcut = SubResource("Shortcut_0wnjg")
 text = "Exit"
 
 [node name="Shift" type="Button" parent="Screen/Controls"]
@@ -2475,6 +2566,7 @@ offset_right = 380.0
 offset_bottom = 229.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
 toggle_mode = true
+shortcut = SubResource("Shortcut_kf770")
 text = "Shift"
 
 [node name="F1" type="Button" parent="Screen/Controls"]
@@ -2484,6 +2576,7 @@ offset_top = 260.0
 offset_right = 68.0
 offset_bottom = 291.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
+shortcut = SubResource("Shortcut_6rxg8")
 text = "1"
 
 [node name="F2" type="Button" parent="Screen/Controls"]
@@ -2493,6 +2586,7 @@ offset_top = 260.0
 offset_right = 143.0
 offset_bottom = 291.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
+shortcut = SubResource("Shortcut_c0pde")
 text = "2"
 
 [node name="F3" type="Button" parent="Screen/Controls"]
@@ -2502,6 +2596,7 @@ offset_top = 259.0
 offset_right = 226.0
 offset_bottom = 290.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
+shortcut = SubResource("Shortcut_vjqnu")
 text = "3"
 
 [node name="F4" type="Button" parent="Screen/Controls"]
@@ -2511,6 +2606,7 @@ offset_top = 259.0
 offset_right = 301.0
 offset_bottom = 290.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
+shortcut = SubResource("Shortcut_1et82")
 text = "4"
 
 [node name="Toggle" type="CheckButton" parent="Screen/Controls"]
@@ -2520,6 +2616,7 @@ offset_top = 239.0
 offset_right = 384.0
 offset_bottom = 263.0
 theme_override_styles/normal = ExtResource("3_hmk0w")
+shortcut = SubResource("Shortcut_fxste")
 
 [node name="Menus" type="ReferenceRect" parent="Screen"]
 visible = false
@@ -2842,6 +2939,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_plhde")
 
 [node name="Memory" type="ReferenceRect" parent="Screen"]
+visible = false
 layout_mode = 0
 offset_top = 45.0
 offset_right = 320.0

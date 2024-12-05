@@ -8,6 +8,9 @@ func _init():
 		#print(MidiOut.get_port_name(i))
 		if MidiOut.get_port_name(i).contains("loopMIDI Port"):
 			midi_out.open_port(i)
+		if MidiOut.get_port_name(i).contains("IAC Driver"):
+			midi_out.open_port(i)
+		
 	print(midi_out.is_port_open())
 
 

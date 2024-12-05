@@ -47,6 +47,14 @@ func _on_left_pressed():
 				note = 11
 			if octave < 0:
 				octave = 0
+		TEMPO:
+			tempo[1] -= 1
+			if tempo[0] == 0:
+				if tempo[1] < 50:
+					tempo[1] = 240
+			else:
+				if tempo[1] < 0:
+					tempo[1] = 2
 	updateScreen()
 
 func _on_right_pressed():
@@ -67,6 +75,14 @@ func _on_right_pressed():
 				note = 0
 			if octave > 7:
 				octave = 7
+		TEMPO:
+			tempo[1] += 1
+			if tempo[0] == 0:
+				if tempo[1] > 240:
+					tempo[1] = 50
+			else:
+				if tempo[1] > 2:
+					tempo[1] = 0
 	updateScreen()
 
 func updateScreen():
@@ -77,6 +93,7 @@ func updateScreen():
 			$PianoGrid.getPossible()
 			$PianoGrid.paint()
 			$Menus/Scale/ScaleValue.text = $PianoGrid.tones[tone] + " " + scales[mode][0]
+			$Menus/Tempo/TempoValue.text = str(tempo[1]) + "BPM"
 		SCALE:
 			# Conseguir Notas de Escala
 			$PianoGrid.getPossible()
@@ -89,6 +106,7 @@ func updateScreen():
 			# Actualizar Nota y Octava Actual
 			# Actualizar Selected
 			$PianoGrid.paint()
+		TEMPO:
+			$Menus/Tempo/TempoValue.text = str(tempo[1]) + "BPM"
 		_:
 			$PianoGrid.paint()
-			#$Piano.updateKeys()
