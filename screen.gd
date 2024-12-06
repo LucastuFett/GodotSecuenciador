@@ -55,6 +55,10 @@ func _on_left_pressed():
 			else:
 				if tempo[1] < 0:
 					tempo[1] = 2
+		CHANNEL:
+			channel -= 1
+			if channel < 0:
+				channel = 15
 	updateScreen()
 
 func _on_right_pressed():
@@ -83,6 +87,10 @@ func _on_right_pressed():
 			else:
 				if tempo[1] > 2:
 					tempo[1] = 0
+		CHANNEL:
+			channel += 1
+			if channel > 15:
+				channel = 0
 	updateScreen()
 
 func updateScreen():
@@ -94,6 +102,7 @@ func updateScreen():
 			$PianoGrid.paint()
 			$Menus/Scale/ScaleValue.text = $PianoGrid.tones[tone] + " " + scales[mode][0]
 			$Menus/Tempo/TempoValue.text = str(tempo[1]) + "BPM"
+			$Menus/Channel/ChnValue.text = str(channel + 1)
 		SCALE:
 			# Conseguir Notas de Escala
 			$PianoGrid.getPossible()
@@ -108,5 +117,7 @@ func updateScreen():
 			$PianoGrid.paint()
 		TEMPO:
 			$Menus/Tempo/TempoValue.text = str(tempo[1]) + "BPM"
+		CHANNEL:
+			$Menus/Channel/ChnValue.text = str(channel + 1)
 		_:
 			$PianoGrid.paint()

@@ -7,7 +7,7 @@ const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
 				["Accept", "Octave -", "Octave +", "Cancel","","","",""],
 				["Save","Shift","Backspace","Load","","Numbers","Space",""],
 				["Accept","Bank -","Bank +","Cancel","","","",""],
-				["","","","","","","",""],
+				["Accept","","","Cancel","","","",""],
 				["Accept","Internal","External","Cancel","","","",""],
 				["Accept","Mode -","Mode +","Cancel","","","",""]]
 const titles = ["Main - Config", 
@@ -45,6 +45,7 @@ var shift = false
 var prevNote = 0
 var prevMode = 0
 var prevTone = 0
+var prevChn = 0
 var prevTempo = [0,120]
 var tempoMS
 
@@ -74,7 +75,7 @@ func _on_select_pressed():
 
 func _on_f_1_pressed():
 	match mainState:
-		MAIN, NOTE, SCALE, TEMPO:
+		MAIN, NOTE, SCALE, TEMPO, CHANNEL:
 			mainState = PROG
 		PROG:
 			if shift:
@@ -90,11 +91,15 @@ func _on_f_1_pressed():
 func _on_f_2_pressed():
 	match mainState:
 		PROG:
-			if !$MidiTimer.running:
-				beat -= 1
+			if shift:
+				prevChn = channel
+				mainState = CHANNEL
 			else:
-				allNotesOff()
-			$MidiTimer.playPause()
+				if !$MidiTimer.running:
+					beat -= 1
+				else:
+					allNotesOff()
+				$MidiTimer.playPause()
 		NOTE:
 			octave -= 1
 			if octave < 0:
@@ -107,7 +112,7 @@ func _on_f_2_pressed():
 			$Screen.updateScreen()
 		TEMPO:
 			tempo[0] = 0
-			
+	changeState()
 func _on_f_3_pressed():
 	match mainState:
 		PROG:
@@ -148,6 +153,9 @@ func _on_f_4_pressed():
 			mainState = PROG
 		TEMPO:
 			tempo = prevTempo
+			mainState = PROG
+		CHANNEL:
+			channel = prevChn
 			mainState = PROG
 		MEMORY:
 			midiFile.read_from_file(messages,offMessages)
@@ -235,6 +243,8 @@ func beatPlay():
 		if offMessages[index][0] != 0:
 			print(offMessages[index])
 			midi.sendMessage(offMessages[index])
+	for i in 10:
+		index = (i * 32) + beat
 		if messages[index][0] != 0:
 			print(messages[index])
 			midi.sendMessage(messages[index])
