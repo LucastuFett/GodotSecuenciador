@@ -5,7 +5,7 @@ enum {MAIN, PROG, NOTE, MEMORY, SAVELOAD, CHANNEL, TEMPO, SCALE, PLAY, LAUNCH, D
 const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
 				["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],
 				["Accept", "Octave -", "Octave +", "Cancel","","","",""],
-				["Save","Shift","Backspace","Load","","Numbers","Space",""],
+				["Save","Shift","Backspace","Load","","Special","Space",""],
 				["Accept","Bank -","Bank +","Cancel","","","",""],
 				["Accept","","","Cancel","","","",""],
 				["Accept","Internal","External","Cancel","","","",""],
@@ -18,7 +18,7 @@ const titles = ["Main - Config",
 				"Edit Channel",
 				"Edit Tempo",
 				"Edit Scale"]
-const scales = [["Major", [2,2,1,2,2,2]], ["Minor", [2,1,2,2,1,2]], ["Chromatic", [1,1,1,1,1,1,1,1,1,1,1]]]
+const scales = [["Major", [2,2,1,2,2,2]], ["Minor", [2,1,2,2,1,2]], ["Chrom", [1,1,1,1,1,1,1,1,1,1,1]]]
 const editLabel = preload("res://themes/EditableLabel.tres")
 signal ok
 var midi : Midi
@@ -34,12 +34,13 @@ static var mode = 0
 static var note = 0
 static var octave = 3
 static var channel = 0
-static var velocity = 0
+static var velocity = 127
 static var channels = PackedByteArray()
 static var mode32 = false
 static var half = false
 static var control = 0
 static var tempo = [0,120] # 0 = Int, 1 = Ext, en Ext, 0 = Half, 2 = Dbl
+static var filename = "Test"
 
 var shift = false
 var prevNote = 0
@@ -70,6 +71,8 @@ func _on_select_pressed():
 		PROG:
 			if mode32:
 				half = not half
+		MEMORY:
+			$Screen.selectLetter()
 	changeState()
 	ok.emit()
 
@@ -80,10 +83,12 @@ func _on_f_1_pressed():
 		PROG:
 			if shift:
 				mainState = MEMORY
+				$Screen.updateMemoryText()
 			else:
 				mainState = NOTE
 				prevNote = note
 		MEMORY:
+			$Screen.saveFilename()
 			midiFile.save_to_file(messages,offMessages,tempo[1])
 			mainState = PROG
 	changeState()
@@ -112,6 +117,18 @@ func _on_f_2_pressed():
 			$Screen.updateScreen()
 		TEMPO:
 			tempo[0] = 0
+		MEMORY:
+			if shift:
+				if $Screen.curPointer == 0:
+					$Screen.curPointer = 1
+				else:
+					$Screen.curPointer = 0
+			else:
+				if $Screen.upper == 1:
+					$Screen.upper = 0
+				else:
+					$Screen.upper = 1
+			$Screen.updateScreen()
 	changeState()
 func _on_f_3_pressed():
 	match mainState:
@@ -135,6 +152,10 @@ func _on_f_3_pressed():
 			$Screen.updateScreen()
 		TEMPO:
 			tempo[0] = 1
+		MEMORY:
+			$Screen.typing[$Screen.typePointer].text = " "
+			if not shift:
+				$Screen._on_left_pressed()
 	changeState()
 
 func _on_f_4_pressed():
@@ -193,11 +214,23 @@ func changeState():
 		MAIN:
 			$Screen/PianoGrid.set_visible(false)
 			$Screen/Menus.set_visible(false)
+			$Screen/Title.set_visible(true)
+			$Screen/TitleProg.set_visible(false)
 		PROG:
 			$Screen/PianoGrid.set_visible(true)
 			$Screen/Menus.set_visible(true)
+			$Screen/Title.set_visible(false)
+			$Screen/TitleProg.set_visible(true)
+			$Screen/Memory.set_visible(false)
+		MEMORY:
+			$Screen/Memory.set_visible(true)
+			$Screen/PianoGrid.set_visible(false)
+			$Screen/Menus.set_visible(false)
+			$Screen/Title.set_visible(true)
+			$Screen/TitleProg.set_visible(false)
 	
 	$Screen/Title.text = titles[mainState]
+	$Screen/TitleProg.text = titles[mainState]
 	$Screen/Labels/LF1.text = labels[mainState][0]
 	$Screen/Labels/LF2.text = labels[mainState][1]
 	$Screen/Labels/LF3.text = labels[mainState][2]
