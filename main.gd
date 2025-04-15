@@ -6,7 +6,7 @@ const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
 				["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],
 				["Accept", "Octave -", "Octave +", "Cancel","","","",""],
 				["Save","Shift","Backspace","Load","","Special","Space",""],
-				["Accept","Bank -","Bank +","Cancel","","","",""],
+				["Accept","Bank -","Bank +","Cancel","","Rename","Delete",""],
 				["Accept","","","Cancel","","","",""],
 				["Accept","Internal","External","Cancel","","","",""],
 				["Accept","Mode -","Mode +","Cancel","","","",""]]
@@ -74,6 +74,8 @@ func _on_select_pressed():
 				half = not half
 		MEMORY:
 			$Screen.selectLetter()
+		SAVELOAD:
+			$Screen.getFilename()
 	changeState()
 	ok.emit()
 
@@ -94,6 +96,7 @@ func _on_f_1_pressed():
 			mainState = PROG
 		SAVELOAD:
 			midiFile.read_from_file(messages,offMessages,filename,bank)
+			$Screen.getFilename()
 			$Buttons.updateBPT()
 			mainState = PROG
 	changeState()
@@ -134,6 +137,10 @@ func _on_f_2_pressed():
 				else:
 					$Screen.upper = 1
 			$Screen.updateScreen()
+		SAVELOAD:
+			bank -= 1
+			if bank < 1:
+				bank = 8
 	changeState()
 func _on_f_3_pressed():
 	match mainState:
@@ -161,6 +168,10 @@ func _on_f_3_pressed():
 			$Screen.typing[$Screen.typePointer].text = " "
 			if not shift:
 				$Screen._on_left_pressed()
+		SAVELOAD:
+			bank += 1
+			if bank > 8:
+				bank = 1
 	changeState()
 
 func _on_f_4_pressed():
@@ -185,6 +196,7 @@ func _on_f_4_pressed():
 			mainState = PROG
 		MEMORY:
 			mainState = SAVELOAD
+			$Screen.saveFilename()
 		SAVELOAD:
 			mainState = MEMORY
 	changeState()
@@ -203,6 +215,13 @@ func _on_exit_pressed():
 		TEMPO:
 			tempo = prevTempo
 			mainState = PROG
+		CHANNEL:
+			channel = prevChn
+			mainState = PROG
+		MEMORY:
+			mainState = PROG
+		SAVELOAD:
+			mainState = MEMORY
 	changeState()
 	
 func _shift(toggled_on):

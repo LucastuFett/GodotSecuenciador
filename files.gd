@@ -1,13 +1,15 @@
 class_name MidiFile
 
 var offMsg
-var len = 19
 var mthd = PackedByteArray()
 var mtrk = PackedByteArray()
 
 # Called when the node enters the scene tree for the first time.
 func _init():
-	pass
+	var saves = DirAccess.open("res://saves/")
+	for i in range(1,9):
+		if not saves.dir_exists(str(i) + "/"):
+			saves.make_dir(str(i) + "/")
 	
 func save_to_file(messages, offMessages, bpm, filename, bank):
 	var file = FileAccess.open("res://saves/" + str(bank) + "/" + filename.strip_edges() + ".mid",FileAccess.WRITE)
@@ -69,7 +71,6 @@ func calcDelta(value, mtrk):
 	while true:
 		print(buffer & 0xFF)
 		mtrk.append(buffer & 0xFF)
-		len += 1
 		if buffer & 0x80:
 			buffer >>= 8
 		else:

@@ -21,6 +21,8 @@ var upper = 0			# 0 = minuscula, 1 = MAYUSCULA
 
 var files = Array()
 var selectedFile = 0
+const bluePanel = preload("res://themes/BlueBtn.tres")
+const greyPanel = preload("res://themes/GreyBtn.tres")
 
 const currentLabel = preload("res://themes/CurrentLabel.tres")
 
@@ -85,6 +87,10 @@ func _on_left_pressed():
 					specialPointer -= 1
 					if specialPointer < 0:
 						specialPointer = 20
+		SAVELOAD:
+			selectedFile -= 1
+			if selectedFile < 0:
+				selectedFile = 11
 	updateScreen()
 
 func _on_right_pressed():
@@ -133,6 +139,10 @@ func _on_right_pressed():
 					specialPointer += 1
 					if specialPointer > 20:
 						specialPointer = 0
+		SAVELOAD:
+			selectedFile += 1
+			if selectedFile > 11:
+				selectedFile = 0
 	updateScreen()
 
 func updateScreen():
@@ -165,7 +175,6 @@ func updateScreen():
 		MEMORY:
 			updateMemoryText()
 		SAVELOAD:
-			# Cambiar Bank al mover, poder mover que archivo de la grilla se elige
 			updateBanks()
 		_:
 			$PianoGrid.paint()
@@ -225,9 +234,23 @@ func saveFilename():
 	for i in 18:
 		filename[i] = typing[i].text
 	print(filename) 
-	
+	edit = 0
+	letterPointer = 0
+	specialPointer = 0
+	curPointer = 0
+	upper = 0
+
 func updateBanks():
 	$Memory/Bank.text = "Bank " + str(bank)
 	var found = midiFile.getFiles(bank)
 	for i in len(files):
+		if i == selectedFile:
+			files[i].add_theme_stylebox_override("panel",bluePanel)
+		else:
+			files[i].add_theme_stylebox_override("panel",greyPanel)
+		
 		files[i].get_child(0).text = found[i].rstrip(".mid")
+
+func getFilename():
+	filename = files[selectedFile].get_child(0).text
+	print(filename)

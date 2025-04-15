@@ -2949,7 +2949,6 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_plhde")
 
 [node name="Memory" type="ReferenceRect" parent="Screen"]
-visible = false
 layout_mode = 0
 offset_top = 45.0
 offset_right = 320.0
@@ -3099,7 +3098,6 @@ offset_bottom = 37.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ljt5i")
 
 [node name="Load" type="GridContainer" parent="Screen/Memory"]
-visible = false
 layout_mode = 0
 offset_left = 15.0
 offset_top = -4.0
