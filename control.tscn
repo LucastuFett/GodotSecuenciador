@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://batna25ggjth"]
+[gd_scene load_steps=42 format=3 uid="uid://batna25ggjth"]
 
 [ext_resource type="Script" path="res://buttons.gd" id="1_2l6ow"]
 [ext_resource type="Script" path="res://main.gd" id="1_3bh58"]
@@ -136,21 +136,6 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lb66f"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ibxgr"]
-bg_color = Color(0.533037, 0.533037, 0.533037, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6bedg"]
-bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_h4sa2"]
 
@@ -2964,436 +2949,13 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_plhde")
 
 [node name="Memory" type="ReferenceRect" parent="Screen"]
-visible = false
 layout_mode = 0
 offset_top = 45.0
 offset_right = 320.0
 offset_bottom = 199.0
 
-[node name="Label" type="Label" parent="Screen/Memory"]
-visible = false
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 0
-offset_left = 50.0
-offset_top = 14.0
-offset_right = 270.0
-offset_bottom = 39.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_lb66f")
-clip_text = true
-text_overrun_behavior = 1
-
-[node name="Keyboard" type="GridContainer" parent="Screen/Memory"]
-visible = false
-layout_mode = 0
-offset_left = 10.0
-offset_top = 50.0
-offset_right = 310.0
-offset_bottom = 150.0
-theme_override_constants/h_separation = 24
-columns = 10
-
-[node name="1" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="2" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="3" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="4" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="5" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="6" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="7" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="8" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="9" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="10" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="11" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="12" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="13" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="14" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="15" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="16" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="17" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="18" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="19" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="20" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="21" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="22" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="23" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="24" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="25" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="26" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="27" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="28" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="29" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="30" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="31" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="32" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="33" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="34" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="35" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="36" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="37" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="38" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="39" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
-[node name="40" type="Button" parent="Screen/Memory/Keyboard"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-theme_override_styles/hover = SubResource("StyleBoxFlat_ibxgr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6bedg")
-text = "q"
-
 [node name="Typing" type="HBoxContainer" parent="Screen/Memory"]
+visible = false
 layout_mode = 0
 offset_left = 13.0
 offset_right = 309.0
@@ -3527,11 +3089,226 @@ text = " "
 horizontal_alignment = 1
 
 [node name="GridBorder" type="Panel" parent="Screen/Memory"]
+visible = false
 z_index = 1
+layout_mode = 0
 offset_left = 11.0
 offset_right = 311.0
 offset_bottom = 37.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ljt5i")
+
+[node name="Load" type="GridContainer" parent="Screen/Memory"]
+visible = false
+layout_mode = 0
+offset_left = 15.0
+offset_top = -4.0
+offset_right = 315.0
+offset_bottom = 154.0
+columns = 4
+
+[node name="1" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/1"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="2" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/2"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="3" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/3"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="4" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/4"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="5" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/5"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="6" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/6"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="7" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/7"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="8" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/8"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="9" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/9"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="10" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/10"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="11" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/11"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="12" type="Panel" parent="Screen/Memory/Load"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hmk0w")
+
+[node name="Name" type="Label" parent="Screen/Memory/Load/12"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 70.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "MMMMMMMMMMMMMMMMMM"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Bank" type="Label" parent="Screen/Memory"]
+visible = false
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_left = 22.0
+offset_top = -34.0
+offset_right = 75.0
+offset_bottom = -11.0
+text = "Bank 1"
+horizontal_alignment = 1
 
 [node name="Title" type="Label" parent="Screen"]
 texture_filter = 1

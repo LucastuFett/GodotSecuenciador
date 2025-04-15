@@ -22,7 +22,7 @@ const scales = [["Major", [2,2,1,2,2,2]], ["Minor", [2,1,2,2,1,2]], ["Chrom", [1
 const editLabel = preload("res://themes/EditableLabel.tres")
 signal ok
 var midi : Midi
-var midiFile : MidiFile
+static var midiFile : MidiFile
 
 static var mainState := MAIN
 static var messages = Array()
@@ -41,6 +41,7 @@ static var half = false
 static var control = 0
 static var tempo = [0,120] # 0 = Int, 1 = Ext, en Ext, 0 = Half, 2 = Dbl
 static var filename = "Test"
+static var bank = 1
 
 var shift = false
 var prevNote = 0
@@ -89,7 +90,11 @@ func _on_f_1_pressed():
 				prevNote = note
 		MEMORY:
 			$Screen.saveFilename()
-			midiFile.save_to_file(messages,offMessages,tempo[1])
+			midiFile.save_to_file(messages,offMessages,tempo[1],filename,bank)
+			mainState = PROG
+		SAVELOAD:
+			midiFile.read_from_file(messages,offMessages,filename,bank)
+			$Buttons.updateBPT()
 			mainState = PROG
 	changeState()
 
@@ -179,9 +184,9 @@ func _on_f_4_pressed():
 			channel = prevChn
 			mainState = PROG
 		MEMORY:
-			midiFile.read_from_file(messages,offMessages)
-			$Buttons.updateBPT()
-			mainState = PROG
+			mainState = SAVELOAD
+		SAVELOAD:
+			mainState = MEMORY
 	changeState()
 
 func _on_exit_pressed():
@@ -228,6 +233,15 @@ func changeState():
 			$Screen/Menus.set_visible(false)
 			$Screen/Title.set_visible(true)
 			$Screen/TitleProg.set_visible(false)
+			$Screen/Memory/Load.set_visible(false)
+			$Screen/Memory/Bank.set_visible(false)
+			$Screen/Memory/GridBorder.set_visible(true)
+			$Screen/Memory/Typing.set_visible(true)
+		SAVELOAD:
+			$Screen/Memory/Load.set_visible(true)
+			$Screen/Memory/Bank.set_visible(true)
+			$Screen/Memory/GridBorder.set_visible(false)
+			$Screen/Memory/Typing.set_visible(false)
 	
 	$Screen/Title.text = titles[mainState]
 	$Screen/TitleProg.text = titles[mainState]

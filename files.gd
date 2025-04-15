@@ -9,8 +9,8 @@ var mtrk = PackedByteArray()
 func _init():
 	pass
 	
-func save_to_file(messages, offMessages, bpm):
-	var file = FileAccess.open("res://saves/save.mid",FileAccess.WRITE)
+func save_to_file(messages, offMessages, bpm, filename, bank):
+	var file = FileAccess.open("res://saves/" + str(bank) + "/" + filename.strip_edges() + ".mid",FileAccess.WRITE)
 	const delta = 24
 	var tempo = int((float(1)/(bpm/60))*1000000)
 	const tone = 0 #C
@@ -75,8 +75,8 @@ func calcDelta(value, mtrk):
 		else:
 			break
 
-func read_from_file(messages, offMessages):
-	var file = FileAccess.open("res://saves/save.mid",FileAccess.READ)
+func read_from_file(messages, offMessages, filename, bank):
+	var file = FileAccess.open("res://saves/" + str(bank) + "/" + filename.strip_edges() + ".mid",FileAccess.READ)
 	var delta = 0
 	var tempo = 0
 	var tone = 0 
@@ -195,3 +195,8 @@ func readDelta(file) -> Array:
 			bytecount += 1
 			value = (value << 7) + (c & 0x7F)
 	return [value, bytecount]
+
+func getFiles(bank) -> PackedStringArray:
+	var files = DirAccess.open("res://saves/" + str(bank) + "/").get_files()
+	files.resize(12)
+	return files

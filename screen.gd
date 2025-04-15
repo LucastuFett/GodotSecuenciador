@@ -19,6 +19,9 @@ var edit = 0			# 0 = carga de variable, 1 = moviendo entre letras, 2 = en una le
 var curPointer = 0 		# 0 = letras, 1 = especiales
 var upper = 0			# 0 = minuscula, 1 = MAYUSCULA
 
+var files = Array()
+var selectedFile = 0
+
 const currentLabel = preload("res://themes/CurrentLabel.tres")
 
 # Called when the node enters the scene tree for the first time.
@@ -27,8 +30,8 @@ func _ready():
 	$Menus/Scale/ScaleValue.text = $PianoGrid.tones[tone] + " " + scales[mode][0]
 	for i in $Memory/Typing.get_children():
 		typing.append(i)
-	#for i in $Memory/Keyboard.get_child_count():
-	#	$Memory/Keyboard.get_children()[i].text = letters[i]
+	for i in $Memory/Load.get_children():
+		files.append(i)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
@@ -161,6 +164,9 @@ func updateScreen():
 			$Menus/Channel/ChnValue.text = str(channel + 1)
 		MEMORY:
 			updateMemoryText()
+		SAVELOAD:
+			# Cambiar Bank al mover, poder mover que archivo de la grilla se elige
+			updateBanks()
 		_:
 			$PianoGrid.paint()
 
@@ -219,3 +225,9 @@ func saveFilename():
 	for i in 18:
 		filename[i] = typing[i].text
 	print(filename) 
+	
+func updateBanks():
+	$Memory/Bank.text = "Bank " + str(bank)
+	var found = midiFile.getFiles(bank)
+	for i in len(files):
+		files[i].get_child(0).text = found[i].rstrip(".mid")
