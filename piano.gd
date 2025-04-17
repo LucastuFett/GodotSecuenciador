@@ -36,6 +36,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# Pintar los cuadrados de la grilla
+	# Falta pintar los cuadrados de entre las notas holded
 	# grid[0] = Beat 15, Note 0, Octave = Cur
 	# grid[23] = Beat 15, Note 11, Octave = Cur + 1
 	# grid[360] = Beat 0, Note 0, Octave = Cur
@@ -81,7 +82,10 @@ func _process(delta):
 		else:
 			grid[i].add_theme_stylebox_override("panel",emptyCell)
 		gridNote += 1
-			
+	for i in holded:
+		# Fijarse en cada holded, sobreescribir lo anterior
+		pass
+# Función para devolver las notas que pertenecen a una escala determinada
 func getPossible():
 	# possible = [[note, note2],[style, style2]]
 	var actKey = tone

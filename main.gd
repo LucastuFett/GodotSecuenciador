@@ -42,6 +42,9 @@ static var control = 0
 static var tempo = [0,120] # 0 = Int, 1 = Ext, en Ext, 0 = Half, 2 = Dbl
 static var filename = "Test"
 static var bank = 1
+static var hold = 0 # 0 = Sin Hold, 1 = Esperando primer valor, 2 = Esperando segundo valor
+static var holded = Dictionary() # {[Beat1, Canal, Nota]:Beat2,}
+static var holdTemporary = 0
 
 var shift = false
 var prevNote = 0
@@ -64,6 +67,14 @@ func _ready():
 func _process(delta):
 	if mainState == TEMPO:
 		tempoChange()
+	if hold == 0:
+		$Screen/Menus/Hold.set_visible(false)
+	elif hold == 1:
+		$Screen/Menus/Hold.set_visible(true)
+		$Screen/Menus/Hold.text = "1st Value"
+	elif hold == 2:
+		$Screen/Menus/Hold.set_visible(true)
+		$Screen/Menus/Hold.text = "2nd Value"
 	
 func _on_select_pressed():
 	match mainState:
@@ -181,6 +192,11 @@ func _on_f_4_pressed():
 				prevMode = mode
 				prevTone = tone
 				mainState = SCALE
+			else:
+				if hold != 0:
+					hold = 0
+				else:
+					hold = 1
 		NOTE:
 			note = prevNote
 			mainState = PROG
@@ -233,6 +249,7 @@ func _toggle(toggled_on):
 	# Recalcular off del 0 si se pasa a 32
 	changeState()
 
+# Función para cambiar el estado de los nodos visibles, más actualizaciones de texto
 func changeState():
 	match mainState:
 		MAIN:
@@ -295,8 +312,10 @@ func changeState():
 		$"Screen/Menus/Toggler/1-16".add_theme_color_override("font_color",Color.WHITE)
 		$"Screen/Menus/Toggler/17-32".add_theme_color_override("font_color",Color.GRAY)
 	$Screen.updateScreen()
+	$Buttons.updateColors()
 	tempoChange()
 
+# Función que se llama cada "beat", envía el mensaje MIDI necesario
 func beatPlay():
 	var index
 	var beatMask = 0x80000000 >> beat
@@ -315,20 +334,25 @@ func beatPlay():
 			print(messages[index])
 			midi.sendMessage(messages[index])
 
+# Función generada por el timer, llama a sonar un beat
 func _on_timeout() -> void:
 	beat += 1
 	if (mode32 && beat == 32) || (!mode32 && beat == 16):
 		beat = 0
 	beatPlay()
+	$Buttons.updateColors()
 	#print(beat)
 
+# Función para enviar un mensaje de apagado en los canales necesarios
 func allNotesOff():
 	for i in 16:
 		if channels[i] != 0:
 			midi.sendMessage([0xB0 | i,123,0])
+	$Buttons.updateColors()
 
+# Función llamada cuando se cambia el tempo para recalcular el tempo
 func tempoChange():
 	if tempo[0] == 0:
 		tempoMS = (float(1)/(float(tempo[1])/60))*1000
-		print(tempoMS)
+		#print(tempoMS)
 		$MidiTimer.setTempo(int(tempoMS))

@@ -6,6 +6,8 @@ const beatButtons = [65, 83, 68, 70, 71, 72, 74, 75,
 const blueStyle = preload("res://themes/BlueBtn.tres")
 const greyStyle = preload("res://themes/GreyBtn.tres")
 const purpleStyle = preload("res://themes/PurpleBtn.tres")
+const redStyle = preload("res://themes/RedBtn.tres")
+const orangeStyle = preload("res://themes/OrangeBtn.tres")
 var listbtn = Array()
 
 # Called when the node enters the scene tree for the first time.
@@ -35,6 +37,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	pass
+
+func updateColors():
 	var bptIndex = (note + (octave * 12)) * 16 + channel
 	var beatMask = 0
 	# Pintar Botones
@@ -45,15 +50,24 @@ func _process(delta):
 		beatMask = 0x80000000 >> num	
 		if beatsPerTone[bptIndex] & beatMask != 0:
 			listbtn[i].add_theme_stylebox_override("normal",blueStyle)
-		else:
+		elif listbtn[i].get_theme_stylebox("normal") != redStyle and listbtn[i].get_theme_stylebox("normal") != orangeStyle :
 			listbtn[i].add_theme_stylebox_override("normal",greyStyle)
+		if holded.has([num,channel,note+octave*12+24]):
+			#print("red:",i)
+			listbtn[i].add_theme_stylebox_override("normal",redStyle)
+			for j in range(i+1,holded.get([num,channel,note+octave*12+24])):
+				#print("orange",j)
+				listbtn[j].add_theme_stylebox_override("normal",orangeStyle)
+			listbtn[holded.get([num,channel,note+octave*12+24])].add_theme_stylebox_override("normal",redStyle)
+			#print("red:",holded.get([num,channel,note+octave*12+24]))
 		if beat == num:
-			listbtn[i].add_theme_stylebox_override("normal",purpleStyle)
-			
+			listbtn[i].add_theme_stylebox_override("normal",purpleStyle)	
+
+# Función que se llama cuando se aprieta un botón, recibe el número del botón apretado
 func _buttonPress(num):
 	# Almacenar en messages y beatsPerTone
 	# messages = [10][32], checkear dupes
-	# beatsPerTone = [96][16], uint 32
+	# beatsPerTone = [96][16], uint 32, ocupa 6K
 	# Checkear si esta en 16 o 32
 	var noteIndex = note + (octave * 12)
 	var midiNote = noteIndex + 24
@@ -65,6 +79,7 @@ func _buttonPress(num):
 	var bptIndex = (noteIndex * 16) + channel
 	
 	# Si ya esta activo
+	# Agregar que pasa si esta holdeado, debe borrar el mismo, la entrada en holded y el ultimo off
 	if beatsPerTone[bptIndex] & beatMask != 0:
 		channels[channel] -= 1
 		while(i < 10):
@@ -83,6 +98,7 @@ func _buttonPress(num):
 						num += 1
 				offMessages[(i*32) + num][0] = 0
 				beatsPerTone[bptIndex] &= ~beatMask
+				updateColors()
 				break
 			else:
 				i += 1
@@ -104,7 +120,12 @@ func _buttonPress(num):
 				if control & beatMask == 0:
 					control |= beatMask
 					#print(control)
-				messages[index] = [0x90 | channel,midiNote,velocity]
+				if hold != 2:
+					messages[index] = [0x90 | channel,midiNote,velocity]
+					beatsPerTone[bptIndex] |= beatMask
+				if hold == 1:
+					holdTemporary = num
+					print(holdTemporary)
 				if mode32:
 					if num == 31:
 						num = 0
@@ -115,16 +136,33 @@ func _buttonPress(num):
 						num = 0
 					else:
 						num += 1
-				beatsPerTone[bptIndex] |= beatMask
-				offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
-				beatMask = 0x80000000 >> num	
+				if hold == 0:
+					offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+				elif hold == 2:
+					if num > holdTemporary:
+						offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+						holded.merge({[holdTemporary,channel,midiNote]:num-1})
+						#print(holded)
+					elif num == 0:
+						offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+						if mode32:
+							holded.merge({[holdTemporary,channel,midiNote]:31})
+						else:
+							holded.merge({[holdTemporary,channel,midiNote]:15})
+						#print(holded)
+					hold = 0
+				elif hold == 1:
+					hold = 2
+				beatMask = 0x80000000 >> num
 				if control & beatMask == 0:
 					control |= beatMask
 				#print(index,messages[index])
 				break
 			else:
 				i += 1
+	updateColors()
 
+# Función que se llama cuando se importa un nuevo archivo, actualizando la estructura beatsPerTone
 func updateBPT():
 	beatsPerTone.fill(0)
 	var bptIndex = 0

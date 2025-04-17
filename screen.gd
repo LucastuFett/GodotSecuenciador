@@ -178,7 +178,10 @@ func updateScreen():
 			updateBanks()
 		_:
 			$PianoGrid.paint()
+	$"../Buttons".updateColors()
 
+
+# Función para actualizar el texto que se va escribiendo en el nombre
 func updateMemoryText():
 	if filename != "" and edit == 0:
 		for i in len(filename):
@@ -201,6 +204,7 @@ func updateMemoryText():
 		else:
 			typing[typePointer].text = special[specialPointer]
 		
+# Función que se llama al poner seleccionar en una letra para guardarla
 func selectLetter():
 	if edit == 1:
 		edit = 2
@@ -229,6 +233,7 @@ func selectLetter():
 		curPointer = 0
 		upper = 0
 
+# Función para guardar el archivo
 func saveFilename():
 	filename = filename.rpad(18," ")
 	for i in 18:
@@ -240,6 +245,7 @@ func saveFilename():
 	curPointer = 0
 	upper = 0
 
+# Función para cargar el nombre de los archivos en la interfaz
 func updateBanks():
 	$Memory/Bank.text = "Bank " + str(bank)
 	var found = midiFile.getFiles(bank)
@@ -251,6 +257,7 @@ func updateBanks():
 		
 		files[i].get_child(0).text = found[i].rstrip(".mid")
 
+# Función para escribir el nombre del archivo seleccionado en el programa
 func getFilename():
 	filename = files[selectedFile].get_child(0).text
 	print(filename)

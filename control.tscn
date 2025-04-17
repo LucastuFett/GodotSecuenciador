@@ -382,7 +382,6 @@ theme_override_styles/normal = ExtResource("3_hmk0w")
 shortcut = SubResource("Shortcut_fxste")
 
 [node name="PianoGrid" type="ReferenceRect" parent="Screen"]
-visible = false
 layout_mode = 0
 offset_left = 240.0
 offset_top = 10.0
@@ -2626,7 +2625,6 @@ offset_bottom = 73.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_7m61d")
 
 [node name="Menus" type="ReferenceRect" parent="Screen"]
-visible = false
 z_index = -1
 layout_mode = 0
 offset_left = 9.0
@@ -2805,6 +2803,19 @@ offset_bottom = 42.0
 theme_override_colors/font_color = Color(0.493545, 0.493546, 0.493546, 1)
 theme_override_font_sizes/font_size = 13
 text = "17-32"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hold" type="Label" parent="Screen/Menus"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = 142.0
+offset_right = 58.0
+offset_bottom = 165.0
+theme_override_font_sizes/font_size = 11
+text = "1st Note"
 horizontal_alignment = 1
 vertical_alignment = 1
 

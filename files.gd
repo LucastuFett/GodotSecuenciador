@@ -10,7 +10,9 @@ func _init():
 	for i in range(1,9):
 		if not saves.dir_exists(str(i) + "/"):
 			saves.make_dir(str(i) + "/")
-	
+
+# Función para Escribir un Archivo, recibe los mensajes de prendido y apagado de la secuencia actual,
+# el bpm, nombre del archivo y banco al cual pertenece
 func save_to_file(messages, offMessages, bpm, filename, bank):
 	var file = FileAccess.open("res://saves/" + str(bank) + "/" + filename.strip_edges() + ".mid",FileAccess.WRITE)
 	const delta = 24
@@ -60,7 +62,7 @@ func save_to_file(messages, offMessages, bpm, filename, bank):
 	file.store_32(len(mtrk))		#ChunkLen, calcular, base 19
 	file.store_buffer(mtrk)
 	
-
+# Función para calcular el valor del campo delta cuando es mayor que 0x7F
 func calcDelta(value, mtrk):
 	var buffer = value & 0x7F
 	while (value >> 7) > 0:
@@ -76,6 +78,8 @@ func calcDelta(value, mtrk):
 		else:
 			break
 
+# Función para leer un archivo, recibe los punteros a los mensajes de encencido y apagado,
+# y de que archivo y banco debe leer
 func read_from_file(messages, offMessages, filename, bank):
 	var file = FileAccess.open("res://saves/" + str(bank) + "/" + filename.strip_edges() + ".mid",FileAccess.READ)
 	var delta = 0
@@ -183,6 +187,7 @@ func read_from_file(messages, offMessages, filename, bank):
 				
 			
 
+# Funcion para leer los campos de delta de un archivo MIDI
 func readDelta(file) -> Array:
 	var bytecount = 1
 	var value = file.get_8()
@@ -197,6 +202,7 @@ func readDelta(file) -> Array:
 			value = (value << 7) + (c & 0x7F)
 	return [value, bytecount]
 
+# Función que devuelve los archivos que se encuentran en un banco
 func getFiles(bank) -> PackedStringArray:
 	var files = DirAccess.open("res://saves/" + str(bank) + "/").get_files()
 	files.resize(12)
