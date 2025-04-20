@@ -82,9 +82,33 @@ func _process(delta):
 		else:
 			grid[i].add_theme_stylebox_override("panel",emptyCell)
 		gridNote += 1
-	for i in holded:
+	for i in holded.keys():
 		# Fijarse en cada holded, sobreescribir lo anterior
-		pass
+		#print(i[2],curOctave)
+		if i[1] == channel:
+			if i[2] >= curOctave*12 + 24 and i[2] < (curOctave+2)*12 + 24:
+				var paintNote = (i[2] - 24) % 12
+				var paintOctave = (i[2] - 24) / 12
+				var firstGrid
+				if paintOctave == curOctave:
+					firstGrid = (15 - i[0])*24 + paintNote
+				else:
+					firstGrid = (15 - i[0])*24 + paintNote + 12
+				for j in range(firstGrid,firstGrid - 1 - (holded[i]-i[0])*24,-24):
+					if paintNote in possible[0]:
+						#print(note,paintNote)
+						if note == paintNote:
+							grid[j].add_theme_stylebox_override("panel",greenCell)
+						elif paintNote == possible[0][0]:
+							grid[j].add_theme_stylebox_override("panel",pinkCell)
+						else:
+							grid[j].add_theme_stylebox_override("panel",blueCell)
+					else:
+						if note == paintNote:
+							grid[j].add_theme_stylebox_override("panel",orangeCell)
+						else:
+							grid[j].add_theme_stylebox_override("panel",redCell)
+				#print(i[0],i[2])
 # Función para devolver las notas que pertenecen a una escala determinada
 func getPossible():
 	# possible = [[note, note2],[style, style2]]

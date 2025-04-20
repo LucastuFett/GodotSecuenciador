@@ -207,3 +207,14 @@ func getFiles(bank) -> PackedStringArray:
 	var files = DirAccess.open("res://saves/" + str(bank) + "/").get_files()
 	files.resize(12)
 	return files
+
+# Función para borrar un archivo
+func deleteFile(filename,bank):
+	print(filename)
+	if filename != "":
+		DirAccess.open("res://saves/" + str(bank) + "/").remove(filename + ".mid")
+
+# Función para renombrar un archivo
+func renameFile(origFilename, filename, bank):
+	if filename != "" and origFilename != "":
+		DirAccess.open("res://saves/" + str(bank) + "/").rename(origFilename + ".mid",filename.strip_edges() + ".mid")

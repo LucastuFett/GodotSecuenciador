@@ -73,7 +73,7 @@ func _on_left_pressed():
 			channel -= 1
 			if channel < 0:
 				channel = 15
-		MEMORY:
+		MEMORY,RENAME:
 			if edit == 1:
 				typePointer -= 1
 				if typePointer < 0:
@@ -125,7 +125,7 @@ func _on_right_pressed():
 			channel += 1
 			if channel > 15:
 				channel = 0
-		MEMORY:
+		MEMORY,RENAME:
 			if edit == 1:
 				typePointer += 1
 				if typePointer > 17:
@@ -172,7 +172,7 @@ func updateScreen():
 			$Menus/Tempo/TempoValue.text = str(tempo[1]) + "BPM"
 		CHANNEL:
 			$Menus/Channel/ChnValue.text = str(channel + 1)
-		MEMORY:
+		MEMORY,RENAME:
 			updateMemoryText()
 		SAVELOAD:
 			updateBanks()
@@ -183,10 +183,15 @@ func updateScreen():
 
 # Función para actualizar el texto que se va escribiendo en el nombre
 func updateMemoryText():
-	if filename != "" and edit == 0:
-		for i in len(filename):
-			print(filename[i])
-			typing[i].text = filename[i]
+	var name = ""
+	if mainState == MEMORY:
+		name = filename
+	elif mainState == RENAME:
+		name = renameFilename
+	if name != "" and edit == 0:
+		for i in len(name):
+			print(name[i])
+			typing[i].text = name[i]
 		for i in typing:
 			i.remove_theme_stylebox_override("normal")
 		typing[0].add_theme_stylebox_override("normal",editLabel)
@@ -234,11 +239,12 @@ func selectLetter():
 		upper = 0
 
 # Función para guardar el archivo
-func saveFilename():
-	filename = filename.rpad(18," ")
+func saveFilename() -> String:
+	var name = filename
+	name = name.rpad(18," ")
 	for i in 18:
-		filename[i] = typing[i].text
-	print(filename) 
+		name[i] = typing[i].text
+	return name
 	edit = 0
 	letterPointer = 0
 	specialPointer = 0
@@ -258,6 +264,7 @@ func updateBanks():
 		files[i].get_child(0).text = found[i].rstrip(".mid")
 
 # Función para escribir el nombre del archivo seleccionado en el programa
-func getFilename():
-	filename = files[selectedFile].get_child(0).text
+func getFilename() -> String:
+	return files[selectedFile].get_child(0).text
 	print(filename)
+	

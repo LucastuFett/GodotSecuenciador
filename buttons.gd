@@ -9,6 +9,8 @@ const purpleStyle = preload("res://themes/PurpleBtn.tres")
 const redStyle = preload("res://themes/RedBtn.tres")
 const orangeStyle = preload("res://themes/OrangeBtn.tres")
 var listbtn = Array()
+static var lastNote = 0
+static var removedHold = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -50,7 +52,7 @@ func updateColors():
 		beatMask = 0x80000000 >> num	
 		if beatsPerTone[bptIndex] & beatMask != 0:
 			listbtn[i].add_theme_stylebox_override("normal",blueStyle)
-		elif listbtn[i].get_theme_stylebox("normal") != redStyle and listbtn[i].get_theme_stylebox("normal") != orangeStyle :
+		elif (listbtn[i].get_theme_stylebox("normal") != redStyle and listbtn[i].get_theme_stylebox("normal") != orangeStyle) or removedHold:
 			listbtn[i].add_theme_stylebox_override("normal",greyStyle)
 		if holded.has([num,channel,note+octave*12+24]):
 			#print("red:",i)
@@ -60,8 +62,12 @@ func updateColors():
 				listbtn[j].add_theme_stylebox_override("normal",orangeStyle)
 			listbtn[holded.get([num,channel,note+octave*12+24])].add_theme_stylebox_override("normal",redStyle)
 			#print("red:",holded.get([num,channel,note+octave*12+24]))
+			lastNote = note+octave*12+24
+		elif (note+octave*12+24 != lastNote and lastNote != 0):
+			listbtn[i].add_theme_stylebox_override("normal",greyStyle)
 		if beat == num:
 			listbtn[i].add_theme_stylebox_override("normal",purpleStyle)	
+	removedHold = 0
 
 # Función que se llama cuando se aprieta un botón, recibe el número del botón apretado
 func _buttonPress(num):
@@ -75,17 +81,21 @@ func _buttonPress(num):
 	if mode32 && half:
 		num += 16
 	beatMask = 0x80000000 >> num	
+	var origNum = num
 	var i = 0
 	var bptIndex = (noteIndex * 16) + channel
 	
 	# Si ya esta activo
-	# Agregar que pasa si esta holdeado, debe borrar el mismo, la entrada en holded y el ultimo off
 	if beatsPerTone[bptIndex] & beatMask != 0:
 		channels[channel] -= 1
 		while(i < 10):
 			var index = (i*32) + num
 			if messages[index][0] & 0xF == channel && messages[index][1] == midiNote:
 				messages[index][0] = 0
+				if holded.has([num,channel,midiNote]):
+					num = holded.get([num,channel,midiNote])
+					holded.erase([origNum,channel,midiNote])
+					removedHold = 1
 				if mode32:
 					if num == 31:
 						num = 0
@@ -104,7 +114,7 @@ func _buttonPress(num):
 				i += 1
 		i = 0
 		while i < 10:
-			if messages[(i*32) + num][0] == 0:
+			if messages[(i*32) + origNum][0] == 0:
 				return
 			elif offMessages[(i*32) + num][0] == 0:
 				return
@@ -113,53 +123,61 @@ func _buttonPress(num):
 		control &= ~beatMask
 	# Si no esta activo
 	else:
-		channels[channel] += 1
-		while i < 10:
-			var index = (i*32) + num
-			if messages[index][0] == 0:
-				if control & beatMask == 0:
-					control |= beatMask
-					#print(control)
-				if hold != 2:
-					messages[index] = [0x90 | channel,midiNote,velocity]
-					beatsPerTone[bptIndex] |= beatMask
-				if hold == 1:
-					holdTemporary = num
-					print(holdTemporary)
-				if mode32:
-					if num == 31:
-						num = 0
-					else:
-						num += 1
-				else:
-					if num == 15:
-						num = 0
-					else:
-						num += 1
-				if hold == 0:
-					offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
-				elif hold == 2:
-					if num > holdTemporary:
-						offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
-						holded.merge({[holdTemporary,channel,midiNote]:num-1})
-						#print(holded)
-					elif num == 0:
-						offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
-						if mode32:
-							holded.merge({[holdTemporary,channel,midiNote]:31})
+		var checkIfNotHolded = 0
+		var checkIfNotAfterHold = 0
+		for j in 32:
+			if holded.has([j,channel,midiNote]):
+				checkIfNotHolded = num >= j and num <= holded.get([j,channel,midiNote])
+				checkIfNotAfterHold = holdTemporary < j and num > holded.get([j,channel,midiNote]) 
+		if not checkIfNotHolded:
+			channels[channel] += 1
+			while i < 10:
+				var index = (i*32) + num
+				if messages[index][0] == 0:
+					if control & beatMask == 0:
+						control |= beatMask
+						#print(control)
+					if hold != 2:
+						messages[index] = [0x90 | channel,midiNote,velocity]
+						beatsPerTone[bptIndex] |= beatMask
+					if hold == 1:
+						holdTemporary = num
+						#print(holdTemporary)
+					if mode32:
+						if num == 31:
+							num = 0
 						else:
-							holded.merge({[holdTemporary,channel,midiNote]:15})
-						#print(holded)
-					hold = 0
-				elif hold == 1:
-					hold = 2
-				beatMask = 0x80000000 >> num
-				if control & beatMask == 0:
-					control |= beatMask
-				#print(index,messages[index])
-				break
-			else:
-				i += 1
+							num += 1
+					else:
+						if num == 15:
+							num = 0
+						else:
+							num += 1
+					if hold == 0:
+						offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+					elif hold == 2:
+						if not checkIfNotAfterHold:
+							if num > holdTemporary:
+								offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+								holded.merge({[holdTemporary,channel,midiNote]:num-1})
+								#print(holded)
+							elif num == 0:
+								offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+								if mode32:
+									holded.merge({[holdTemporary,channel,midiNote]:31})
+								else:
+									holded.merge({[holdTemporary,channel,midiNote]:15})
+								#print(holded)
+						hold = 0
+					elif hold == 1:
+						hold = 2
+					beatMask = 0x80000000 >> num
+					if control & beatMask == 0:
+						control |= beatMask
+					#print(index,messages[index])
+					break
+				else:
+					i += 1
 	updateColors()
 
 # Función que se llama cuando se importa un nuevo archivo, actualizando la estructura beatsPerTone

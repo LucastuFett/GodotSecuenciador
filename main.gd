@@ -1,12 +1,13 @@
 class_name Main
 extends Control
 
-enum {MAIN, PROG, NOTE, MEMORY, SAVELOAD, CHANNEL, TEMPO, SCALE, PLAY, LAUNCH, DAW}
+enum {MAIN, PROG, NOTE, MEMORY, SAVELOAD, RENAME, CHANNEL, TEMPO, SCALE, PLAY, LAUNCH, DAW}
 const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
 				["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],
 				["Accept", "Octave -", "Octave +", "Cancel","","","",""],
 				["Save","Shift","Backspace","Load","","Special","Space",""],
 				["Accept","Bank -","Bank +","Cancel","","Rename","Delete",""],
+				["Save","Shift","Backspace","Cancel","","Special","Space",""],
 				["Accept","","","Cancel","","","",""],
 				["Accept","Internal","External","Cancel","","","",""],
 				["Accept","Mode -","Mode +","Cancel","","","",""]]
@@ -41,6 +42,7 @@ static var half = false
 static var control = 0
 static var tempo = [0,120] # 0 = Int, 1 = Ext, en Ext, 0 = Half, 2 = Dbl
 static var filename = "Test"
+static var renameFilename = ""
 static var bank = 1
 static var hold = 0 # 0 = Sin Hold, 1 = Esperando primer valor, 2 = Esperando segundo valor
 static var holded = Dictionary() # {[Beat1, Canal, Nota]:Beat2,}
@@ -83,10 +85,10 @@ func _on_select_pressed():
 		PROG:
 			if mode32:
 				half = not half
-		MEMORY:
+		MEMORY,RENAME:
 			$Screen.selectLetter()
 		SAVELOAD:
-			$Screen.getFilename()
+			filename = $Screen.getFilename()
 	changeState()
 	ok.emit()
 
@@ -102,14 +104,17 @@ func _on_f_1_pressed():
 				mainState = NOTE
 				prevNote = note
 		MEMORY:
-			$Screen.saveFilename()
+			filename = $Screen.saveFilename()
 			midiFile.save_to_file(messages,offMessages,tempo[1],filename,bank)
 			mainState = PROG
 		SAVELOAD:
 			midiFile.read_from_file(messages,offMessages,filename,bank)
-			$Screen.getFilename()
+			filename = $Screen.getFilename()
 			$Buttons.updateBPT()
 			mainState = PROG
+		RENAME:
+			midiFile.renameFile(renameFilename,$Screen.saveFilename(),bank)
+			mainState = SAVELOAD
 	changeState()
 
 func _on_f_2_pressed():
@@ -136,7 +141,7 @@ func _on_f_2_pressed():
 			$Screen.updateScreen()
 		TEMPO:
 			tempo[0] = 0
-		MEMORY:
+		MEMORY,RENAME:
 			if shift:
 				if $Screen.curPointer == 0:
 					$Screen.curPointer = 1
@@ -149,10 +154,17 @@ func _on_f_2_pressed():
 					$Screen.upper = 1
 			$Screen.updateScreen()
 		SAVELOAD:
-			bank -= 1
-			if bank < 1:
-				bank = 8
+			if shift:
+				mainState = RENAME
+				renameFilename = $Screen.getFilename()
+				$Screen.edit = 0
+				print(renameFilename)
+			else:
+				bank -= 1
+				if bank < 1:
+					bank = 8
 	changeState()
+
 func _on_f_3_pressed():
 	match mainState:
 		PROG:
@@ -175,14 +187,18 @@ func _on_f_3_pressed():
 			$Screen.updateScreen()
 		TEMPO:
 			tempo[0] = 1
-		MEMORY:
+		MEMORY,RENAME:
 			$Screen.typing[$Screen.typePointer].text = " "
 			if not shift:
 				$Screen._on_left_pressed()
 		SAVELOAD:
-			bank += 1
-			if bank > 8:
-				bank = 1
+			if shift:
+				midiFile.deleteFile($Screen.getFilename(),bank)
+				$Screen.updateBanks()
+			else:
+				bank += 1
+				if bank > 8:
+					bank = 1
 	changeState()
 
 func _on_f_4_pressed():
@@ -212,9 +228,11 @@ func _on_f_4_pressed():
 			mainState = PROG
 		MEMORY:
 			mainState = SAVELOAD
-			$Screen.saveFilename()
+			filename = $Screen.saveFilename()
 		SAVELOAD:
 			mainState = MEMORY
+		RENAME:
+			mainState = SAVELOAD
 	changeState()
 
 func _on_exit_pressed():
@@ -278,6 +296,11 @@ func changeState():
 			$Screen/Memory/Bank.set_visible(true)
 			$Screen/Memory/GridBorder.set_visible(false)
 			$Screen/Memory/Typing.set_visible(false)
+		RENAME:
+			$Screen/Memory/Load.set_visible(false)
+			$Screen/Memory/Bank.set_visible(false)
+			$Screen/Memory/GridBorder.set_visible(true)
+			$Screen/Memory/Typing.set_visible(true)
 	
 	$Screen/Title.text = titles[mainState]
 	$Screen/TitleProg.text = titles[mainState]
