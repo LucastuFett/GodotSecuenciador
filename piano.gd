@@ -36,7 +36,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# Pintar los cuadrados de la grilla
-	# Falta pintar los cuadrados de entre las notas holded
+	# Falta cuando se cambia de 16 a 32 q se repinten
 	# grid[0] = Beat 15, Note 0, Octave = Cur
 	# grid[23] = Beat 15, Note 11, Octave = Cur + 1
 	# grid[360] = Beat 0, Note 0, Octave = Cur
@@ -85,16 +85,35 @@ func _process(delta):
 	for i in holded.keys():
 		# Fijarse en cada holded, sobreescribir lo anterior
 		#print(i[2],curOctave)
+		var endBeat = holded.get(i)
+		var n = i[0] >= 16
+		var e = endBeat >= 16
+		var firstBeat = i[0]
+		
+		if ((not mode32) and (n or e)) or (n and not half) or ((not n) and (not e) and mode32 and half):
+			continue
+			
+		if e and half:
+			endBeat -= 16
+		elif (n and not e) or (e and not half):
+			endBeat = 15
+		
+		if n:
+			firstBeat -= 16
+		elif (not n) and e and half:
+			firstBeat = 0
+		
 		if i[1] == channel:
 			if i[2] >= curOctave*12 + 24 and i[2] < (curOctave+2)*12 + 24:
 				var paintNote = (i[2] - 24) % 12
 				var paintOctave = (i[2] - 24) / 12
 				var firstGrid
 				if paintOctave == curOctave:
-					firstGrid = (15 - i[0])*24 + paintNote
+					firstGrid = (15 - firstBeat)*24 + paintNote
 				else:
-					firstGrid = (15 - i[0])*24 + paintNote + 12
-				for j in range(firstGrid,firstGrid - 1 - (holded[i]-i[0])*24,-24):
+					firstGrid = (15 - firstBeat)*24 + paintNote + 12
+				
+				for j in range(firstGrid,firstGrid - 1 - (endBeat-firstBeat)*24,-24):
 					if paintNote in possible[0]:
 						#print(note,paintNote)
 						if note == paintNote:

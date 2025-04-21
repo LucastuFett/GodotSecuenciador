@@ -16,7 +16,8 @@ func _init():
 func save_to_file(messages, offMessages, bpm, filename, bank):
 	var file = FileAccess.open("res://saves/" + str(bank) + "/" + filename.strip_edges() + ".mid",FileAccess.WRITE)
 	const delta = 24
-	var tempo = int((float(1)/(bpm/60))*1000000)
+	var tempo = int((float(1)/(float(bpm)/60))*1000000)
+	print("tempoSaved ",tempo,"\ntempoCalc ", (float(1)/(float(bpm)/60))*1000000, "bpm ", bpm)
 	const tone = 0 #C
 	const mode = 0 #Major
 	print(tempo," ",file.get_open_error())
@@ -80,7 +81,7 @@ func calcDelta(value, mtrk):
 
 # Función para leer un archivo, recibe los punteros a los mensajes de encencido y apagado,
 # y de que archivo y banco debe leer
-func read_from_file(messages, offMessages, filename, bank):
+func read_from_file(messages, offMessages, bpm, filename, bank):
 	var file = FileAccess.open("res://saves/" + str(bank) + "/" + filename.strip_edges() + ".mid",FileAccess.READ)
 	var delta = 0
 	var tempo = 0
@@ -141,12 +142,13 @@ func read_from_file(messages, offMessages, filename, bank):
 					0x2F:
 						buffer = file.get_8()
 						chunklen -= 2
-						#print("End")
+						print("End")
 					0x51:
 						buffer = file.get_32()
 						tempo = buffer & 0xFFFFFF
+						bpm[1] = int(60000000 / tempo)
 						chunklen -= 5
-						#print("Tempo")
+						print("Tempo ", bpm)
 					0x58:
 						buffer = file.get_8()
 						buffer = file.get_32()
@@ -184,7 +186,7 @@ func read_from_file(messages, offMessages, filename, bank):
 					offMessages[indexOff] = msg
 					curOffMsg += 1
 				chunklen -= 2
-				
+				print("Mensaje ",msg)
 			
 
 # Funcion para leer los campos de delta de un archivo MIDI

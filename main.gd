@@ -16,6 +16,7 @@ const titles = ["Main - Config",
 				"Edit Note",
 				"Memory",
 				"Save/Load",
+				"Rename",
 				"Edit Channel",
 				"Edit Tempo",
 				"Edit Scale"]
@@ -85,6 +86,7 @@ func _on_select_pressed():
 		PROG:
 			if mode32:
 				half = not half
+			$Buttons.toggledMode = 1
 		MEMORY,RENAME:
 			$Screen.selectLetter()
 		SAVELOAD:
@@ -98,8 +100,9 @@ func _on_f_1_pressed():
 			mainState = PROG
 		PROG:
 			if shift:
-				mainState = MEMORY
 				$Screen.updateMemoryText()
+				$Screen.edit = 0
+				mainState = MEMORY
 			else:
 				mainState = NOTE
 				prevNote = note
@@ -108,9 +111,12 @@ func _on_f_1_pressed():
 			midiFile.save_to_file(messages,offMessages,tempo[1],filename,bank)
 			mainState = PROG
 		SAVELOAD:
-			midiFile.read_from_file(messages,offMessages,filename,bank)
 			filename = $Screen.getFilename()
+			midiFile.read_from_file(messages,offMessages,tempo,filename,bank)
 			$Buttons.updateBPT()
+			$Buttons.updateHolded()
+			$Screen/Controls/Toggle.set_pressed_no_signal(mode32)
+			#print(filename)
 			mainState = PROG
 		RENAME:
 			midiFile.renameFile(renameFilename,$Screen.saveFilename(),bank)

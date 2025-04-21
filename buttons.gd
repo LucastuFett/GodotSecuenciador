@@ -11,6 +11,7 @@ const orangeStyle = preload("res://themes/OrangeBtn.tres")
 var listbtn = Array()
 static var lastNote = 0
 static var removedHold = 0
+static var toggledMode = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -52,25 +53,56 @@ func updateColors():
 		beatMask = 0x80000000 >> num	
 		if beatsPerTone[bptIndex] & beatMask != 0:
 			listbtn[i].add_theme_stylebox_override("normal",blueStyle)
-		elif (listbtn[i].get_theme_stylebox("normal") != redStyle and listbtn[i].get_theme_stylebox("normal") != orangeStyle) or removedHold:
+		elif (listbtn[i].get_theme_stylebox("normal") != redStyle and listbtn[i].get_theme_stylebox("normal") != orangeStyle) or removedHold or toggledMode:
 			listbtn[i].add_theme_stylebox_override("normal",greyStyle)
 		if holded.has([num,channel,note+octave*12+24]):
-			#print("red:",i)
-			listbtn[i].add_theme_stylebox_override("normal",redStyle)
-			for j in range(i+1,holded.get([num,channel,note+octave*12+24])):
-				#print("orange",j)
-				listbtn[j].add_theme_stylebox_override("normal",orangeStyle)
-			listbtn[holded.get([num,channel,note+octave*12+24])].add_theme_stylebox_override("normal",redStyle)
+			# Si esta en modo 16, si hay un valor mayor de 15, continuar, no pintar nada
+			# Si esta en modo 32, num < 16 y half, si el end >= 16 pintar solo el final
+			var endBeat = holded.get([num,channel,note+octave*12+24])
+			var n = num >= 16
+			var e = endBeat >= 16
+			
+			if ((not mode32) and (n or e)) or (n and not half) or ((not n) and (not e) and mode32 and half):
+				continue
+				
+			if e and half:
+				endBeat -= 16
+			elif n and not e:
+				endBeat = 15
+			elif e and not half:
+				endBeat = 16
+			
+			if (not half) or (not mode32) or (n and e):
+				listbtn[i].add_theme_stylebox_override("normal",redStyle)
+				
+			if (not n) and e and half:
+				for j in range(0,endBeat):
+					listbtn[j].add_theme_stylebox_override("normal",orangeStyle)
+			else:
+				for j in range(i+1,endBeat):
+					#print("orange",j)
+					listbtn[j].add_theme_stylebox_override("normal",orangeStyle)
+				
+			if half or (not e):
+				listbtn[endBeat].add_theme_stylebox_override("normal",redStyle)
 			#print("red:",holded.get([num,channel,note+octave*12+24]))
 			lastNote = note+octave*12+24
-		elif (note+octave*12+24 != lastNote and lastNote != 0):
+		if holded.has([i,channel,note+octave*12+24]) and mode32 and half:
+			if holded.get([i,channel,note+octave*12+24]) > 15:
+				for j in range(0,holded.get([i,channel,note+octave*12+24]) - 16):
+						listbtn[j].add_theme_stylebox_override("normal",orangeStyle)
+				listbtn[holded.get([i,channel,note+octave*12+24]) - 16].add_theme_stylebox_override("normal",redStyle)
+			
+		if (note+octave*12+24 != lastNote and lastNote != 0): #Agregar cuando se pasa de 16 a 32
 			listbtn[i].add_theme_stylebox_override("normal",greyStyle)
 		if beat == num:
 			listbtn[i].add_theme_stylebox_override("normal",purpleStyle)	
 	removedHold = 0
+	toggledMode = 0
 
 # Función que se llama cuando se aprieta un botón, recibe el número del botón apretado
 func _buttonPress(num):
+	print(holded)
 	# Almacenar en messages y beatsPerTone
 	# messages = [10][32], checkear dupes
 	# beatsPerTone = [96][16], uint 32, ocupa 6K
@@ -193,3 +225,38 @@ func updateBPT():
 				beatsPerTone[bptIndex] |= (beatMask >> j)
 				if control & (beatMask >> j) == 0:
 					control |= (beatMask >> j)
+
+# Función que se llama cuando se importa un nuevo archivo, actualizando la estructura holded
+func updateHolded():
+	# Si el mensaje siguiente en messages no tiene el mismo numero pero velocidad 0, se considera un holded
+	# Se busca el indice del mensaje de off, y se guardan los datos del canal, notamidi mas ambos beats
+	holded.clear()
+	var found = 0
+	var found32 = 0
+	for j in range(16,32):
+		for i in 10:
+			if messages[i*32 + j][0] != 0:
+				found32 = 1
+				break
+	for i in 10:
+		for j in 32:
+			var index = (i * 32) + j
+			if messages[index][0] != 0:
+				if (j == 31 and found32) or (j == 15 and not found32):
+					if offMessages[i*32][1] == messages[index][1]:
+						continue
+				elif offMessages[index + 1][1] == messages[index][1]:
+					continue
+				else:
+					for k in range(j,32):
+						if offMessages[(i*32) + k][1] == messages[index][1]:
+							holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:k})
+							found = 1
+							break
+					if not found:
+						if offMessages[(i*32)][1] == messages[index][1] and found32:
+							holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:31})
+						elif offMessages[(i*32)][1] == messages[index][1] and not found32:
+							holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:15})
+					found = 0
+	mode32 = found32
