@@ -1,8 +1,28 @@
 class_name Screen
 extends Main
 
-static var curOctave = 2
+const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
+				["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],
+				["Accept", "Octave -", "Octave +", "Cancel","","","",""],
+				["Save","Shift","Backspace","Load","","Special","Space",""],
+				["Accept","Bank -","Bank +","Cancel","","Rename","Delete",""],
+				["Save","Shift","Backspace","Cancel","","Special","Space",""],
+				["Accept","","","Cancel","","","",""],
+				["Accept","Internal","External","Cancel","","","",""],
+				["Accept","Mode -","Mode +","Cancel","","","",""],
+				["Play/Pause","Bank -","Bank +","Stop","","","",""]]
 
+const titles = ["Main - Config", 
+				"Programming", 
+				"Edit Note",
+				"Memory",
+				"Save/Load",
+				"Rename",
+				"Edit Channel",
+				"Edit Tempo",
+				"Edit Scale",
+				"Play"]
+				
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
@@ -10,6 +30,10 @@ const shLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', '
  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 const special = ['0','1','2','3','4','5','6','7','8','9',"'",'.',',','/',':',';','-','_','?','!','"']
+
+const bluePanel = preload("res://themes/BlueBtn.tres")
+const greyPanel = preload("res://themes/GreyBtn.tres")
+const currentLabel = preload("res://themes/CurrentLabel.tres")
 
 var typing = Array()
 var typePointer = 0
@@ -21,10 +45,7 @@ var upper = 0			# 0 = minuscula, 1 = MAYUSCULA
 
 var files = Array()
 var selectedFile = 0
-const bluePanel = preload("res://themes/BlueBtn.tres")
-const greyPanel = preload("res://themes/GreyBtn.tres")
 
-const currentLabel = preload("res://themes/CurrentLabel.tres")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,10 +57,15 @@ func _ready():
 		files.append(i)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if hold == 0:
+		$Menus/Hold.set_visible(false)
+	elif hold == 1:
+		$Menus/Hold.set_visible(true)
+		$Menus/Hold.text = "1st Value"
+	elif hold == 2:
+		$Menus/Hold.set_visible(true)
+		$Menus/Hold.text = "2nd Value"
 
-func _on_select_pressed():
-	pass
 
 func _on_left_pressed():
 	match mainState:
@@ -147,9 +173,17 @@ func _on_right_pressed():
 
 func updateScreen():
 	match mainState:
+		MAIN:
+			$PianoGrid.set_visible(false)
+			$Menus.set_visible(false)
+			$Title.set_visible(true)
+			$TitleProg.set_visible(false)
 		PROG:
-			# Actualizar Label de Nota
-			# Actualizar Ubicacion y Color de Selected
+			$PianoGrid.set_visible(true)
+			$Menus.set_visible(true)
+			$Title.set_visible(false)
+			$TitleProg.set_visible(true)
+			$Memory.set_visible(false)
 			$PianoGrid.getPossible()
 			$PianoGrid.paint()
 			$Menus/Scale/ScaleValue.text = $PianoGrid.tones[tone] + " " + scales[mode][0]
@@ -172,13 +206,63 @@ func updateScreen():
 			$Menus/Tempo/TempoValue.text = str(tempo[1]) + "BPM"
 		CHANNEL:
 			$Menus/Channel/ChnValue.text = str(channel + 1)
-		MEMORY,RENAME:
+		MEMORY:
+			$Memory.set_visible(true)
+			$PianoGrid.set_visible(false)
+			$Menus.set_visible(false)
+			$Title.set_visible(true)
+			$TitleProg.set_visible(false)
+			$Memory/Load.set_visible(false)
+			$Memory/Bank.set_visible(false)
+			$Memory/GridBorder.set_visible(true)
+			$Memory/Typing.set_visible(true)
+			updateMemoryText()
+		RENAME:
+			$Memory/Load.set_visible(false)
+			$Memory/Bank.set_visible(false)
+			$Memory/GridBorder.set_visible(true)
+			$Memory/Typing.set_visible(true)
 			updateMemoryText()
 		SAVELOAD:
+			$Memory/Load.set_visible(true)
+			$Memory/Bank.set_visible(true)
+			$Memory/GridBorder.set_visible(false)
+			$Memory/Typing.set_visible(false)
 			updateBanks()
-		_:
-			$PianoGrid.paint()
-	$"../Buttons".updateColors()
+	
+	$Controls/Toggle.set_pressed_no_signal(mode32)
+	$Title.text = titles[mainState]
+	$TitleProg.text = titles[mainState]
+	$Labels/LF1.text = labels[mainState][0]
+	$Labels/LF2.text = labels[mainState][1]
+	$Labels/LF3.text = labels[mainState][2]
+	$Labels/LF4.text = labels[mainState][3]
+	if labels[mainState][4] != "":
+		$Labels/SH1.visible = true
+		$Labels/SH1.text = labels[mainState][4]
+	else:
+		$Labels/SH1.visible = false
+	if labels[mainState][5] != "":
+		$Labels/SH2.visible = true
+		$Labels/SH2.text = labels[mainState][5]
+	else:
+		$Labels/SH2.visible = false
+	if labels[mainState][6] != "":
+		$Labels/SH3.visible = true
+		$Labels/SH3.text = labels[mainState][6]
+	else:
+		$Labels/SH3.visible = false
+	if labels[mainState][7] != "":
+		$Labels/SH4.visible = true
+		$Labels/SH4.text = labels[mainState][7]
+	else:
+		$Labels/SH4.visible = false
+	if mode32 && half:
+		$"Menus/Toggler/1-16".add_theme_color_override("font_color",Color.GRAY)
+		$"Menus/Toggler/17-32".add_theme_color_override("font_color",Color.WHITE)
+	else:
+		$"Menus/Toggler/1-16".add_theme_color_override("font_color",Color.WHITE)
+		$"Menus/Toggler/17-32".add_theme_color_override("font_color",Color.GRAY)
 
 
 # Función para actualizar el texto que se va escribiendo en el nombre

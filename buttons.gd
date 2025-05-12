@@ -9,9 +9,10 @@ const purpleStyle = preload("res://themes/PurpleBtn.tres")
 const redStyle = preload("res://themes/RedBtn.tres")
 const orangeStyle = preload("res://themes/OrangeBtn.tres")
 var listbtn = Array()
-static var lastNote = 0
-static var removedHold = 0
-static var toggledMode = 0
+var lastNote = 0
+var removedHold = 0
+var toggledMode = 0
+var holdTemporary = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

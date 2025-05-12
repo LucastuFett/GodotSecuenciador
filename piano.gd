@@ -6,6 +6,7 @@ var selection = Array()
 var possible = Array()
 var grid = Array()
 var tones = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+var curOctave = 2
 
 const blueStyle = preload("res://themes/BlueScale.tres")
 const blueCell = preload("res://themes/BlueCell.tres")
@@ -128,6 +129,7 @@ func _process(delta):
 						else:
 							grid[j].add_theme_stylebox_override("panel",redCell)
 				#print(i[0],i[2])
+
 # Función para devolver las notas que pertenecen a una escala determinada
 func getPossible():
 	# possible = [[note, note2],[style, style2]]
@@ -145,8 +147,8 @@ func getPossible():
 		possible[0].append(actKey)
 		possible[1].append(blueStyle)
 
+# Funci[on para pintar Escala y Seleccionado
 func paint():
-	# Pintar Escala y Seleccionado
 	var pos = null
 	for key in keys:
 		key.add_theme_stylebox_override("panel",noStyle)

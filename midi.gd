@@ -22,3 +22,28 @@ func sendNoteOff(chn: int, note, vel):
 
 func sendMessage(mes):
 	midi_out.send_message(mes)
+
+# Función que se llama cada "beat", envía el mensaje MIDI necesario
+func beatPlay(beat, control, messages, offMessages):
+	var index
+	var beatMask = 0x80000000 >> beat
+	if control & beatMask == 0:
+		#print("empty")
+		return
+	for i in 10:
+		index = (i * 32) + beat
+		#print(messages[index][0])
+		if offMessages[index][0] != 0:
+			print(offMessages[index])
+			sendMessage(offMessages[index])
+	for i in 10:
+		index = (i * 32) + beat
+		if messages[index][0] != 0:
+			print(messages[index])
+			sendMessage(messages[index])
+
+# Función para enviar un mensaje de apagado en los canales necesarios
+func allNotesOff(channels):
+	for i in 16:
+		if channels[i] != 0:
+			sendMessage([0xB0 | i,123,0])
