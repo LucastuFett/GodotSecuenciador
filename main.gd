@@ -231,6 +231,76 @@ func _on_exit_pressed():
 func _shift(toggled_on):
 	shift = toggled_on
 	
+func _on_left_pressed():
+	match mainState:
+		PROG:
+			velocity -= 1
+			if velocity < 0:
+				velocity = 0
+			# Cambiar Velocity
+		SCALE:
+			# Cambiar Tono
+			tone -= 1
+			if tone < 0:
+				tone = 11
+		NOTE:
+			# Cambiar Nota
+			note -= 1
+			if note < 0:
+				octave -= 1
+				note = 11
+			if octave < 0:
+				octave = 0
+		TEMPO:
+			tempo[1] -= 1
+			if tempo[0] == 0:
+				if tempo[1] < 50:
+					tempo[1] = 240
+			else:
+				if tempo[1] < 0:
+					tempo[1] = 2
+		CHANNEL:
+			channel -= 1
+			if channel < 0:
+				channel = 15
+	$Screen._on_left_pressed()
+	changeState()
+	
+func _on_right_pressed():
+	match mainState:
+		PROG:
+			velocity += 1
+			if velocity > 127:
+				velocity = 127
+			# Cambiar Velocity
+		SCALE:
+			# Cambiar Tono
+			tone += 1
+			if tone > 11:
+				tone = 0
+		NOTE:
+			# Cambiar Nota
+			note += 1
+			if note > 11:
+				octave += 1
+				note = 0
+			if octave > 7:
+				octave = 7
+		TEMPO:
+			tempo[1] += 1
+			if tempo[0] == 0:
+				if tempo[1] > 240:
+					tempo[1] = 50
+			else:
+				if tempo[1] > 2:
+					tempo[1] = 0
+		CHANNEL:
+			channel += 1
+			if channel > 15:
+				channel = 0
+	$Screen._on_right_pressed()
+	changeState()
+	
 func _toggle(toggled_on):
 	mode32 = toggled_on
 	# Pasar off del 0 al 16 o del 16 al 0
@@ -249,6 +319,7 @@ func _on_timeout() -> void:
 		beat = 0
 	midi.beatPlay(beat, control, messages, offMessages)
 	$Buttons.updateColors()
+	print(holded)
 	#print(beat)
 
 # Función llamada cuando se cambia el tempo para recalcular el tempo

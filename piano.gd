@@ -147,7 +147,7 @@ func getPossible():
 		possible[0].append(actKey)
 		possible[1].append(blueStyle)
 
-# Funci[on para pintar Escala y Seleccionado
+# Función para pintar Escala y Seleccionado
 func paint():
 	var pos = null
 	for key in keys:

@@ -231,6 +231,7 @@ func updateBPT():
 func updateHolded():
 	# Si el mensaje siguiente en messages no tiene el mismo numero pero velocidad 0, se considera un holded
 	# Se busca el indice del mensaje de off, y se guardan los datos del canal, notamidi mas ambos beats
+	# Ejemplo Out of Touch, debería devolver: { [0, 2, 41]: 7, [8, 2, 38]: 9, [10, 2, 43]: 15, [16, 2, 45]: 19, [20, 2, 43]: 22, [23, 2, 45]: 28, [29, 2, 40]: 31 }
 	holded.clear()
 	var found = 0
 	var found32 = 0
@@ -251,7 +252,7 @@ func updateHolded():
 				else:
 					for k in range(j,32):
 						if offMessages[(i*32) + k][1] == messages[index][1]:
-							holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:k})
+							holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:k-1})
 							found = 1
 							break
 					if not found:
