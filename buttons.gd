@@ -44,6 +44,7 @@ func _process(delta):
 	pass
 
 func updateColors():
+	#TODO: al borrar un holded desaparecen los otros hasta hacer otro click
 	var bptIndex = (note + (octave * 12)) * 16 + channel
 	var beatMask = 0
 	# Pintar Botones
@@ -117,7 +118,7 @@ func _buttonPress(num):
 	var origNum = num
 	var i = 0
 	var bptIndex = (noteIndex * 16) + channel
-	
+	#TODO: OffMessage de un Hold no necesariamente está en la misma fila que el message, debe buscar donde entrar y posicionarse ahi, igual para borrar.
 	# Si ya esta activo
 	if beatsPerTone[bptIndex] & beatMask != 0:
 		channels[channel] -= 1
@@ -216,6 +217,7 @@ func _buttonPress(num):
 # Función que se llama cuando se importa un nuevo archivo, actualizando la estructura beatsPerTone
 func updateBPT():
 	beatsPerTone.fill(0)
+	channels.fill(0)
 	var bptIndex = 0
 	var beatMask = 0x80000000
 	for j in 32:
@@ -226,6 +228,8 @@ func updateBPT():
 				beatsPerTone[bptIndex] |= (beatMask >> j)
 				if control & (beatMask >> j) == 0:
 					control |= (beatMask >> j)
+				channels[messages[index][0] & 0xF] +=1
+				
 
 # Función que se llama cuando se importa un nuevo archivo, actualizando la estructura holded
 func updateHolded():
@@ -243,22 +247,34 @@ func updateHolded():
 	for i in 10:
 		for j in 32:
 			var index = (i * 32) + j
+			var flag = false
 			if messages[index][0] != 0:
-				if (j == 31 and found32) or (j == 15 and not found32):
-					if offMessages[i*32][1] == messages[index][1]:
-						continue
-				elif offMessages[index + 1][1] == messages[index][1]:
-					continue
-				else:
+				for l in 10:
+					if (j == 31 and found32) or (j == 15 and not found32):
+						if offMessages[l*32][1] == messages[index][1]:
+							flag = true
+							break
+					elif offMessages[(l*32) + j + 1][1] == messages[index][1]:
+						flag = true
+						break
+				if not flag:
 					for k in range(j,32):
-						if offMessages[(i*32) + k][1] == messages[index][1]:
-							holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:k-1})
-							found = 1
+						for l in 10:
+							if offMessages[(l*32) + k].slice(0,2) == messages[index].slice(0,2):
+								holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:k-1})
+								#print({[j,messages[index][0]&0xF,messages[index][1]]:k-1})
+								found = 1
+								break
+						if found == 1:
 							break
 					if not found:
-						if offMessages[(i*32)][1] == messages[index][1] and found32:
-							holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:31})
-						elif offMessages[(i*32)][1] == messages[index][1] and not found32:
-							holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:15})
+						for l in 10:
+							if offMessages[(l*32)].slice(0,2) == messages[index].slice(0,2) and found32:
+								holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:31})
+								break
+							elif offMessages[(l*32)].slice(0,2) == messages[index].slice(0,2) and not found32:
+								holded.merge({[j,messages[index][0]&0xF,messages[index][1]]:15})
+								break
 					found = 0
+	#print(holded)
 	mode32 = found32

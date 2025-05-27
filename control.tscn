@@ -1,14 +1,14 @@
 [gd_scene load_steps=42 format=3 uid="uid://batna25ggjth"]
 
-[ext_resource type="Script" path="res://buttons.gd" id="1_2l6ow"]
-[ext_resource type="Script" path="res://main.gd" id="1_3bh58"]
-[ext_resource type="Script" path="res://screen.gd" id="2_sqclt"]
-[ext_resource type="Script" path="res://piano.gd" id="3_1i77l"]
+[ext_resource type="Script" uid="uid://dl0we6ll6ujou" path="res://buttons.gd" id="1_2l6ow"]
+[ext_resource type="Script" uid="uid://csdcklenxmu8d" path="res://main.gd" id="1_3bh58"]
+[ext_resource type="Script" uid="uid://c1lvsbvgeonfs" path="res://screen.gd" id="2_sqclt"]
+[ext_resource type="Script" uid="uid://bg8j0lm8sw32" path="res://piano.gd" id="3_1i77l"]
 [ext_resource type="StyleBox" uid="uid://j252hx5vtswo" path="res://themes/GreyBtn.tres" id="3_hmk0w"]
 [ext_resource type="StyleBox" uid="uid://dinv8ybs16wac" path="res://themes/EmptyCell.tres" id="7_1lila"]
 [ext_resource type="Texture2D" uid="uid://dx32mh4ra7n4a" path="res://textures/Keys7.bmp" id="7_f5vj2"]
 [ext_resource type="StyleBox" uid="uid://ifxgqnl52ruv" path="res://themes/TransparentKey.tres" id="7_qthdj"]
-[ext_resource type="Script" path="res://timer.gd" id="9_sov8j"]
+[ext_resource type="Script" uid="uid://dssnitrbsmcxr" path="res://timer.gd" id="9_sov8j"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_b2jhy"]
 device = -1
@@ -256,9 +256,6 @@ custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.1
 
 [node name="MidiTimer" type="Node" parent="."]
 script = ExtResource("9_sov8j")

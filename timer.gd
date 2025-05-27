@@ -9,18 +9,18 @@ signal timeout
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	startTime = Time.get_ticks_msec()
+	startTime = Time.get_unix_time_from_system() * 1000
 
 func _process(delta: float) -> void:
 	if running:
-		curTime = Time.get_ticks_msec()
+		curTime = Time.get_unix_time_from_system() * 1000
 		if curTime - startTime >= division:
 			timeout.emit()
 			startTime = curTime
 
 func start():
 	running = true
-	startTime = Time.get_ticks_msec()
+	startTime = Time.get_unix_time_from_system() * 1000
 	timeout.emit()
 	
 func stop():
