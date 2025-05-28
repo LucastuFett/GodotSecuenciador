@@ -62,7 +62,7 @@ func save_to_file(messages, offMessages, bpm, filename, bank):
 	mtrk.append_array([0x00,0xFF,0x2F,0x00])		#End
 	file.store_32(len(mtrk))		#ChunkLen, calcular, base 19
 	file.store_buffer(mtrk)
-	
+
 # Función para calcular el valor del campo delta cuando es mayor que 0x7F
 func calcDelta(value, mtrk):
 	var buffer = value & 0x7F
@@ -187,7 +187,6 @@ func read_from_file(messages, offMessages, bpm, filename, bank):
 					curOffMsg += 1
 				chunklen -= 2
 				print("Mensaje ",msg)
-			
 
 # Funcion para leer los campos de delta de un archivo MIDI
 func readDelta(file) -> Array:

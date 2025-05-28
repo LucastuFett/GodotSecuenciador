@@ -9,23 +9,11 @@ const purpleStyle = preload("res://themes/PurpleBtn.tres")
 const redStyle = preload("res://themes/RedBtn.tres")
 const orangeStyle = preload("res://themes/OrangeBtn.tres")
 var listbtn = Array()
-var lastNote = 0
-var removedHold = 0
-var toggledMode = 0
 var holdTemporary = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	listbtn = [$B1, $B2, $B3, $B4, $B5, $B6, $B7, $B8, $B9, $B10, $B11, $B12, $B13, $B14, $B15, $B16]
-	messages.resize(320)
-	offMessages.resize(320)
-	beatsPerTone.resize(1536)
-	channels.resize(16)
-	
-	channels.fill(0)
-	beatsPerTone.fill(0)
-	messages.fill([0,0,0])
-	offMessages.fill([0,0,0])
 	var n = 0
 	for btn in listbtn:
 		btn.pressed.connect(_buttonPress.bind(n))
@@ -37,17 +25,19 @@ func _ready():
 		btn.shortcut = sh
 		btn.text = OS.get_keycode_string(inp.keycode)
 		n += 1
-	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
+# Función para actualizar los colores de la botonera
 func updateColors():
-	#TODO: al borrar un holded desaparecen los otros hasta hacer otro click
 	var bptIndex = (note + (octave * 12)) * 16 + channel
 	var beatMask = 0
 	# Pintar Botones
+	for i in len(listbtn):
+		listbtn[i].add_theme_stylebox_override("normal",greyStyle)
+	#TODO: Si está en modo Play o Channel, utilizar los botones para prender o apagar canales, al apagar canal mandar un allnotesoff de ese canal
 	for i in len(listbtn):
 		var num = i
 		if mode32 && half:
@@ -55,8 +45,8 @@ func updateColors():
 		beatMask = 0x80000000 >> num	
 		if beatsPerTone[bptIndex] & beatMask != 0:
 			listbtn[i].add_theme_stylebox_override("normal",blueStyle)
-		elif (listbtn[i].get_theme_stylebox("normal") != redStyle and listbtn[i].get_theme_stylebox("normal") != orangeStyle) or removedHold or toggledMode:
-			listbtn[i].add_theme_stylebox_override("normal",greyStyle)
+		#elif (listbtn[i].get_theme_stylebox("normal") != redStyle and listbtn[i].get_theme_stylebox("normal") != orangeStyle) or removedHold or toggledMode:
+		#	listbtn[i].add_theme_stylebox_override("normal",greyStyle)
 		if holded.has([num,channel,note+octave*12+24]):
 			# Si esta en modo 16, si hay un valor mayor de 15, continuar, no pintar nada
 			# Si esta en modo 32, num < 16 y half, si el end >= 16 pintar solo el final
@@ -88,19 +78,16 @@ func updateColors():
 			if half or (not e):
 				listbtn[endBeat].add_theme_stylebox_override("normal",redStyle)
 			#print("red:",holded.get([num,channel,note+octave*12+24]))
-			lastNote = note+octave*12+24
 		if holded.has([i,channel,note+octave*12+24]) and mode32 and half:
 			if holded.get([i,channel,note+octave*12+24]) > 15:
 				for j in range(0,holded.get([i,channel,note+octave*12+24]) - 16):
-						listbtn[j].add_theme_stylebox_override("normal",orangeStyle)
+					listbtn[j].add_theme_stylebox_override("normal",orangeStyle)
 				listbtn[holded.get([i,channel,note+octave*12+24]) - 16].add_theme_stylebox_override("normal",redStyle)
 			
-		if (note+octave*12+24 != lastNote and lastNote != 0): #Agregar cuando se pasa de 16 a 32
-			listbtn[i].add_theme_stylebox_override("normal",greyStyle)
+		#if (note+octave*12+24 != lastNote and lastNote != 0): #Agregar cuando se pasa de 16 a 32
+		#	listbtn[i].add_theme_stylebox_override("normal",greyStyle)
 		if beat == num:
 			listbtn[i].add_theme_stylebox_override("normal",purpleStyle)	
-	removedHold = 0
-	toggledMode = 0
 
 # Función que se llama cuando se aprieta un botón, recibe el número del botón apretado
 func _buttonPress(num):
@@ -118,7 +105,6 @@ func _buttonPress(num):
 	var origNum = num
 	var i = 0
 	var bptIndex = (noteIndex * 16) + channel
-	#TODO: OffMessage de un Hold no necesariamente está en la misma fila que el message, debe buscar donde entrar y posicionarse ahi, igual para borrar.
 	# Si ya esta activo
 	if beatsPerTone[bptIndex] & beatMask != 0:
 		channels[channel] -= 1
@@ -129,7 +115,6 @@ func _buttonPress(num):
 				if holded.has([num,channel,midiNote]):
 					num = holded.get([num,channel,midiNote])
 					holded.erase([origNum,channel,midiNote])
-					removedHold = 1
 				if mode32:
 					if num == 31:
 						num = 0
@@ -140,7 +125,10 @@ func _buttonPress(num):
 						num = 0
 					else:
 						num += 1
-				offMessages[(i*32) + num][0] = 0
+				for j in 10:
+					if offMessages[j*32 + num][0] & 0xF == channel && offMessages[j*32 + num][1] == midiNote:
+						offMessages[j*32 + num][0] = 0
+						break
 				beatsPerTone[bptIndex] &= ~beatMask
 				updateColors()
 				break
@@ -188,23 +176,32 @@ func _buttonPress(num):
 						else:
 							num += 1
 					if hold == 0:
-						offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+						for j in 10:
+							if offMessages[j*32 + num][0] == 0:
+								offMessages[(j*32) + num] = [0x90 | channel,midiNote,0]
+								break
+					elif hold == 1:
+						hold = 2
 					elif hold == 2:
 						if not checkIfNotAfterHold:
 							if num > holdTemporary:
-								offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+								for j in 10:
+									if offMessages[j*32 + num][0] == 0:
+										offMessages[(j*32) + num] = [0x90 | channel,midiNote,0]
+										break
 								holded.merge({[holdTemporary,channel,midiNote]:num-1})
 								#print(holded)
 							elif num == 0:
-								offMessages[(i*32) + num] = [0x90 | channel,midiNote,0]
+								for j in 10:
+									if offMessages[j*32 + num][0] == 0:
+										offMessages[(j*32) + num] = [0x90 | channel,midiNote,0]
+										break
 								if mode32:
 									holded.merge({[holdTemporary,channel,midiNote]:31})
 								else:
 									holded.merge({[holdTemporary,channel,midiNote]:15})
 								#print(holded)
 						hold = 0
-					elif hold == 1:
-						hold = 2
 					beatMask = 0x80000000 >> num
 					if control & beatMask == 0:
 						control |= beatMask
@@ -214,8 +211,8 @@ func _buttonPress(num):
 					i += 1
 	updateColors()
 
-# Función que se llama cuando se importa un nuevo archivo, actualizando la estructura beatsPerTone
-func updateBPT():
+# Función que se llama cuando se importa un nuevo archivo, actualizando la estructura beatsPerTone y channels
+func updateStructures():
 	beatsPerTone.fill(0)
 	channels.fill(0)
 	var bptIndex = 0
@@ -229,13 +226,12 @@ func updateBPT():
 				if control & (beatMask >> j) == 0:
 					control |= (beatMask >> j)
 				channels[messages[index][0] & 0xF] +=1
-				
+	updateHolded()
 
 # Función que se llama cuando se importa un nuevo archivo, actualizando la estructura holded
 func updateHolded():
 	# Si el mensaje siguiente en messages no tiene el mismo numero pero velocidad 0, se considera un holded
 	# Se busca el indice del mensaje de off, y se guardan los datos del canal, notamidi mas ambos beats
-	# Ejemplo Out of Touch, debería devolver: { [0, 2, 41]: 7, [8, 2, 38]: 9, [10, 2, 43]: 15, [16, 2, 45]: 19, [20, 2, 43]: 22, [23, 2, 45]: 28, [29, 2, 40]: 31 }
 	holded.clear()
 	var found = 0
 	var found32 = 0

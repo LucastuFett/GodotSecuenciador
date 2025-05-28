@@ -8,10 +8,11 @@ const editLabel = preload("res://themes/EditableLabel.tres")
 var midi : Midi
 static var midiFile : MidiFile
 
+# Variables Globales
 static var mainState := MAIN
-static var messages = Array()
-static var offMessages = Array()
-static var beatsPerTone = PackedInt32Array()
+static var messages = Array()						# 10*32*3 = 960B
+static var offMessages = Array()					# 10*32*3 = 960B
+static var beatsPerTone = PackedInt32Array()		# 96*16*4 = 6144B
 static var beat := 0
 static var tone = 0
 static var mode = 0
@@ -30,6 +31,13 @@ static var bank = 1
 static var hold = 0 # 0 = Sin Hold, 1 = Esperando primer valor, 2 = Esperando segundo valor
 static var holded = Dictionary() # {[Beat1, Canal, Nota]:Beat2,}
 
+#Variables para Play
+static var nextMessages = Array()					# 10*32*3 = 960B
+static var nextOffMessages = Array()				# 10*32*3 = 960B
+static var nextTempo = [0,120]
+static var nextFilename
+static var queue = 0
+
 var shift = false
 var prevNote = 0
 var prevMode = 0
@@ -39,6 +47,20 @@ var prevTempo = [0,120]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	messages.resize(320)
+	offMessages.resize(320)
+	nextMessages.resize(320)
+	nextOffMessages.resize(320)
+	beatsPerTone.resize(1536)
+	channels.resize(16)
+	
+	channels.fill(0)
+	beatsPerTone.fill(0)
+	messages.fill([0,0,0])
+	offMessages.fill([0,0,0])
+	nextMessages.fill([0,0,0])
+	nextOffMessages.fill([0,0,0])
+	
 	midi = Midi.new()
 	midiFile = MidiFile.new()
 	changeState()
@@ -55,11 +77,19 @@ func _on_select_pressed():
 		PROG:
 			if mode32:
 				half = not half
-			$Buttons.toggledMode = 1
 		MEMORY,RENAME:
 			$Screen.selectLetter()
 		SAVELOAD:
 			filename = $Screen.getFilename()
+		PLAY:
+			if $MidiTimer.running:
+				nextFilename = $Screen.getFilename()
+				midiFile.read_from_file(nextMessages,nextOffMessages,nextTempo,nextFilename,bank)
+				queue = 1
+			else:
+				filename = $Screen.getFilename()
+				midiFile.read_from_file(messages,offMessages,tempo,filename,bank)
+				$Buttons.updateStructures()
 	changeState()
 
 func _on_f_1_pressed():
@@ -81,17 +111,25 @@ func _on_f_1_pressed():
 		SAVELOAD:
 			filename = $Screen.getFilename()
 			midiFile.read_from_file(messages,offMessages,tempo,filename,bank)
-			$Buttons.updateBPT()
-			$Buttons.updateHolded()
+			$Buttons.updateStructures()
 			#print(filename)
 			mainState = PROG
 		RENAME:
 			midiFile.renameFile(renameFilename,$Screen.saveFilename(),bank)
 			mainState = SAVELOAD
+		PLAY:
+			if !$MidiTimer.running:
+				beat -= 1
+			else:
+				midi.allNotesOff(channels)
+				$Buttons.updateColors()
+			$MidiTimer.playPause()
 	changeState()
 
 func _on_f_2_pressed():
 	match mainState:
+		MAIN:
+			mainState = PLAY
 		PROG:
 			if shift:
 				prevChn = channel
@@ -134,6 +172,10 @@ func _on_f_2_pressed():
 				bank -= 1
 				if bank < 1:
 					bank = 8
+		PLAY:
+			bank -= 1
+			if bank < 1:
+				bank = 8
 	changeState()
 
 func _on_f_3_pressed():
@@ -169,6 +211,10 @@ func _on_f_3_pressed():
 				bank += 1
 				if bank > 8:
 					bank = 1
+		PLAY:
+			bank += 1
+			if bank > 8:
+				bank = 1
 	changeState()
 
 func _on_f_4_pressed():
@@ -203,11 +249,16 @@ func _on_f_4_pressed():
 			mainState = MEMORY
 		RENAME:
 			mainState = SAVELOAD
+		PLAY:
+			$MidiTimer.stop()
+			midi.allNotesOff(channels)
+			$Buttons.updateColors()
+			beat = 0
 	changeState()
 
 func _on_exit_pressed():
 	match mainState:
-		PROG:
+		PROG,PLAY:
 			mainState = MAIN
 		NOTE:
 			note = prevNote
@@ -307,20 +358,29 @@ func _toggle(toggled_on):
 	# Recalcular off del 0 si se pasa a 32
 	changeState()
 
-func changeState():
-	$Screen.updateScreen()
-	$Buttons.updateColors()
-	tempoChange()
-
 # Función generada por el timer, llama a sonar un beat
 func _on_timeout() -> void:
 	beat += 1
 	if (mode32 && beat == 32) || (!mode32 && beat == 16):
 		beat = 0
+		if mainState == PLAY and queue:
+			messages = nextMessages.duplicate(true)
+			offMessages = nextOffMessages.duplicate(true)
+			filename = nextFilename
+			tempo = nextTempo
+			midi.allNotesOff(channels)
+			$Buttons.updateStructures()
+			queue = 0
 	midi.beatPlay(beat, control, messages, offMessages)
 	$Buttons.updateColors()
-	print(holded)
+	#print(holded)
 	#print(beat)
+
+# Función para cambiar el estado de los botones y de la pantalla
+func changeState():
+	$Screen.updateScreen()
+	$Buttons.updateColors()
+	tempoChange()
 
 # Función llamada cuando se cambia el tempo para recalcular el tempo
 func tempoChange():

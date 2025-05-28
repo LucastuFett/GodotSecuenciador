@@ -33,6 +33,7 @@ const special = ['0','1','2','3','4','5','6','7','8','9',"'",'.',',','/',':',';'
 
 const bluePanel = preload("res://themes/BlueBtn.tres")
 const greyPanel = preload("res://themes/GreyBtn.tres")
+const purplePanel = preload("res://themes/PurpleBtn.tres")
 const currentLabel = preload("res://themes/CurrentLabel.tres")
 
 var typing = Array()
@@ -45,6 +46,7 @@ var upper = 0			# 0 = minuscula, 1 = MAYUSCULA
 
 var files = Array()
 var selectedFile = 0
+var currentFile
 
 
 # Called when the node enters the scene tree for the first time.
@@ -67,7 +69,6 @@ func _process(delta):
 		$Menus/Hold.set_visible(true)
 		$Menus/Hold.text = "2nd Value"
 
-
 func _on_left_pressed():
 	match mainState:
 		MEMORY,RENAME:
@@ -84,7 +85,7 @@ func _on_left_pressed():
 					specialPointer -= 1
 					if specialPointer < 0:
 						specialPointer = 20
-		SAVELOAD:
+		SAVELOAD,PLAY:
 			selectedFile -= 1
 			if selectedFile < 0:
 				selectedFile = 11
@@ -105,11 +106,12 @@ func _on_right_pressed():
 					specialPointer += 1
 					if specialPointer > 20:
 						specialPointer = 0
-		SAVELOAD:
+		SAVELOAD,PLAY:
 			selectedFile += 1
 			if selectedFile > 11:
 				selectedFile = 0
 
+# Función para actualizar los contenidos de la pantalla en cada modo
 func updateScreen():
 	match mainState:
 		MAIN:
@@ -117,6 +119,15 @@ func updateScreen():
 			$Menus.set_visible(false)
 			$Title.set_visible(true)
 			$TitleProg.set_visible(false)
+			$Memory.set_visible(false)
+			$Memory/Load.set_visible(false)
+			$Memory/Bank.set_visible(false)
+		PLAY:
+			$Title.set_visible(true)
+			$Memory.set_visible(true)
+			$Memory/Load.set_visible(true)
+			$Memory/Bank.set_visible(true)
+			updateBanks()
 		PROG:
 			$PianoGrid.set_visible(true)
 			$Menus.set_visible(true)
@@ -203,7 +214,6 @@ func updateScreen():
 		$"Menus/Toggler/1-16".add_theme_color_override("font_color",Color.WHITE)
 		$"Menus/Toggler/17-32".add_theme_color_override("font_color",Color.GRAY)
 
-
 # Función para actualizar el texto que se va escribiendo en el nombre
 func updateMemoryText():
 	var name = ""
@@ -231,7 +241,7 @@ func updateMemoryText():
 				typing[typePointer].text = shLetters[letterPointer]
 		else:
 			typing[typePointer].text = special[specialPointer]
-		
+
 # Función que se llama al poner seleccionar en una letra para guardarla
 func selectLetter():
 	if edit == 1:
@@ -283,10 +293,13 @@ func updateBanks():
 			files[i].add_theme_stylebox_override("panel",bluePanel)
 		else:
 			files[i].add_theme_stylebox_override("panel",greyPanel)
+		if mainState == PLAY and i == currentFile:
+			files[i].add_theme_stylebox_override("panel",purplePanel)
 		files[i].get_child(0).text = found[i].rstrip(".mid")
 
 # Función para escribir el nombre del archivo seleccionado en el programa
 func getFilename() -> String:
+	if mainState == PLAY:
+		currentFile = selectedFile
 	return files[selectedFile].get_child(0).text
 	print(filename)
-	

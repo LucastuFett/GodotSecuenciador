@@ -13,7 +13,6 @@ func _init():
 		
 	print(midi_out.is_port_open())
 
-
 func sendNoteOn(chn: int, note, vel):
 	midi_out.send_message([0x90 | chn,note,vel])
 	
@@ -34,12 +33,12 @@ func beatPlay(beat, control, messages, offMessages):
 		index = (i * 32) + beat
 		#print(messages[index][0])
 		if offMessages[index][0] != 0:
-			print(offMessages[index])
+			#print(offMessages[index])
 			sendMessage(offMessages[index])
 	for i in 10:
 		index = (i * 32) + beat
 		if messages[index][0] != 0:
-			print(messages[index])
+			#print(messages[index])
 			sendMessage(messages[index])
 
 # Función para enviar un mensaje de apagado en los canales necesarios

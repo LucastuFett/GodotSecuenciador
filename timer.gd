@@ -22,7 +22,7 @@ func start():
 	running = true
 	startTime = Time.get_unix_time_from_system() * 1000
 	timeout.emit()
-	
+
 func stop():
 	running = false
 
