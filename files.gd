@@ -87,6 +87,13 @@ func read_from_file(messages, offMessages, bpm, filename, bank):
 	var tempo = 0
 	var tone = 0 
 	var mode = 0 
+	var type = 0
+	var messageCount = Array()
+	var offMessageCount = Array()
+	messageCount.resize(32)
+	messageCount.fill(0)
+	offMessageCount.resize(32)
+	offMessageCount.fill(0)
 	messages.fill([0,0,0])
 	offMessages.fill([0,0,0])
 	print("error",file.get_open_error())
@@ -101,12 +108,13 @@ func read_from_file(messages, offMessages, bpm, filename, bank):
 			OS.alert("Error on MIDI File MThd","Error")
 			return
 		buffer = file.get_16()
-		if buffer != 0:
-			OS.alert("MIDI File not Type 0","Error")
+		if buffer > 1:
+			OS.alert("MIDI File not Type 0 or 1","Error")
 			return
+		type = buffer
 		buffer = file.get_16()
-		if buffer != 1:
-			OS.alert("MIDI Tracks should be 1","Error")
+		if buffer > 15:
+			OS.alert("MIDI Tracks should be less than 16","Error")
 			return
 		buffer = file.get_16()
 		if buffer >= 0x7000:
@@ -118,76 +126,122 @@ func read_from_file(messages, offMessages, bpm, filename, bank):
 		return
 	
 	# Leer MTrk
-	buffer = file.get_32()
-	if buffer == 0x4D54726B:
-		print("MTrk")
-		chunklen = file.get_32()
-		var curOff = 0
-		var curBeat = 0
-		var curMsg = 0
-		var curOffMsg = 0
-		var index = 0
-		var indexOff = 0
-		while chunklen > 0:
-			var result = readDelta(file)
-			curOff = result[0]
-			chunklen -= result[1]
-			buffer = file.get_8()
-			#print(buffer)
-			chunklen -= 1
-			# Si es System Message
-			if buffer == 0xFF:
+	while file.get_position() < file.get_length():
+		buffer = file.get_32()
+		if buffer == 0x4D54726B:
+			print("MTrk")
+			chunklen = file.get_32()
+			var curOff = 0
+			var curBeat = 0
+			var curMsg = 0
+			var curOffMsg = 0
+			var index = 0
+			var indexOff = 0
+			while chunklen > 0:
+				var result = readDelta(file)
+				curOff = result[0]
+				chunklen -= result[1]
 				buffer = file.get_8()
-				match buffer:
-					0x2F:
-						buffer = file.get_8()
+				#print(buffer)
+				chunklen -= 1
+				# Si es System Message
+				if buffer == 0xFF:
+					buffer = file.get_8()
+					match buffer:
+						0x01,0x02,0x03,0x04,0x05,0x06,0x07:
+							var lenText = file.get_8()
+							for i in lenText:
+								buffer = file.get_8()
+								chunklen -= 1
+							chunklen -= 1
+						0x2F:
+							buffer = file.get_8()
+							chunklen -= 2
+							print("End")
+							break
+						0x51:
+							buffer = file.get_32()
+							tempo = buffer & 0xFFFFFF
+							bpm[1] = int(60000000 / tempo)
+							chunklen -= 5
+							print("Tempo ", bpm)
+						0x58:
+							buffer = file.get_8()
+							buffer = file.get_32()
+							if buffer & 0xFFFF0000 != 0x04020000:
+								OS.alert("Only 4/4 is supported","Error")
+								return
+							chunklen -= 6
+							#print("TimeSig ", chunklen)
+						0x59:
+							buffer = file.get_8()
+							buffer = file.get_8()
+							tone = buffer # Esta respecto al Circulo de Quintas, cambiar
+							buffer = file.get_8()
+							mode = buffer
+							chunklen -= 4
+							#print("Scale")
+				# Si es Control Change
+				elif buffer >= 0xA0:
+					if buffer & 0xF0 == 0xB0:
+						buffer = file.get_16()
 						chunklen -= 2
-						print("End")
-					0x51:
-						buffer = file.get_32()
-						tempo = buffer & 0xFFFFFF
-						bpm[1] = int(60000000 / tempo)
-						chunklen -= 5
-						print("Tempo ", bpm)
-					0x58:
+					elif buffer & 0xF0 == 0xC0:
 						buffer = file.get_8()
-						buffer = file.get_32()
-						if buffer & 0xFFFF0000 != 0x04020000:
-							OS.alert("Only 4/4 is supported","Error")
-							return
-						chunklen -= 6
-						#print("TimeSig ", chunklen)
-					0x59:
-						buffer = file.get_8()
-						buffer = file.get_8()
-						tone = buffer # Esta respecto al Circulo de Quintas, cambiar
-						buffer = file.get_8()
-						mode = buffer
-						chunklen -= 4
-						#print("Scale")
-			# Si es Track Message
-			else:
-				var msg = []
-				if curOff != 0:
-					curBeat += curOff/delta
-					curMsg = 0
-					curOffMsg = 0
-				index = (curMsg * 32) + curBeat
-				indexOff = (curOffMsg * 32) + curBeat
-				msg.append(buffer)
-				buffer = file.get_8()
-				msg.append(buffer)
-				buffer = file.get_8()
-				msg.append(buffer)
-				if msg[2] != 0:
-					messages[index] = msg
-					curMsg += 1
+						chunklen -= 1
+				# Si es Track Message
 				else:
-					offMessages[indexOff] = msg
-					curOffMsg += 1
-				chunklen -= 2
-				print("Mensaje ",msg)
-
+					var msg = []
+					if curOff != 0:
+						curBeat += curOff/delta
+						curMsg = 0
+						curOffMsg = 0
+					if curBeat == 32:
+						curBeat = 0
+					# Si es tipo 0, usar una variable para ver el mensaje actual
+					if type == 0:
+						index = (curMsg * 32) + curBeat
+						indexOff = (curOffMsg * 32) + curBeat
+					# Si es tipo 1, se utiliza el arreglo de cuantos mensajes hay por beat
+					else:
+						if messageCount[curBeat] == 10 or offMessageCount[curBeat] == 10:
+							OS.alert("There are more than 10 notes in a beat","Error")
+							return
+						index = (messageCount[curBeat] * 32) + curBeat
+						indexOff = (offMessageCount[curBeat] * 32) + curBeat
+						
+					# Si es un Note Off, transformar a un Note On con Velocidad 0
+					if buffer & 0xF0 == 0x80:
+						msg.append(0x90 | (buffer & 0xF))
+						buffer = file.get_8()
+						msg.append(buffer)
+						buffer = file.get_8()
+						msg.append(0x00)
+					else:
+						msg.append(buffer)
+						buffer = file.get_8()
+						msg.append(buffer)
+						buffer = file.get_8()
+						msg.append(buffer)
+						
+					if msg[2] != 0:
+						messages[index] = msg
+						if type == 0:
+							curMsg += 1
+						else:
+							messageCount[curBeat] += 1
+					else:
+						#TODO: Actualmente solo funciona con beats de 32 
+						if type == 0:
+							curOffMsg += 1
+						else:
+							offMessageCount[curBeat] += 1
+						offMessages[indexOff] = msg
+					chunklen -= 2
+					print("Mensaje ",msg)
+		else:
+			OS.alert("Error on MIDI File MTrk","Error")
+			return
 # Funcion para leer los campos de delta de un archivo MIDI
 func readDelta(file) -> Array:
 	var bytecount = 1

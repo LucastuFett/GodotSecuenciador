@@ -90,6 +90,11 @@ func _on_select_pressed():
 				filename = $Screen.getFilename()
 				midiFile.read_from_file(messages,offMessages,tempo,filename,bank)
 				$Buttons.updateStructures()
+	print("messages: \n",messages)
+	print("offm: \n", offMessages)
+	print("channels: \n",channels)
+	print("tempo: \n",tempo)
+	print("control: \n", control)
 	changeState()
 
 func _on_f_1_pressed():
