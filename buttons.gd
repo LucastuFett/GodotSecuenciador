@@ -240,16 +240,16 @@ func updateHolded():
 			if messages[i*32 + j][0] != 0:
 				found32 = 1
 				break
+		if found32: break
 	for i in 10:
 		for j in 32:
 			var index = (i * 32) + j
 			var flag = false
 			if messages[index][0] != 0:
 				for l in 10:
-					if (j == 31 and found32) or (j == 15 and not found32):
-						if offMessages[l*32][1] == messages[index][1]:
-							flag = true
-							break
+					if ((j == 31 and found32) or (j == 15 and not found32)) and (offMessages[l*32][1] == messages[index][1]):
+						flag = true
+						break
 					elif offMessages[(l*32) + j + 1][1] == messages[index][1]:
 						flag = true
 						break
