@@ -135,7 +135,7 @@ func updateScreen():
 			$TitleProg.set_visible(true)
 			$Memory.set_visible(false)
 			$PianoGrid.getPossible()
-			$PianoGrid.paint()
+			$PianoGrid.paintScales()
 			$Menus/Scale/ScaleValue.text = $PianoGrid.tones[tone] + " " + scales[mode][0]
 			$Menus/Tempo/TempoValue.text = str(tempo[1]) + "BPM"
 			$Menus/Channel/ChnValue.text = str(channel + 1)
@@ -145,13 +145,13 @@ func updateScreen():
 			$PianoGrid.getPossible()
 			# Pintar Escala y Notas en Grid
 			# Actualizar Color de Selected
-			$PianoGrid.paint()
+			$PianoGrid.paintScales()
 			# Actualizar Nombre de Escala
 			$Menus/Scale/ScaleValue.text = $PianoGrid.tones[tone] + " " + scales[mode][0]
 		NOTE:
 			# Actualizar Nota y Octava Actual
 			# Actualizar Selected
-			$PianoGrid.paint()
+			$PianoGrid.paintScales()
 		TEMPO:
 			$Menus/Tempo/TempoValue.text = str(tempo[1]) + "BPM"
 		CHANNEL:

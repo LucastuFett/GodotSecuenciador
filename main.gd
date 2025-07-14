@@ -301,12 +301,12 @@ func _on_left_pressed():
 				tone = 11
 		NOTE:
 			# Cambiar Nota
-			note -= 1
-			if note < 0:
-				octave -= 1
-				note = 11
-			if octave < 0:
-				octave = 0
+			note += 1
+			if note > 11:
+				octave += 1
+				note = 0
+			if octave > 7:
+				octave = 7
 		TEMPO:
 			tempo[1] -= 1
 			if tempo[0] == 0:
@@ -336,12 +336,12 @@ func _on_right_pressed():
 				tone = 0
 		NOTE:
 			# Cambiar Nota
-			note += 1
-			if note > 11:
-				octave += 1
-				note = 0
-			if octave > 7:
-				octave = 7
+			note -= 1
+			if note < 0:
+				octave -= 1
+				note = 11
+			if octave < 0:
+				octave = 0
 		TEMPO:
 			tempo[1] += 1
 			if tempo[0] == 0:
