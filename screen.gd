@@ -13,7 +13,7 @@ const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
 				["Play/Pause","Bank -","Bank +","Stop","","","",""]]
 
 const titles = ["Main - Config", 
-				"Programming", 
+				"Prog\nram", 
 				"Edit Note",
 				"Memory",
 				"Save/Load",

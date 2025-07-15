@@ -276,6 +276,7 @@ layout_mode = 0
 offset_top = -8.0
 offset_right = 403.0
 offset_bottom = 293.0
+border_color = Color(1, 0, 0, 0)
 border_width = 0.5
 
 [node name="Left" type="Button" parent="Screen/Controls"]
@@ -2621,6 +2622,15 @@ offset_right = 192.0
 offset_bottom = 73.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_7m61d")
 
+[node name="Division2" type="Panel" parent="Screen/PianoGrid"]
+z_index = 4
+layout_mode = 0
+offset_left = 97.0
+offset_right = 241.0
+offset_bottom = 1.0
+rotation = 1.5708
+theme_override_styles/panel = SubResource("StyleBoxFlat_7m61d")
+
 [node name="Menus" type="ReferenceRect" parent="Screen"]
 z_index = -1
 layout_mode = 0
@@ -2635,7 +2645,7 @@ layout_mode = 0
 offset_left = -4.0
 offset_right = 58.0
 offset_bottom = 44.0
-border_color = Color(0.521569, 1, 1, 1)
+border_color = Color(0.537255, 0.666667, 0.976471, 1)
 border_width = 2.0
 editor_only = false
 
@@ -2669,7 +2679,7 @@ offset_left = -4.0
 offset_top = 46.0
 offset_right = 58.0
 offset_bottom = 90.0
-border_color = Color(0.521569, 1, 1, 1)
+border_color = Color(0.537255, 0.666667, 0.976471, 1)
 border_width = 2.0
 editor_only = false
 
@@ -2703,7 +2713,7 @@ offset_left = -4.0
 offset_top = 92.0
 offset_right = 58.0
 offset_bottom = 136.0
-border_color = Color(0.521569, 1, 1, 1)
+border_color = Color(0.537255, 0.666667, 0.976471, 1)
 border_width = 2.0
 editor_only = false
 
@@ -2737,6 +2747,8 @@ offset_left = 249.0
 offset_top = 59.0
 offset_right = 290.0
 offset_bottom = 109.0
+border_color = Color(1, 0, 0, 0)
+editor_only = false
 
 [node name="Text" type="Label" parent="Screen/Menus/Rotary"]
 texture_filter = 1
@@ -2777,6 +2789,8 @@ offset_left = 249.0
 offset_top = 117.0
 offset_right = 290.0
 offset_bottom = 167.0
+border_color = Color(1, 0, 0, 0)
+editor_only = false
 
 [node name="1-16" type="Label" parent="Screen/Menus/Toggler"]
 texture_filter = 1
@@ -2823,6 +2837,7 @@ offset_left = 3.0
 offset_top = 212.0
 offset_right = 318.0
 offset_bottom = 241.0
+border_color = Color(1, 0, 0, 0)
 
 [node name="SH1" type="Label" parent="Screen/Labels"]
 texture_filter = 1
@@ -3336,7 +3351,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TitleProg" type="Label" parent="Screen"]
-visible = false
 texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(0, 31)
@@ -3348,7 +3362,8 @@ offset_bottom = 97.0
 theme_override_constants/line_spacing = -7
 theme_override_fonts/font = SubResource("SystemFont_h4sa2")
 theme_override_font_sizes/font_size = 22
-text = "Programming"
+text = "Prog
+ram"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
