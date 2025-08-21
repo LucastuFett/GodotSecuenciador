@@ -75,8 +75,11 @@ func _on_select_pressed():
 		NOTE, SCALE, TEMPO:
 			mainState = PROG
 		PROG:
-			if mode32:
-				half = not half
+			if shift:
+				mode32 = not mode32
+			else:
+				if mode32:
+					half = not half
 		MEMORY,RENAME:
 			$Screen.selectLetter()
 		SAVELOAD:
@@ -117,7 +120,8 @@ func _on_f_1_pressed():
 			filename = $Screen.getFilename()
 			midiFile.read_from_file(messages,offMessages,tempo,filename,bank)
 			$Buttons.updateStructures()
-			#print(filename)
+			for i in 10:
+				print(messages[i * 32])
 			mainState = PROG
 		RENAME:
 			midiFile.renameFile(renameFilename,$Screen.saveFilename(),bank)
@@ -357,11 +361,6 @@ func _on_right_pressed():
 	$Screen._on_right_pressed()
 	changeState()
 	
-func _toggle(toggled_on):
-	mode32 = toggled_on
-	# Pasar off del 0 al 16 o del 16 al 0
-	# Recalcular off del 0 si se pasa a 32
-	changeState()
 
 # Función generada por el timer, llama a sonar un beat
 func _on_timeout() -> void:

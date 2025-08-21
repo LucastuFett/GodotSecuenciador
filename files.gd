@@ -204,6 +204,7 @@ func read_from_file(messages, offMessages, bpm, filename, bank):
 						indexOff = (curOffMsg * 32) + curBeat
 					# Si es tipo 1, se utiliza el arreglo de cuantos mensajes hay por beat
 					else:
+						print(messageCount[0])
 						if messageCount[curBeat] == 10 or offMessageCount[curBeat] == 10:
 							OS.alert("There are more than 10 notes in a beat","Error")
 							return
@@ -238,7 +239,7 @@ func read_from_file(messages, offMessages, bpm, filename, bank):
 							offMessageCount[curBeat] += 1
 						offMessages[indexOff] = msg
 					chunklen -= 2
-					print("Mensaje ",msg)
+					print("Mensaje ",msg,"\tBeat ",curBeat)
 		else:
 			OS.alert("Error on MIDI File MTrk","Error")
 			return
@@ -255,6 +256,7 @@ func readDelta(file) -> Array:
 			c = file.get_8()
 			bytecount += 1
 			value = (value << 7) + (c & 0x7F)
+	#print("value:", value, "bytecount:", bytecount)
 	return [value, bytecount]
 
 # Función que devuelve los archivos que se encuentran en un banco

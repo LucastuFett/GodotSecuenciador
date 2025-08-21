@@ -180,7 +180,6 @@ func updateScreen():
 			$Memory/Typing.set_visible(false)
 			updateBanks()
 	
-	$Controls/Toggle.set_pressed_no_signal(mode32)
 	$Title.text = titles[mainState]
 	$TitleProg.text = titles[mainState]
 	$Labels/LF1.text = labels[mainState][0]
@@ -207,6 +206,10 @@ func updateScreen():
 		$Labels/SH4.text = labels[mainState][7]
 	else:
 		$Labels/SH4.visible = false
+	if mode32:
+		$Menus/Toggler/Mode.text = "32 St"
+	else:
+		$Menus/Toggler/Mode.text = "16 St"
 	if mode32 && half:
 		$"Menus/Toggler/1-16".add_theme_color_override("font_color",Color.GRAY)
 		$"Menus/Toggler/17-32".add_theme_color_override("font_color",Color.WHITE)
