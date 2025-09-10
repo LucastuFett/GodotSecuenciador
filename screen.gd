@@ -1,7 +1,7 @@
 class_name Screen
 extends Main
 
-const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
+const labels = [["Sequencer", "Play", "Launch", "DAW","","","",""],
 				["Note", "Play/Pause", "Stop", "Hold","Memory","Channel","Tempo","Scale"],
 				["Accept", "Octave -", "Octave +", "Cancel","","","",""],
 				["Save","Shift","Backspace","Load","","Special","Space",""],
@@ -13,7 +13,7 @@ const labels = [["Programming", "Play", "Launch", "DAW","","","",""],
 				["Play/Pause","Bank -","Bank +","Stop","","","",""]]
 
 const titles = ["Main - Config", 
-				"Prog\nram", 
+				"Edit\nSeq", 
 				"Edit Note",
 				"Memory",
 				"Save/Load",
