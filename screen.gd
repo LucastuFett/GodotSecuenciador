@@ -10,7 +10,8 @@ const labels = [["Sequencer", "Play", "Launch", "DAW","","","",""],
 				["Accept","","","Cancel","","","",""],
 				["Accept","Internal","External","Cancel","","","",""],
 				["Accept","Mode -","Mode +","Cancel","","","",""],
-				["Play/Pause","Bank -","Bank +","Stop","","","",""]]
+				["Play/Pause","Bank -","Bank +","Stop","","","",""],
+				["Tone -","Mode -","Mode +","Tone +","","Channel -","Channel +",""]]
 
 const titles = ["Main - Config", 
 				"Edit\nSeq", 
@@ -21,7 +22,8 @@ const titles = ["Main - Config",
 				"Edit Channel",
 				"Edit Tempo",
 				"Edit Scale",
-				"Play"]
+				"Play",
+				"Launchpad/Keyboard"]
 				
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -115,6 +117,7 @@ func _on_right_pressed():
 func updateScreen():
 	match mainState:
 		MAIN:
+			$Launchpad.set_visible(false)
 			$PianoGrid.set_visible(false)
 			$Menus.set_visible(false)
 			$Title.set_visible(true)
@@ -134,7 +137,7 @@ func updateScreen():
 			$Title.set_visible(false)
 			$TitleProg.set_visible(true)
 			$Memory.set_visible(false)
-			$PianoGrid.getPossible()
+			$PianoGrid.possible = $PianoGrid.getPossible(tone, mode)
 			$PianoGrid.paintScales()
 			$Menus/Scale/ScaleValue.text = $PianoGrid.tones[tone] + " " + scales[mode][0]
 			$Menus/Tempo/TempoValue.text = str(tempo[1]) + "BPM"
@@ -179,7 +182,9 @@ func updateScreen():
 			$Memory/GridBorder.set_visible(false)
 			$Memory/Typing.set_visible(false)
 			updateBanks()
-	
+		LAUNCH:
+			$Launchpad.set_visible(true)
+			updateLaunch()
 	$Title.text = titles[mainState]
 	$TitleProg.text = titles[mainState]
 	$Labels/LF1.text = labels[mainState][0]
@@ -306,3 +311,80 @@ func getFilename() -> String:
 		currentFile = selectedFile
 	return files[selectedFile].get_child(0).text
 	print(filename)
+
+# Función para analizar el modo de funcionamiento launch/key y realizar los cambios necesarios
+func updateLaunch():
+	$Launchpad/Channel.text = "Channel " + str(launchChn+1)
+	if launchType == false:	# Launchpad
+		launchPossible = $PianoGrid.getPossible(launchTone, launchMode)
+		$Launchpad/Keyboard.set_visible(false)
+		$Launchpad/Scale.set_visible(true)
+		$Launchpad/Scale.text = $PianoGrid.tones[launchTone] + " " + scales[launchMode][0]
+		$Launchpad/Launchpad.set_visible(true)
+		var sbf1 = StyleBoxFlat.new()
+		var sbf4 = StyleBoxFlat.new()
+		var sbf8 = StyleBoxFlat.new()
+		sbf1.bg_color = Color(0.99,0.19,0.14)
+		sbf4.bg_color = Color(0.82,0.52,0.1)
+		sbf8.bg_color = Color(0.8,0,0.97)
+		$"Launchpad/Keys/1".add_theme_stylebox_override("panel",sbf1)
+		$"Launchpad/Keys/4".add_theme_stylebox_override("panel",sbf4)
+		$"Launchpad/Keys/8".add_theme_stylebox_override("panel",sbf8)
+		for i in 8:
+			if (i == 7):
+				var noteIndexLow = launchPossible[0][0] + ((launchOctave+1) * 12) + 24
+				var noteIndexHigh = launchPossible[0][0] + ((launchOctave+2) * 12) + 24
+				get_node("Launchpad/Keys/"+str(i+1)+"/Name").text = $PianoGrid.tones[launchPossible[0][0]] + str(launchOctave+1)
+				launchMessages[i] = [0x90 | launchChn,noteIndexLow,127]
+				get_node("Launchpad/Keys/"+str(i+9)+"/Name").text = $PianoGrid.tones[launchPossible[0][0]] + str(launchOctave+2)
+				launchMessages[i+8] = [0x90 | launchChn,noteIndexHigh,127]
+			else:
+				var noteIndexLow = launchPossible[0][i] + ((launchOctave) * 12) + 24
+				var noteIndexHigh = launchPossible[0][i] + ((launchOctave+1) * 12) + 24
+				get_node("Launchpad/Keys/"+str(i+1)+"/Name").text = $PianoGrid.tones[launchPossible[0][i]] + str(launchOctave)
+				launchMessages[i] = [0x90 | launchChn,noteIndexLow,127]
+				get_node("Launchpad/Keys/"+str(i+9)+"/Name").text = $PianoGrid.tones[launchPossible[0][i]] + str(launchOctave+1)
+				launchMessages[i+8] = [0x90 | launchChn,noteIndexHigh,127]
+	else:	# Keyboard
+		$Launchpad/Keyboard.set_visible(true)
+		$Launchpad/Scale.set_visible(false)
+		$Launchpad/Launchpad.set_visible(false)
+		$"Launchpad/Keys/1".remove_theme_stylebox_override("panel")
+		$"Launchpad/Keys/4".remove_theme_stylebox_override("panel")
+		$"Launchpad/Keys/8".remove_theme_stylebox_override("panel")
+		
+		$"Launchpad/Keys/1/Name".text = ""
+		$"Launchpad/Keys/2/Name".text = "C#" + str(launchOctave)
+		$"Launchpad/Keys/3/Name".text = "D#" + str(launchOctave)
+		$"Launchpad/Keys/4/Name".text = ""
+		$"Launchpad/Keys/5/Name".text = "F#" + str(launchOctave)
+		$"Launchpad/Keys/6/Name".text = "G#" + str(launchOctave)
+		$"Launchpad/Keys/7/Name".text = "A#" + str(launchOctave)
+		$"Launchpad/Keys/8/Name".text = ""
+		
+		$"Launchpad/Keys/9/Name".text = "C" + str(launchOctave)
+		$"Launchpad/Keys/10/Name".text = "D" + str(launchOctave)
+		$"Launchpad/Keys/11/Name".text = "E" + str(launchOctave)
+		$"Launchpad/Keys/12/Name".text = "F" + str(launchOctave)
+		$"Launchpad/Keys/13/Name".text = "G" + str(launchOctave)
+		$"Launchpad/Keys/14/Name".text = "A" + str(launchOctave)
+		$"Launchpad/Keys/15/Name".text = "B" + str(launchOctave)
+		$"Launchpad/Keys/16/Name".text = "C" + str(launchOctave+1)
+		
+		launchMessages[0] = [0,0,0]
+		launchMessages[1] = [0x90 | launchChn,1 + ((launchOctave) * 12) + 24,127]
+		launchMessages[2] = [0x90 | launchChn,3 + ((launchOctave) * 12) + 24,127]
+		launchMessages[3] = [0,0,0]
+		launchMessages[4] = [0x90 | launchChn,6 + ((launchOctave) * 12) + 24,127]
+		launchMessages[5] = [0x90 | launchChn,8 + ((launchOctave) * 12) + 24,127]
+		launchMessages[6] = [0x90 | launchChn,10 + ((launchOctave) * 12) + 24,127]
+		launchMessages[7] = [0,0,0]
+		
+		launchMessages[8] = [0x90 | launchChn,0 + ((launchOctave) * 12) + 24,127]
+		launchMessages[9] = [0x90 | launchChn,2 + ((launchOctave) * 12) + 24,127]
+		launchMessages[10] = [0x90 | launchChn,4 + ((launchOctave) * 12) + 24,127]
+		launchMessages[11] = [0x90 | launchChn,5 + ((launchOctave) * 12) + 24,127]
+		launchMessages[12] = [0x90 | launchChn,7 + ((launchOctave) * 12) + 24,127]
+		launchMessages[13] = [0x90 | launchChn,9 + ((launchOctave) * 12) + 24,127]
+		launchMessages[14] = [0x90 | launchChn,11 + ((launchOctave) * 12) + 24,127]
+		launchMessages[15] = [0x90 | launchChn,0 + ((launchOctave+1) * 12) + 24,127]

@@ -31,7 +31,7 @@ func _ready():
 		selection.append(i)
 	for i in $SequenceGrid.get_children():
 		grid.append(i)
-	getPossible()
+	possible = getPossible(tone, mode)
 	paintScales()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -133,10 +133,10 @@ func _process(delta):
 				#print(i[0],i[2])
 
 # Función para devolver las notas que pertenecen a una escala determinada
-func getPossible():
+func getPossible(tone, mode) -> Array:
 	# possible = [[note, note2],[style, style2]]
 	var actKey = tone
-	possible = []
+	var possible = []
 	possible.append([])
 	possible.append([])
 	
@@ -148,6 +148,7 @@ func getPossible():
 			actKey -= 12
 		possible[0].append(actKey)
 		possible[1].append(blueStyle)
+	return possible
 
 # Función para pintar Escala y Seleccionado
 func paintScales():

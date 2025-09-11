@@ -5,7 +5,7 @@ enum {MAIN, PROG, NOTE, MEMORY, SAVELOAD, RENAME, CHANNEL, TEMPO, SCALE, PLAY, L
 
 const scales = [["Major", [2,2,1,2,2,2]], ["Minor", [2,1,2,2,1,2]], ["Chrom", [1,1,1,1,1,1,1,1,1,1,1]]]
 const editLabel = preload("res://themes/EditableLabel.tres")
-var midi : Midi
+static var midi : Midi
 static var midiFile : MidiFile
 
 # Variables Globales
@@ -37,6 +37,16 @@ static var nextOffMessages = Array()				# 10*32*3 = 960B
 static var nextTempo = [0,120]
 static var nextFilename
 static var queue = 0
+static var channelEnabled = Array()
+
+#Variables para Launch
+static var launchType = false 	# false = Launchpad, true = Keyboard
+static var launchMessages = Array()
+static var launchOctave = 3
+static var launchTone = 0
+static var launchMode = 0
+static var launchChn = 0
+static var launchPossible = []
 
 var shift = false
 var prevNote = 0
@@ -53,7 +63,11 @@ func _ready():
 	nextOffMessages.resize(320)
 	beatsPerTone.resize(1536)
 	channels.resize(16)
+	channelEnabled.resize(16)
+	launchMessages.resize(16)
 	
+	launchMessages.fill([0,0,0])
+	channelEnabled.fill(true)
 	channels.fill(0)
 	beatsPerTone.fill(0)
 	messages.fill([0,0,0])
@@ -93,11 +107,13 @@ func _on_select_pressed():
 				filename = $Screen.getFilename()
 				midiFile.read_from_file(messages,offMessages,tempo,filename,bank)
 				$Buttons.updateStructures()
-	print("messages: \n",messages)
-	print("offm: \n", offMessages)
-	print("channels: \n",channels)
-	print("tempo: \n",tempo)
-	print("control: \n", control)
+		LAUNCH:
+			launchType = !launchType
+	#print("messages: \n",messages)
+	#print("offm: \n", offMessages)
+	#print("channels: \n",channels)
+	#print("tempo: \n",tempo)
+	#print("control: \n", control)
 	changeState()
 
 func _on_f_1_pressed():
@@ -133,6 +149,10 @@ func _on_f_1_pressed():
 				midi.allNotesOff(channels)
 				$Buttons.updateColors()
 			$MidiTimer.playPause()
+		LAUNCH:
+			launchTone -= 1
+			if (launchTone < 0):
+				launchTone = 11
 	changeState()
 
 func _on_f_2_pressed():
@@ -185,10 +205,19 @@ func _on_f_2_pressed():
 			bank -= 1
 			if bank < 1:
 				bank = 8
+		LAUNCH:
+			if shift:
+				launchChn -= 1
+				if (launchChn < 0):
+					launchChn = 15
+			else:
+				launchMode = (0 if launchMode else 1)
 	changeState()
 
 func _on_f_3_pressed():
 	match mainState:
+		MAIN:
+			mainState = LAUNCH
 		PROG:
 			if shift:
 				prevTempo = tempo
@@ -224,6 +253,13 @@ func _on_f_3_pressed():
 			bank += 1
 			if bank > 8:
 				bank = 1
+		LAUNCH:
+			if shift:
+				launchChn += 1
+				if (launchChn > 15):
+					launchChn = 0
+			else:
+				launchMode = (0 if launchMode else 1)
 	changeState()
 
 func _on_f_4_pressed():
@@ -263,11 +299,15 @@ func _on_f_4_pressed():
 			midi.allNotesOff(channels)
 			$Buttons.updateColors()
 			beat = 0
+		LAUNCH:
+			launchTone += 1
+			if (launchTone > 11):
+				launchTone = 0
 	changeState()
 
 func _on_exit_pressed():
 	match mainState:
-		PROG,PLAY:
+		PROG,PLAY,LAUNCH:
 			mainState = MAIN
 		NOTE:
 			note = prevNote
@@ -323,6 +363,10 @@ func _on_left_pressed():
 			channel -= 1
 			if channel < 0:
 				channel = 15
+		LAUNCH:
+			launchOctave -= 1
+			if launchOctave < 0:
+				launchOctave = 0
 	$Screen._on_left_pressed()
 	changeState()
 	
@@ -358,10 +402,13 @@ func _on_right_pressed():
 			channel += 1
 			if channel > 15:
 				channel = 0
+		LAUNCH:
+			launchOctave += 1
+			if launchOctave > 6:
+				launchOctave = 6
 	$Screen._on_right_pressed()
 	changeState()
 	
-
 # Función generada por el timer, llama a sonar un beat
 func _on_timeout() -> void:
 	beat += 1
@@ -375,7 +422,7 @@ func _on_timeout() -> void:
 			midi.allNotesOff(channels)
 			$Buttons.updateStructures()
 			queue = 0
-	midi.beatPlay(beat, control, messages, offMessages)
+	midi.beatPlay(beat, control, messages, offMessages, channelEnabled)
 	$Buttons.updateColors()
 	#print(holded)
 	#print(beat)

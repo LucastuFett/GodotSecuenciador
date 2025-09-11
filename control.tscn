@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://batna25ggjth"]
+[gd_scene load_steps=49 format=3 uid="uid://batna25ggjth"]
 
 [ext_resource type="Script" uid="uid://dl0we6ll6ujou" path="res://buttons.gd" id="1_2l6ow"]
 [ext_resource type="Script" uid="uid://csdcklenxmu8d" path="res://main.gd" id="1_3bh58"]
@@ -10,15 +10,17 @@
 [ext_resource type="StyleBox" uid="uid://ifxgqnl52ruv" path="res://themes/TransparentKey.tres" id="7_qthdj"]
 [ext_resource type="Script" uid="uid://dssnitrbsmcxr" path="res://timer.gd" id="9_sov8j"]
 
+[sub_resource type="InputEventKey" id="InputEventKey_sky72"]
+
+[sub_resource type="Shortcut" id="Shortcut_s3sxy"]
+events = [SubResource("InputEventKey_sky72")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62ndd"]
+
 [sub_resource type="InputEventKey" id="InputEventKey_b2jhy"]
 device = -1
 keycode = 44
 unicode = 44
-
-[sub_resource type="Shortcut" id="Shortcut_s3sxy"]
-events = [SubResource("InputEventKey_b2jhy")]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62ndd"]
 
 [sub_resource type="Shortcut" id="Shortcut_ao5pd"]
 events = [SubResource("InputEventKey_b2jhy")]
@@ -129,6 +131,30 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sky72"]
+bg_color = Color(1, 0.194376, 0.144153, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ytqx"]
+bg_color = Color(0, 0.526272, 0.0472067, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pxugv"]
+bg_color = Color(0.246703, 0.468332, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eh0v1"]
+bg_color = Color(0.829484, 0.520141, 0.108027, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_am1vj"]
+bg_color = Color(0.945168, 0.329314, 0.684037, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g31lc"]
+bg_color = Color(0.0436314, 0.669656, 0.787449, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knq72"]
+bg_color = Color(0.977755, 0.371491, 0.296081, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xvdhi"]
+bg_color = Color(0.8079, 0.00209292, 0.979365, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_h4sa2"]
 
@@ -2617,6 +2643,7 @@ rotation = 1.5708
 theme_override_styles/panel = SubResource("StyleBoxFlat_7m61d")
 
 [node name="Menus" type="ReferenceRect" parent="Screen"]
+visible = false
 z_index = -1
 layout_mode = 0
 offset_left = 9.0
@@ -3120,6 +3147,7 @@ offset_bottom = 37.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ljt5i")
 
 [node name="Load" type="GridContainer" parent="Screen/Memory"]
+visible = false
 layout_mode = 0
 offset_left = 15.0
 offset_top = -4.0
@@ -3320,6 +3348,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Bank" type="Label" parent="Screen/Memory"]
+visible = false
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 0
@@ -3328,6 +3357,338 @@ offset_top = -34.0
 offset_right = 75.0
 offset_bottom = -11.0
 text = "Bank 1"
+horizontal_alignment = 1
+
+[node name="Launchpad" type="ReferenceRect" parent="Screen"]
+visible = false
+layout_mode = 0
+offset_top = 45.0
+offset_right = 320.0
+offset_bottom = 199.0
+
+[node name="Keys" type="GridContainer" parent="Screen/Launchpad"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 53.0
+offset_right = 315.0
+offset_bottom = 211.0
+columns = 8
+
+[node name="1" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sky72")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/1"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "D#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="2" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0ytqx")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/2"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="3" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pxugv")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/3"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="4" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eh0v1")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/4"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="5" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_am1vj")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/5"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="6" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_g31lc")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/6"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="7" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_knq72")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/7"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="8" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xvdhi")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/8"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="9" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xvdhi")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/9"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="10" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_knq72")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/10"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="11" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_g31lc")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/11"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="12" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_am1vj")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/12"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="13" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eh0v1")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/13"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="14" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pxugv")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/14"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="15" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0ytqx")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/15"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="16" type="Panel" parent="Screen/Launchpad/Keys"]
+custom_minimum_size = Vector2(35, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sky72")
+
+[node name="Name" type="Label" parent="Screen/Launchpad/Keys/16"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 17
+text = "B#3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Scale" type="Label" parent="Screen/Launchpad"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_left = 7.0
+offset_top = 20.0
+offset_right = 161.0
+offset_bottom = 43.0
+text = "B# Major"
+horizontal_alignment = 1
+
+[node name="Channel" type="Label" parent="Screen/Launchpad"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_left = 85.0
+offset_top = 1.0
+offset_right = 239.0
+offset_bottom = 24.0
+text = "Channel 16"
+horizontal_alignment = 1
+
+[node name="Launchpad" type="Label" parent="Screen/Launchpad"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_left = 161.0
+offset_top = 20.0
+offset_right = 315.0
+offset_bottom = 43.0
+text = "Launchpad"
+horizontal_alignment = 1
+
+[node name="Keyboard" type="Label" parent="Screen/Launchpad"]
+visible = false
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_left = 84.0
+offset_top = 20.0
+offset_right = 238.0
+offset_bottom = 43.0
+text = "Keyboard"
 horizontal_alignment = 1
 
 [node name="Title" type="Label" parent="Screen"]
