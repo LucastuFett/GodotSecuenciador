@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://batna25ggjth"]
+[gd_scene load_steps=45 format=3 uid="uid://batna25ggjth"]
 
 [ext_resource type="Script" uid="uid://dl0we6ll6ujou" path="res://buttons.gd" id="1_2l6ow"]
 [ext_resource type="Script" uid="uid://csdcklenxmu8d" path="res://main.gd" id="1_3bh58"]
@@ -10,20 +10,7 @@
 [ext_resource type="StyleBox" uid="uid://ifxgqnl52ruv" path="res://themes/TransparentKey.tres" id="7_qthdj"]
 [ext_resource type="Script" uid="uid://dssnitrbsmcxr" path="res://timer.gd" id="9_sov8j"]
 
-[sub_resource type="InputEventKey" id="InputEventKey_sky72"]
-
-[sub_resource type="Shortcut" id="Shortcut_s3sxy"]
-events = [SubResource("InputEventKey_sky72")]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62ndd"]
-
-[sub_resource type="InputEventKey" id="InputEventKey_b2jhy"]
-device = -1
-keycode = 44
-unicode = 44
-
-[sub_resource type="Shortcut" id="Shortcut_ao5pd"]
-events = [SubResource("InputEventKey_b2jhy")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_ypg5i"]
 device = -1
@@ -183,14 +170,12 @@ custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_styles/normal = ExtResource("3_hmk0w")
 action_mode = 0
-shortcut = SubResource("Shortcut_s3sxy")
 
 [node name="B2" type="Button" parent="Buttons"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_62ndd")
 action_mode = 0
-shortcut = SubResource("Shortcut_ao5pd")
 
 [node name="B3" type="Button" parent="Buttons"]
 custom_minimum_size = Vector2(60, 60)

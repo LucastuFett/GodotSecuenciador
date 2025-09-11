@@ -12,6 +12,7 @@ const launchColors = [Color8(255,50,37),Color8(0,134,12),Color8(63,119,255),Colo
 					  Color8(206,1,250),Color8(245,95,76),Color8(11,171,201),Color8(241,84,174),Color8(212,133,28),Color8(63,119,255),Color8(0,134,12),Color8(255,50,37)]
 var listbtn = Array()
 var buttonsPressed = Array()
+var DAWSent = Array()
 var holdTemporary = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -19,6 +20,8 @@ func _ready():
 	listbtn = [$B1, $B2, $B3, $B4, $B5, $B6, $B7, $B8, $B9, $B10, $B11, $B12, $B13, $B14, $B15, $B16]
 	buttonsPressed.resize(16)
 	buttonsPressed.fill(false)
+	DAWSent.resize(16)
+	DAWSent.fill(false)
 	var n = 0
 	for btn in listbtn:
 		btn.pressed.connect(_buttonPress.bind(n))
@@ -120,6 +123,14 @@ func updateColors():
 					var sbf = StyleBoxFlat.new()
 					sbf.bg_color = launchColors[i]
 					listbtn[i].add_theme_stylebox_override("pressed",sbf)
+					listbtn[i].add_theme_stylebox_override("normal",sbf)
+		DAW:
+			for i in len(listbtn):
+				listbtn[i].add_theme_stylebox_override("normal",greyStyle)
+			for i in 16:
+				if (DAWSent[i]):
+					var sbf = StyleBoxFlat.new()
+					sbf.bg_color = launchColors[i]
 					listbtn[i].add_theme_stylebox_override("normal",sbf)
 
 # Función que se llama cuando se aprieta un botón, recibe el número del botón apretado
@@ -248,11 +259,17 @@ func _buttonPress(num):
 		LAUNCH:
 			if launchMessages[num][0] != 0:
 				midi.sendMessage(launchMessages[num])
+		DAW:
+			if DAWSent[num]:
+				midi.sendMessage([launchMessages[num][0],launchMessages[num][1],0])
+			else:
+				midi.sendMessage(launchMessages[num])
+			DAWSent[num] = !DAWSent[num]
 	updateColors()
 
 # Función que se llama cuando se deja de apretar un botón
 func _buttonUp(num):
-	if mainState == LAUNCH:
+	if (mainState == LAUNCH):
 		if launchMessages[num][0] != 0:
 			midi.sendMessage([launchMessages[num][0],launchMessages[num][1],0])
 	updateColors()

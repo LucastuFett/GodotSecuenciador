@@ -212,6 +212,8 @@ func _on_f_2_pressed():
 					launchChn = 15
 			else:
 				launchMode = (0 if launchMode else 1)
+		DAW:
+			midi.sendMessage([0xFB])
 	changeState()
 
 func _on_f_3_pressed():
@@ -260,10 +262,14 @@ func _on_f_3_pressed():
 					launchChn = 0
 			else:
 				launchMode = (0 if launchMode else 1)
+		DAW:
+			midi.sendMessage([0xFC])
 	changeState()
 
 func _on_f_4_pressed():
 	match mainState:
+		MAIN:
+			mainState = DAW
 		PROG:
 			if shift:
 				prevMode = mode
@@ -307,7 +313,7 @@ func _on_f_4_pressed():
 
 func _on_exit_pressed():
 	match mainState:
-		PROG,PLAY,LAUNCH:
+		PROG,PLAY,LAUNCH,DAW:
 			mainState = MAIN
 		NOTE:
 			note = prevNote
